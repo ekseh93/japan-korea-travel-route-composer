@@ -3,9 +3,9 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY  
-> 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher 구현; 실제 Catalog 반입·AWS 리소스 검증·배포 미실행
+> 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 Catalog 반입·AWS 리소스 검증·배포 미실행
 > 공개 URL·사용자 지표: 없음  
-> LUN-014 검증: format·lint·typecheck·64개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
+> LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업과 Smoke contract tests·Release contract tests 통과 ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909295562), 2026-08-16)
 
 ## 프로젝트 개요
@@ -109,7 +109,7 @@ Source 내부 검수 메모·권리 판단 필드는 제외하고 provider·attr
 합성 Fixture는 테스트에서만 허용되고 Production Projection에서는 차단됩니다. DynamoDB Catalog
 Publisher는 두 도시 META를 조건부로 예약한 뒤 검증된 Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Current pointer를
 기대 이전 Version 조건의 단일 transaction으로 승격합니다. Production Workflow는 apply 직후
-Publisher CLI를 호출하도록 연결했지만 실제 AWS publish는 실행하지 않았습니다.
+Publisher CLI를 호출하도록 연결했고, 보호된 rollback Workflow는 기존 Catalog pointer를 조건부로 복구하지만 실제 AWS publish·rollback은 실행하지 않았습니다.
 Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
 GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact 업로드,
 Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
@@ -120,9 +120,9 @@ Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행
 |---|---|
 | 회사형 요건정의 | v1.0 BASELINED |
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료 |
-| 애플리케이션·인프라 코드 | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher 구현; 실제 AWS 적용은 미실행 |
+| 애플리케이션·인프라 코드 | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 AWS 적용은 미실행 |
 | 실제 150~250개 Catalog | 미수집, Source 승인 필요 |
-| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·64개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
+| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
 | AWS 리소스·배포 URL | 없음 |
 | 실제 성능·가용성·사용자 지표 | 없음 |
 
@@ -176,7 +176,7 @@ AWS 계정·Budget·OIDC·Source Gate를 확인하기 전에는 Production 배�
 
 ## 로드맵
 
-1. LUN-001~014 애플리케이션·Terraform·CI, Source Governance Gate·Projection Build·Catalog Publisher 구현 및 검증 완료
+1. LUN-001~014 애플리케이션·Terraform·CI, Source Governance Gate·Projection Build·Catalog Publisher·Rollback 구현 및 검증 완료
 2. 승인된 Source로 도쿄·서울 최소 150개 Place를 수동 검수
 3. 사용자 승인 후 AWS 배포·Smoke·Rollback 검증
 4. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가

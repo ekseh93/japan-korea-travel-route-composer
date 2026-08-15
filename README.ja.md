@@ -3,9 +3,9 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
-> 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisherを実装、実Catalog取込・AWSリソース検証・配信は未実行
+> 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
-> LUN-014検証: format・lint・typecheck・64 Vitestテスト・Smoke契約4件・Release契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
+> LUN-014検証: format・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
 > GitHub CI検証: quality・browser-e2e・terraform-static、Smoke contract tests、Release contract testsに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909295562)、2026-08-16)
 
 ## プロジェクト概要
@@ -105,7 +105,7 @@ LUN-014のSource GateはProduction Catalogの合計150～250件・都市別最�
 検証済みProjectionからのみCurrent pointer候補を作成し、stale Versionの昇格を拒否するローカル契約も追加しました。
 DynamoDB Catalog Publisherは2都市のMETAを条件付きで予約してから検証済みProjectionをVersion partitionへ制限付き再試行で書き込み、
 2都市のCurrent pointerを期待する以前のVersion条件付き単一transactionで昇格します。Production
-Workflowはapply直後にPublisher CLIを呼び出す構成ですが、実AWS publishは実行していません。
+Workflowはapply直後にPublisher CLIを呼び出し、保護されたrollback Workflowは既存Catalog pointerを条件付きで復元しますが、実AWS publish・rollbackは実行していません。
 合成Fixtureはテストでのみ許可し、Production Projectionでは拒否します。
 Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。
 実AWS Plan、OIDC AssumeRole、Artifactアップロード、実Lambda/API Gateway統合・配信、
@@ -117,9 +117,9 @@ Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGit
 |---|---|
 | 会社形式の要件定義 | v1.0 BASELINED |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
-| アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisherを実装、実AWS適用は未実行 |
+| アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実AWS適用は未実行 |
 | 実データ150～250件のCatalog | 未収集、Source承認が必要 |
-| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・64 Vitestテスト・Smoke契約4件・Release契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
+| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
 | AWSリソース・公開URL | なし |
 | 実測性能・可用性・ユーザー指標 | なし |
 
@@ -169,7 +169,7 @@ AWSアカウント・Budget・OIDC・Source Gateの確認前にProduction手順�
 
 ## ロードマップ
 
-1. LUN-001~014 TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog Publisherの実装・検証を完了
+1. LUN-001~014 TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog Publisher・Rollbackの実装・検証を完了
 2. 承認済みSourceで東京・ソウル合計150件以上のPlaceを手動審査
 3. ユーザー承認後のAWS配信・Smoke・Rollback検証
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価

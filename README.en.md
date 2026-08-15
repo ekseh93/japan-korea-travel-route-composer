@@ -3,9 +3,9 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > Status: Sol phased design complete; Luna implementation handoff READY  
-> Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate, Projection Build, and DynamoDB Catalog Publisher implemented; real catalog ingestion, AWS resource validation, and deployment not run
+> Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 64 Vitest tests, 4 smoke contract tests, 4 release contract tests, 3 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
+> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 3 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
 > GitHub CI verification: quality, browser-e2e, terraform-static, Smoke contract tests, and Release contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909295562), 2026-08-16)
 
 ## Project Overview
@@ -116,7 +116,7 @@ are rejected in Production mode.
 The local pointer contract now creates candidates only from a validated Projection and rejects stale Version promotion.
 The DynamoDB Catalog Publisher conditionally reserves both city META items before writing the validated Projection to Version partitions with bounded retries,
 then promotes both city Current pointers in one transaction with expected-previous-Version conditions.
-The Production Workflow invokes the publisher CLI immediately after apply, but real AWS publication has not run.
+The Production Workflow invokes the publisher CLI immediately after apply, and the protected rollback Workflow conditionally restores existing Catalog pointers; real AWS publication and rollback have not run.
 
 ## Current Status
 
@@ -124,9 +124,9 @@ The Production Workflow invokes the publisher CLI immediately after apply, but r
 |---|---|
 | Company-style requirements definition | v1.0 BASELINED |
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
-| Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, and DynamoDB Catalog Publisher implemented; AWS application not run |
+| Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 64 Vitest tests, 4 smoke contract tests, 4 release contract tests, 3 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
+| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 3 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 
@@ -180,7 +180,7 @@ credentials; it has not called AWS locally.
 
 ## Roadmap
 
-1. Implement and verify the LUN-001~014 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, Terraform, CI, Source Governance Gate, Projection Build, and Catalog Publisher
+1. Implement and verify the LUN-001~014 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, Terraform, CI, Source Governance Gate, Projection Build, Catalog Publisher, and Rollback
 2. Manually review at least 150 places from approved Sources in Tokyo and Seoul
 3. Deploy only after user approval, then verify smoke tests and rollback
 4. Re-evaluate city expansion and optional route/AI adapters from real feedback

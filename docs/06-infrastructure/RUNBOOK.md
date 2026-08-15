@@ -77,12 +77,12 @@ AWS Apply·Rollback·철거 명령은 사용자 승인과 실제 계정·State �
 
 ## 6. Release Rollback
 
-1. 이전 성공 Commit SHA, Artifact checksum과 CatalogVersion을 Release에서 선택한다.
-2. 권리·사실 문제면 Catalog Current pointer를 먼저 이전 Version으로 되돌린다.
-3. API 문제면 이전 Lambda Artifact와 Terraform Commit을 적용한다.
+1. 이전 성공 Release의 Commit SHA, Artifact checksum과 CatalogVersion을 선택한다.
+2. 권리·사실 문제면 보호된 `rollback.yml`에 현재 Version과 대상 Version을 입력해 Catalog Current pointer를 먼저 되돌린다.
+3. API 문제면 이전 Lambda Artifact와 Terraform Commit을 `deploy-production.yml`로 재배포한다.
 4. Web 문제면 이전 정적 Artifact를 업로드하고 HTML 경로만 무효화한다.
 5. Cache key에 Version이 포함되어 구·신 Catalog 결과가 섞이지 않는지 확인한다.
-6. Smoke와 Drift Plan이 통과할 때까지 Release를 재개하지 않는다.
+6. Catalog rollback Workflow와 재배포 뒤 Smoke와 Drift Plan이 통과할 때까지 Release를 재개하지 않는다.
 
 ## 7. Production Application 철거
 

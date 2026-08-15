@@ -24,7 +24,7 @@
 | `terraform-plan.yml` | 신뢰 PR | Plan Role OIDC | Production read-only Plan |
 | `deploy-production.yml` | main 수동/승인 | Deploy Role OIDC | Apply, Catalog·Web 배포, Smoke |
 | `drift.yml` | 주 1회, 수동 | Plan Role OIDC | 변경 없는 Plan 기대 |
-| `rollback.yml` | 수동 | Deploy Role OIDC | 이전 SHA·CatalogVersion 복구 |
+| `rollback.yml` | 수동 | Deploy Role OIDC | 기존 CatalogVersion pointer 복구 |
 | `teardown.yml` | 수동 이중 승인 | Deploy Role OIDC | Production Application 철거 |
 
 Fork PR에는 OIDC와 Secret을 제공하지 않으며 AWS Plan을 건너뛴다. 로컬·정적
@@ -53,7 +53,7 @@ flowchart TD
     Smoke --> Result{"Healthy?"}
     Result -->|Yes| Release["Release metadata · drift-free plan"]
     Result -->|No| Stop["Mark failed · block further deploy"]
-    Stop --> Rollback["Manual previous SHA/catalog rollback"]
+    Stop --> Rollback["Manual Catalog pointer rollback"]
 ~~~
 
 ## 4. PR 필수 Gate

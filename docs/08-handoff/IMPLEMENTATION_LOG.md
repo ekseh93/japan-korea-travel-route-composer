@@ -10,8 +10,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher 완료 |
-| 로컬 검증 | format, lint, typecheck, 64 Vitest tests, smoke contract 4건, release contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료 |
+| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -49,6 +49,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `2d44969` | Release Artifact CI 검증 결과와 README 상태 동기화 | GitHub CI 성공 |
 | `ca7feb5` | DynamoDB Catalog Publisher, 조건부 Current 승격과 배포 Workflow 연결 | GitHub CI 성공 |
 | `8d5cf93` | META 예약으로 동일 CatalogVersion 재작성 차단 | GitHub CI 성공 |
+| `ea1e3b4` | 불변 Catalog CI 검증 결과와 문서 동기화 | GitHub CI 성공 |
+
+### LUN-014 Catalog Rollback 구현 결과
+
+- `DynamoDbCatalogPublisher.rollback`은 대상 Version META를 ConsistentRead로 확인한 뒤 두 도시 Current pointer를 하나의 조건부 TransactWrite로 되돌린다.
+- 대상 META가 없거나 현재 Version이 기대값과 다르면 pointer transaction을 실행하지 않는다.
+- 보호된 `rollback.yml`은 승인된 Environment와 OIDC Deploy Role을 사용하며 Catalog pointer만 변경한다. API·Web은 이전 Release를 `deploy-production.yml`로 재배포한다.
+- fake DynamoDB client로 대상 META 조회, 누락 차단과 두 도시 조건부 transaction을 검증했다.
 
 ### LUN-014 Catalog Publisher 구현 결과
 

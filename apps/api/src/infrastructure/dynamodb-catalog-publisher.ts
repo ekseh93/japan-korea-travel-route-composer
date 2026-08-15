@@ -2,6 +2,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   BatchWriteCommand,
   DynamoDBDocumentClient,
+  GetCommand,
   type BatchWriteCommandInput,
   type TransactWriteCommandInput,
   TransactWriteCommand,
@@ -15,6 +16,7 @@ import { z } from "zod";
 
 const hashSchema = z.string().regex(/^[a-f0-9]{64}$/);
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const isoDateSchema = z.string().regex(isoDatePattern);
 type TransactWriteItem = NonNullable<TransactWriteCommandInput["TransactItems"]>[number];
 
 const cityStatsSchema = z
@@ -68,8 +70,22 @@ export type CatalogPublishResult = {
   readonly placeCountByCity: Readonly<Record<CityId, number>>;
 };
 
+export type CatalogRollbackOptions = {
+  readonly tableName: string;
+  readonly targetVersions: Readonly<Record<CityId, string>>;
+  readonly expectedCurrentVersions: Readonly<Record<CityId, string>>;
+};
+
 const cityIds = ["TOKYO", "SEOUL"] as const satisfies readonly CityId[];
 const maxBatchWriteItems = 25;
+const catalogMetaSchema = z.object({
+  cityId: z.enum(["TOKYO", "SEOUL"]),
+  catalogVersion: z.string().min(1),
+  schemaVersion: z.string().min(1),
+  sourceChecksum: hashSchema,
+  placeCount: z.number().int().nonnegative(),
+  checkedAt: isoDateSchema,
+});
 
 function partitionKey(cityId: CityId, version: string): string {
   return `CITY#${cityId}#VERSION#${version}`;
@@ -207,6 +223,41 @@ function currentPointerUpdate(
   };
 }
 
+function currentPointerRollbackUpdate(
+  tableName: string,
+  metadata: z.infer<typeof catalogMetaSchema>,
+  expectedCurrentVersion: string,
+): TransactWriteItem {
+  return {
+    Update: {
+      TableName: tableName,
+      Key: currentKey(metadata.cityId),
+      UpdateExpression:
+        "SET #itemType = :itemType, #cityId = :cityId, #catalogVersion = :catalogVersion, #schemaVersion = :schemaVersion, #sourceChecksum = :sourceChecksum, #placeCount = :placeCount, #checkedAt = :checkedAt",
+      ConditionExpression: "#catalogVersion = :expectedVersion",
+      ExpressionAttributeNames: {
+        "#itemType": "itemType",
+        "#cityId": "cityId",
+        "#catalogVersion": "catalogVersion",
+        "#schemaVersion": "schemaVersion",
+        "#sourceChecksum": "sourceChecksum",
+        "#placeCount": "placeCount",
+        "#checkedAt": "checkedAt",
+      },
+      ExpressionAttributeValues: {
+        ":itemType": "CURRENT",
+        ":cityId": metadata.cityId,
+        ":catalogVersion": metadata.catalogVersion,
+        ":schemaVersion": metadata.schemaVersion,
+        ":sourceChecksum": metadata.sourceChecksum,
+        ":placeCount": metadata.placeCount,
+        ":checkedAt": metadata.checkedAt,
+        ":expectedVersion": expectedCurrentVersion,
+      },
+    },
+  };
+}
+
 export function parseCatalogProjectionArtifact(value: unknown): CatalogProjectionArtifact {
   return projectionArtifactSchema.parse(value);
 }
@@ -280,5 +331,40 @@ export class DynamoDbCatalogPublisher {
         ]),
       ) as Record<CityId, number>,
     };
+  }
+
+  public async rollback(options: CatalogRollbackOptions): Promise<void> {
+    if (options.tableName.length === 0) throw new Error("tableName cannot be empty.");
+    const metadata = await Promise.all(
+      cityIds.map(async (cityId) => {
+        const response = await this.client.send(
+          new GetCommand({
+            TableName: options.tableName,
+            Key: { pk: partitionKey(cityId, options.targetVersions[cityId]), sk: "META" },
+            ConsistentRead: true,
+          }),
+        );
+        const parsed = catalogMetaSchema.safeParse(response.Item);
+        if (!parsed.success || parsed.data.cityId !== cityId) {
+          throw new Error(`Rollback target metadata is missing or invalid for ${cityId}.`);
+        }
+        if (parsed.data.catalogVersion !== options.targetVersions[cityId]) {
+          throw new Error(`Rollback target metadata version does not match for ${cityId}.`);
+        }
+        return parsed.data;
+      }),
+    );
+
+    await this.client.send(
+      new TransactWriteCommand({
+        TransactItems: metadata.map((item) =>
+          currentPointerRollbackUpdate(
+            options.tableName,
+            item,
+            options.expectedCurrentVersions[item.cityId],
+          ),
+        ),
+      }),
+    );
   }
 }

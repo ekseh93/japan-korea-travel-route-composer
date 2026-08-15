@@ -203,4 +203,73 @@ describe("DynamoDB catalog publisher", () => {
       }),
     ).rejects.toThrow("Place count does not match metadata");
   });
+
+  it("rolls both current pointers back only when target metadata exists and versions match", async () => {
+    const commands: unknown[] = [];
+    const client = fakeDynamoClient(async (command) => {
+      commands.push(command);
+      if ((command as object).constructor.name === "GetCommand") {
+        const cityId = (
+          command as { readonly input: { readonly Key: { readonly pk: string } } }
+        ).input.Key.pk.includes("TOKYO")
+          ? "TOKYO"
+          : "SEOUL";
+        return {
+          Item: {
+            cityId,
+            catalogVersion: "catalog-old-v1",
+            schemaVersion: "api-v1",
+            sourceChecksum: "c".repeat(64),
+            placeCount: 75,
+            checkedAt: "2026-08-15",
+          },
+        };
+      }
+      return {};
+    });
+
+    await new DynamoDbCatalogPublisher(client).rollback({
+      tableName: "catalog-table",
+      targetVersions: { TOKYO: "catalog-old-v1", SEOUL: "catalog-old-v1" },
+      expectedCurrentVersions: { TOKYO: "catalog-new-v1", SEOUL: "catalog-new-v1" },
+    });
+
+    expect(commands.map((command) => (command as object).constructor.name)).toEqual([
+      "GetCommand",
+      "GetCommand",
+      "TransactWriteCommand",
+    ]);
+    const transaction = commands[2] as {
+      readonly input: {
+        readonly TransactItems: readonly {
+          readonly Update?: { readonly ConditionExpression?: string };
+        }[];
+      };
+    };
+    expect(transaction.input.TransactItems).toHaveLength(2);
+    expect(transaction.input.TransactItems[0]?.Update).toMatchObject({
+      ConditionExpression: "#catalogVersion = :expectedVersion",
+    });
+  });
+
+  it("does not write pointers when a rollback target META is missing", async () => {
+    const commands: unknown[] = [];
+    const client = fakeDynamoClient(async (command) => {
+      commands.push(command);
+      return { Item: undefined };
+    });
+
+    await expect(
+      new DynamoDbCatalogPublisher(client).rollback({
+        tableName: "catalog-table",
+        targetVersions: { TOKYO: "catalog-old-v1", SEOUL: "catalog-old-v1" },
+        expectedCurrentVersions: { TOKYO: "catalog-new-v1", SEOUL: "catalog-new-v1" },
+      }),
+    ).rejects.toThrow("Rollback target metadata");
+    expect(commands).toHaveLength(2);
+    expect(commands.map((command) => (command as object).constructor.name)).toEqual([
+      "GetCommand",
+      "GetCommand",
+    ]);
+  });
 });
