@@ -10,8 +10,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~010 완료 |
-| 로컬 검증 | format, lint, typecheck, 40 tests, browser E2E 2건, build, catalog validation, audit, Terraform fmt/validate, TFLint 완료 |
+| 구현 | LUN-001~011 완료 |
+| 로컬 검증 | format, lint, typecheck, 40 tests, browser E2E 3건, build, catalog validation, audit, Terraform fmt/validate, TFLint 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -32,15 +32,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|---|
 | `d76aec0` | LUN-001~010 애플리케이션·테스트·Terraform·CI 기반 구현 | 로컬 검증 기록 |
 | `bb609b6` | 깨끗한 CI 체크아웃에서 contracts 빌드를 명시 | GitHub CI 성공 |
+| `8649ce7` | LUN-011 MapLibre/OpenFreeMap 지도와 타일 장애 축소 | 로컬 검증 기록 |
 
 ## 다음 단계
 
-다음 구현 단위는 승인된 ADR-005와 UX 명세에 따른 LUN-011 MapLibre/OpenFreeMap
-progressive enhancement다. 지도 타일 장애 시 텍스트 일정과 외부 지도 링크가
-유지되는지 먼저 검증하고, 실제 공개 배포나 최신 Provider 약관 확인 없이는
-운영 타일 사용을 완료 상태로 표시하지 않는다.
+다음 구현 단위는 LUN-012 Terraform Bootstrap·Production·Budget 검증이다. 실제
+AWS 리소스 생성과 `terraform apply`는 여전히 사용자 승인 전에는 실행하지 않는다.
 
-### LUN-011 구현 전 계약
+### LUN-011 구현 계약
 
 - 지도는 Compose 결과를 읽기만 하며 Domain·Application·추천 점수에 관여하지 않는다.
 - 장소 좌표와 순서는 API 응답의 `VISIT` 항목에서만 가져온다.

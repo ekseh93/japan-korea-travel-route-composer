@@ -2,7 +2,7 @@
 
 > 상태: 설계 승인
 > 기준일: 2026-08-15
-> 구현 상태: LUN-010 입력·결과·출처·오류 Web 구현 및 로컬/GitHub CI 검증 완료; LUN-011 지도 progressive enhancement 미구현
+> 구현 상태: LUN-010 입력·결과·출처·오류 Web과 LUN-011 지도 progressive enhancement 구현 및 로컬/GitHub CI 검증 완료
 
 상태별 Mobile·Desktop 정보 계층과 컴포넌트 동작은
 [반응형 Low-fidelity Wireframe](WIREFRAMES.md)을 단일 기준으로 사용한다.
