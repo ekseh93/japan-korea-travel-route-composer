@@ -30,7 +30,8 @@
 쿼터와 비용을 사용하고 응답 원문을 Artifact에 저장하지 않는다.
 
 현재 로컬 실행 증거는 Vitest 67개, Release contract 4개, Smoke contract 4개,
-브라우저 E2E 3개, build, dependency audit이다. GitHub CI는 quality,
+Workflow contract 5개, Terraform safety contract 3개, 브라우저 E2E 4개, build,
+dependency audit이다. GitHub CI는 quality,
 browser-e2e, terraform-static을 통과했으며, 실제 AWS Plan/Apply와 Production
 Smoke는 승인 전 실행하지 않는다.
 
