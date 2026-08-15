@@ -50,6 +50,36 @@ test("all workflows use the Node 24-compatible pinned checkout action", async ()
   }
 });
 
+test("deployment workflows require reviewed inputs and protected environments", async () => {
+  const deploy = await workflow("deploy-production.yml");
+  assert.match(deploy, /release_sha:[\s\S]*?required:\s+true/);
+  assert.match(deploy, /catalog_as_of:[\s\S]*?required:\s+true/);
+  assert.match(deploy, /environment:\s+name:\s+production/);
+  assert.match(deploy, /Fresh Terraform plan and apply/);
+  assert.match(deploy, /-chdir=infra\/environments\/production apply/);
+
+  const rollback = await workflow("rollback.yml");
+  for (const input of [
+    "reviewed_sha",
+    "target_tokyo_catalog_version",
+    "target_seoul_catalog_version",
+    "expected_tokyo_catalog_version",
+    "expected_seoul_catalog_version",
+  ]) {
+    assert.match(rollback, new RegExp(`${input}:\\s+[\\s\\S]*?required:\\s+true`));
+  }
+  assert.match(rollback, /environment:\s+name:\s+production/);
+  assert.match(rollback, /ref:\s+\$\{\{ inputs\.reviewed_sha \}\}/);
+
+  const teardown = await workflow("teardown.yml");
+  assert.match(teardown, /confirmation:[\s\S]*?required:\s+true/);
+  assert.match(teardown, /DESTROY-PRODUCTION/);
+  assert.match(teardown, /environment:\s+name:\s+production-teardown/);
+
+  const plan = await workflow("terraform-plan.yml");
+  assert.match(plan, /environment:\s+terraform-plan/);
+});
+
 test("AWS-capable workflows require OIDC and protected fork guards", async () => {
   for (const name of [
     "terraform-plan.yml",

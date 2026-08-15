@@ -5,7 +5,7 @@
 > Status: Sol phased design complete; Luna implementation handoff READY  
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 4 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
+> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
 > GitHub CI verification: quality, browser-e2e, terraform-static, Smoke contract tests, Release contract tests, and Workflow contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31912171277), 2026-08-16)
 
 ## Project Overview
@@ -127,7 +127,7 @@ The MapLibre renderer is lazy-loaded on the result view, separating the initial 
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
 | Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 4 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
+| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 
