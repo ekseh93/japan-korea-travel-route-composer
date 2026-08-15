@@ -40,6 +40,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `4ee0839` | LUN-014 BLOCKED/UNVERIFIED Source·만료 Evidence·MANUAL_LINK_ONLY Tier Gate와 계약 테스트 | GitHub CI 성공 |
 | `7ddb550` | LUN-014 Source review·Host·Production Route SourceRef Gate와 계약 테스트 | GitHub CI 성공 |
 | `c219f5c` | LUN-014 재현 가능한 catalog validation CLI와 옵션 계약 테스트 | GitHub CI 성공 |
+| `437cf05` | LUN-015 결정론적 Catalog Projection Build와 계약 테스트 | GitHub CI 성공 |
 
 ## 다음 단계
 

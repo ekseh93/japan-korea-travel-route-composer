@@ -6,7 +6,7 @@
 > Implementation: LUN-001~013 application/infrastructure, LUN-014 Source Governance Gate, and LUN-015 deterministic Projection Build implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
 > LUN-015 verification: format, lint, typecheck, 52 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-15)
-> GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31864902189), 2026-08-15)
+> GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31865408214), 2026-08-15)
 
 ## Project Overview
 
