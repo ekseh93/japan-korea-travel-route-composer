@@ -44,17 +44,20 @@ AWS Apply·Rollback·철거 명령은 사용자 승인과 실제 계정·State �
 4. 생성·변경·삭제 수, IAM diff, 비용 가능 Resource와 고정비 금지 Policy를 검토한다.
 5. GitHub Production Environment 승인을 받는다.
 6. 같은 Commit에서 새 Plan을 만들고 OIDC Deploy Role로 Apply한다.
-7. Catalog 새 Version을 완전히 쓰고 checksum 확인 후 Current pointer를 변경한다.
-8. Web Asset과 HTML을 안전한 순서로 배포한다.
-9. Web/API/출처/지도 장애 축소 Smoke Test를 실행한다.
-10. Drift-free Plan, URL, Commit과 Test Run을 Release 기록에 남긴다.
+7. `catalog-publisher-cli`로 Catalog 새 Version을 완전히 쓰고 BatchWrite 재시도를
+   확인한다. 최초 게시에는 두 expected Version 입력을 비우고, 갱신에는 각 도시의
+   현재 Version을 반드시 입력한다.
+8. Publisher의 단일 조건부 TransactWrite가 두 도시 Current pointer를 변경했는지 확인한다.
+9. Web Asset과 HTML을 안전한 순서로 배포한다.
+10. Web/API/출처/지도 장애 축소 Smoke Test를 실행한다.
+11. Drift-free Plan, URL, Commit과 Test Run을 Release 기록에 남긴다.
 
 ## 4. 배포 실패
 
 - Terraform Apply 실패: 추가 Apply를 중지하고 State lock, 실제 리소스와 Plan을
   비교한다. State를 수동 편집하지 않는다.
-- Catalog 게시 실패: Current pointer를 바꾸지 않고 미완성 Version을 폐기 대상으로
-  표시한다.
+- Catalog 게시 실패: 조건부 pointer transaction이 실행되지 않았는지 확인하고, Current
+  pointer를 바꾸지 않은 미완성 Version을 폐기 대상으로 표시한다.
 - Web 배포 실패: 기존 `index.html`을 유지한다.
 - Smoke 실패: Release를 실패 처리하고 자동 성공 Tag를 만들지 않는다.
 - OIDC 실패: 장기 Access Key로 우회하지 않고 Trust `sub`, Audience와 Environment를

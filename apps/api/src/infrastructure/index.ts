@@ -1,5 +1,6 @@
 export * from "./dynamodb-cache-repository.js";
 export * from "./dynamodb-catalog-repository.js";
+export * from "./dynamodb-catalog-publisher.js";
 export * from "./in-memory-cache-repository.js";
 export * from "./in-memory-catalog-repository.js";
 export * from "./repository-errors.js";

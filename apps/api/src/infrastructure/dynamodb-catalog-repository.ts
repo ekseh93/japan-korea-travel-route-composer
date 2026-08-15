@@ -10,6 +10,8 @@ import { RepositoryError } from "./repository-errors.js";
 
 const currentVersionItemSchema = z
   .object({
+    pk: z.string().optional(),
+    sk: z.string().optional(),
     itemType: z.literal("CURRENT"),
     cityId: cityIdSchema,
     catalogVersion: z.string().min(1),
@@ -21,6 +23,8 @@ const currentVersionItemSchema = z
   .strict();
 
 const projectedPlaceItemSchema = publishedPlaceSchema.extend({
+  pk: z.string().optional(),
+  sk: z.string().optional(),
   itemType: z.literal("PLACE"),
   catalogVersion: z.string().min(1),
 });

@@ -11,6 +11,16 @@ on:
         description: "Catalog rights review date (YYYY-MM-DD)"
         required: true
         type: string
+      expected_tokyo_catalog_version:
+        description: "Expected active Tokyo catalog version; empty only for first publish"
+        required: false
+        default: ""
+        type: string
+      expected_seoul_catalog_version:
+        description: "Expected active Seoul catalog version; empty only for first publish"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -146,6 +156,18 @@ jobs:
             -var="release_sha=${{ inputs.release_sha }}"
           docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production apply -input=false -auto-approve /workspace/release/tfplan
+      - name: Publish immutable Catalog projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          catalog_table="$(docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+            -chdir=infra/environments/production output -raw catalog_table_name)"
+          node release/lambda/dist/infrastructure/catalog-publisher-cli.js \
+            --table-name "$catalog_table" \
+            --artifact release/catalog-projection.json \
+            --checked-at "${{ inputs.catalog_as_of }}" \
+            --expected-tokyo-version "${{ inputs.expected_tokyo_catalog_version }}" \
+            --expected-seoul-version "${{ inputs.expected_seoul_catalog_version }}"
       - name: Publish Web artifact after API is known
         shell: bash
         run: |

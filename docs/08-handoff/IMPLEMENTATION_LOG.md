@@ -10,8 +10,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate와 Projection Build tooling 완료 |
-| 로컬 검증 | format, lint, typecheck, 61 Vitest tests, smoke contract 4건, release contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher 완료 |
+| 로컬 검증 | format, lint, typecheck, 64 Vitest tests, smoke contract 4건, release contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -46,13 +46,22 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `2e83848` | Production Catalog 규모 Gate와 도시별 검증 통계 | GitHub CI 성공 |
 | `59bb9f2` | 검증된 Projection 기반 Current pointer 계약과 stale Version 차단 | GitHub CI 성공 |
 | `8f0437b` | Production Catalog Artifact와 Release checksum/SBOM 검증 Workflow | GitHub CI 성공 |
+| `2d44969` | Release Artifact CI 검증 결과와 README 상태 동기화 | GitHub CI 성공 |
+
+### LUN-014 Catalog Publisher 구현 결과
+
+- `DynamoDbCatalogPublisher`가 검증된 public Projection을 도시별 immutable Version partition에 25개 단위로 작성한다.
+- BatchWrite의 Unprocessed Item은 제한된 지수형 재시도로 처리하고, 예산 초과 시 Current pointer를 변경하지 않고 실패한다.
+- 두 도시 `CURRENT` pointer는 expected previous Version을 조건으로 단일 `TransactWrite`에서 함께 승격한다. 초기 게시에는 빈 기대 Version을 사용한다.
+- 배포 Artifact의 `catalog-publisher-cli`를 Terraform apply 직후 호출하도록 Production Workflow를 연결했다. Lambda runtime IAM은 계속 DynamoDB read-only다.
+- fake DynamoDB client로 batch 순서·25개 제한·재시도·stale 조건과 metadata 불일치 사전 차단을 검증했다.
 
 ### LUN-013/014 Release Artifact 계약 구현 결과
 
 - Production Workflow가 `catalog_as_of`를 요구하고 `catalog:validate --production`과 `catalog:build --production`을 실행한다.
 - Release Artifact에 Lambda zip, Catalog Projection, Web, SHA256SUMS, Lambda hash와 SBOM을 포함한다.
 - `release:verify`가 Release SHA, Lambda·Catalog checksum, SBOM, public Projection shape와 Web entrypoint를 검증한다.
-- DynamoDB Catalog publish adapter, 실제 AWS publish와 배포 Smoke는 사용자 승인 전 미실행이다.
+- DynamoDB Catalog publish adapter와 Workflow 호출 코드는 구현했지만, 실제 AWS publish와 배포 Smoke는 사용자 승인 전 미실행이다.
 
 ### LUN-014 Catalog 규모 Gate 구현 결과
 
@@ -70,7 +79,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 ## 다음 단계
 
 다음 설계 순서의 구현 단위는 승인된 Source 기반 공개 Catalog 검수다.
-이번 단계에서는 실제 Source를 반입하지 않고 검증된 Seed의 Projection Build만 구현했다.
+이번 단계에서는 실제 Source를 반입하지 않고 검증된 Seed의 Projection Build와 게시 Adapter 계약만 구현했다.
 사용자 지시에 따라 실제 Source 반입·커뮤니티 크롤링·유료 Provider 활성화는 승인 전
 시작하지 않으며, AWS 리소스 생성과 `terraform apply`도 실행하지 않는다.
 

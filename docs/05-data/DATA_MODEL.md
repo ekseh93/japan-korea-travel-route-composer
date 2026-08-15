@@ -117,6 +117,12 @@ API는 Current pointer를 읽은 뒤 해당 Version Partition을 한 번 Query�
 - 기대한 이전 Version과 일치할 때만 교체한다.
 - 새 버전 쓰기가 완료되기 전에는 포인터를 변경하지 않는다.
 
+Production의 `catalog-publisher-cli`는 Projection Artifact를 먼저 도시별 Version
+partition에 25개 단위 BatchWrite한다. Unprocessed Item은 제한된 지수형 재시도로
+처리하며, 두 도시의 `CURRENT` Item은 `expectedPreviousVersion` 조건을 가진 하나의
+TransactWrite에서 함께 갱신한다. 런타임 Lambda IAM은 GetItem/Query만 사용하고,
+게시 권한은 보호된 GitHub Deploy Role의 Workflow에만 둔다.
+
 ### Itinerary Cache Table
 
 | Partition Key | 주요 필드 | 규칙 |

@@ -1,6 +1,6 @@
 # GitHub Actions CI/CD 설계
 
-> 상태: 설계 승인, LUN-013 Build once·OIDC Workflow 코드 구현 및 GitHub CI 정적 검증 완료; AWS OIDC/배포 미실행
+> 상태: 설계 승인, LUN-013 Build once·OIDC와 LUN-014 Catalog Publisher Workflow 코드 구현 및 GitHub CI 정적 검증 완료; AWS OIDC/배포 미실행
 > 기준일: 2026-08-15  
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
 
@@ -94,6 +94,7 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 - Artifact 이름에 Commit SHA, CatalogVersion과 AlgorithmVersion을 포함한다.
 - SHA-256 checksum과 SBOM을 생성하고 GitHub Artifact에 30일 보존한다.
 - `release:verify`가 Release SHA, Lambda·Catalog checksum, SBOM, public Projection shape와 Web entrypoint를 확인한다.
+- `catalog-publisher-cli`가 검증된 Projection을 DynamoDB Version partition에 쓰고, 두 도시의 `CURRENT` pointer를 기대 이전 Version 조건과 함께 단일 transaction으로 승격한다. BatchWrite 미처리 Item은 제한된 재시도를 사용한다.
 - Deploy job은 Build job의 Artifact만 내려받고 다시 `npm build`하지 않는다.
 - GitHub Actions는 검토한 full commit SHA로 고정한다.
 - Package lockfile과 Terraform provider lockfile을 커밋한다.
@@ -103,9 +104,10 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 URL Smoke는 Production 배포 후에만 보호된 Workflow에서 실행하며, URL이 없을 때
 성공으로 표시하지 않는다.
 
-Production Workflow는 Production Catalog Gate와 immutable Projection Artifact까지 구현했지만,
-현재 DynamoDB Catalog publish adapter와 실제 AWS publish는 아직 연결하지 않았다. 실제 Source와
-AWS 승인 전에는 Workflow를 실행하지 않는다.
+Production Workflow는 Production Catalog Gate, immutable Projection Artifact와 DynamoDB Catalog
+publish adapter 호출까지 구현했다. 실제 AWS publish와 배포 Smoke는 아직 실행하지 않았으며,
+실제 Source와 AWS 승인 전에는 Workflow를 실행하지 않는다. 최초 게시 시 두 expected Version
+입력은 빈 값으로 둘 수 있고, 기존 Catalog 갱신 시에는 현재 Version을 각각 명시해야 한다.
 
 ## 7. OIDC와 Environment 보호
 
@@ -121,14 +123,15 @@ AWS 승인 전에는 Workflow를 실행하지 않는다.
 1. CI Gate를 다시 통과하고 immutable Artifact를 만든다.
 2. Production 승인 후 최신 State에서 새 Terraform Plan을 만든다.
 3. 위험 변경과 비용 금지 Policy를 검사하고 Apply한다.
-4. 새 CatalogVersion Item 전체를 쓰고 checksum을 검증한다.
+4. `catalog-publisher-cli`로 새 CatalogVersion Item 전체를 쓰고 BatchWrite 재시도를 완료한다.
 5. Lambda Artifact와 설정을 적용하고 API health를 확인한다.
 6. 정적 Asset을 S3에 올리고 `index.html`을 마지막에 교체한다.
 7. Versioned Asset은 무효화하지 않고 HTML 경로만 최소 무효화한다.
 8. API, Web, Source 링크, 지도 장애 축소 Smoke Test를 실행한다.
-9. Catalog Current pointer를 안전한 순서로 활성화한다. 로컬 `current-pointer` 계약은
-   검증 완료 Projection과 기대 이전 Version을 확인한다. AWS Conditional Update와 실제
-   Rollback은 배포 승인 후 검증하며, 부분 Catalog가 사용자에게 보이면 안 된다.
+9. Publisher의 단일 `TransactWrite`로 두 도시 Catalog Current pointer를 기대 이전 Version
+   조건과 함께 활성화한다. 로컬 `current-pointer`와 AWS adapter 계약은 검증 완료 Projection과
+   stale Version을 차단하며, 부분 Catalog가 사용자에게 보이지 않도록 한다. 실제 Rollback은
+   배포 승인 후 검증한다.
 10. 변경 없는 Terraform Plan과 Release metadata를 남긴다.
 
 Catalog와 API Schema 변경이 호환되지 않으면 Expand/Contract 순서를 사용한다.
