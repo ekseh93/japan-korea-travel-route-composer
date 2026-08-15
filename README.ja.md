@@ -111,6 +111,7 @@ Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGit
 実AWS Plan、OIDC AssumeRole、Artifactアップロード、実Lambda/API Gateway統合・配信、
 運用Alarmの受信検証は未実行です。
 Production Terraform Workflowは`TERRAFORM_STATE_BUCKET`とlockfile backendを使い、Workflow契約テストでremote State・OIDC・fork保護を固定しました。
+MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエントリと選択チャンクを分離しました。ローカルbuildで警告がないことを確認しました。
 
 ## 現在の状態
 

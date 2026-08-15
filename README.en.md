@@ -117,6 +117,7 @@ The local pointer contract now creates candidates only from a validated Projecti
 The DynamoDB Catalog Publisher conditionally reserves both city META items before writing the validated Projection to Version partitions with bounded retries,
 then promotes both city Current pointers in one transaction with expected-previous-Version conditions.
 The Production Workflow invokes the publisher CLI immediately after apply, and the protected rollback Workflow conditionally restores existing Catalog pointers. Production Terraform workflows now pass the approved State bucket, fixed state key, and lockfile backend; real AWS publication and rollback have not run.
+The MapLibre renderer is lazy-loaded on the result view, separating the initial Web entry from the optional map chunk; the local build completed without a chunk warning.
 
 ## Current Status
 

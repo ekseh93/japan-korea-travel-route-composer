@@ -115,6 +115,8 @@ GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact �
 Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
 Production Terraform Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록
 보강했고, Workflow 계약 테스트로 원격 State·OIDC·fork 보호를 고정했습니다.
+MapLibre 지도 렌더러는 결과 화면에서 지연 로드해 초기 Web 엔트리와 선택 청크를 분리했으며,
+로컬 build에서 경고 없이 확인했습니다.
 
 ## 현재 상태
 

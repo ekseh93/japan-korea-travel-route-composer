@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { useState, type FormEvent } from "react";
+import { lazy, Suspense, useState, type FormEvent } from "react";
 
 import {
   composeTripRequestSchema,
@@ -11,8 +11,11 @@ import {
 } from "@route-composer/contracts";
 
 import { appName, implementationMilestone } from "./app";
-import { RouteMap } from "./route-map";
 import "./styles.css";
+
+const RouteMap = lazy(() =>
+  import("./route-map").then(({ RouteMap: Component }) => ({ default: Component })),
+);
 
 const defaultRequest: ComposeTripRequest = {
   cityId: "TOKYO" as const,
@@ -280,12 +283,22 @@ function App() {
                     <time dateTime={day.date}>{day.date}</time>
                   </div>
                   <h3>{day.title}</h3>
-                  <RouteMap
-                    visits={day.items.filter(
-                      (item): item is Extract<typeof item, { type: "VISIT" }> =>
-                        item.type === "VISIT",
-                    )}
-                  />
+                  <Suspense
+                    fallback={
+                      <div className="map-frame">
+                        <p className="map-status" role="status">
+                          지도를 불러오는 중입니다.
+                        </p>
+                      </div>
+                    }
+                  >
+                    <RouteMap
+                      visits={day.items.filter(
+                        (item): item is Extract<typeof item, { type: "VISIT" }> =>
+                          item.type === "VISIT",
+                      )}
+                    />
+                  </Suspense>
                   {day.items.map((item) =>
                     item.type === "VISIT" ? (
                       <div className="timeline-item visit" key={item.visitId}>
