@@ -128,6 +128,7 @@ MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエ
 ## 設計ドキュメント
 
 - [Sol Phase Gate](docs/00-governance/SOL_PHASE_GATES.md)、[要件トレーサビリティ](docs/00-governance/REQUIREMENTS_TRACEABILITY_MATRIX.md)、[文書管理台帳](docs/00-governance/DOCUMENT_REGISTER.md)
+- [LUN-015 承認チェックリスト](docs/08-handoff/LUN015_APPROVAL_CHECKLIST.md)
 - [製品要求](docs/01-product/PRD.md)、[業務・システム要件定義書](docs/01-product/REQUIREMENTS_DEFINITION.md)、[要件仕様](docs/01-product/REQUIREMENTS.md)、[用語集](docs/01-product/GLOSSARY.md)
 - [UX仕様](docs/02-ux/UX_SPEC.md)、[レスポンシブWireframe](docs/02-ux/WIREFRAMES.md)、[情報アーキテクチャ](docs/02-ux/INFORMATION_ARCHITECTURE.md)
 - [DDD設計](docs/03-domain/DDD.md)

@@ -134,6 +134,7 @@ The MapLibre renderer is lazy-loaded on the result view, separating the initial 
 ## Design Documents
 
 - [Sol Phase Gates](docs/00-governance/SOL_PHASE_GATES.md), [requirements traceability](docs/00-governance/REQUIREMENTS_TRACEABILITY_MATRIX.md), [document register](docs/00-governance/DOCUMENT_REGISTER.md)
+- [LUN-015 approval checklist](docs/08-handoff/LUN015_APPROVAL_CHECKLIST.md)
 - [Product requirements](docs/01-product/PRD.md), [business and system requirements definition](docs/01-product/REQUIREMENTS_DEFINITION.md), [requirements specification](docs/01-product/REQUIREMENTS.md), [glossary](docs/01-product/GLOSSARY.md)
 - [UX specification](docs/02-ux/UX_SPEC.md), [responsive wireframes](docs/02-ux/WIREFRAMES.md), [information architecture](docs/02-ux/INFORMATION_ARCHITECTURE.md)
 - [DDD design](docs/03-domain/DDD.md)

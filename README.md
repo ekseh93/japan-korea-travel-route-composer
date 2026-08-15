@@ -133,6 +133,7 @@ MapLibre 지도 렌더러는 결과 화면에서 지연 로드해 초기 Web 엔
 ## 설계 문서
 
 - [Sol Phase Gate](docs/00-governance/SOL_PHASE_GATES.md), [요구사항 추적성](docs/00-governance/REQUIREMENTS_TRACEABILITY_MATRIX.md), [문서 관리대장](docs/00-governance/DOCUMENT_REGISTER.md)
+- [LUN-015 승인 체크리스트](docs/08-handoff/LUN015_APPROVAL_CHECKLIST.md)
 - [제품 요구사항](docs/01-product/PRD.md), [업무·시스템 요건정의서](docs/01-product/REQUIREMENTS_DEFINITION.md), [요구사항 명세](docs/01-product/REQUIREMENTS.md), [용어집](docs/01-product/GLOSSARY.md)
 - [UX 명세](docs/02-ux/UX_SPEC.md), [반응형 Wireframe](docs/02-ux/WIREFRAMES.md), [정보 구조](docs/02-ux/INFORMATION_ARCHITECTURE.md)
 - [DDD 설계](docs/03-domain/DDD.md)
