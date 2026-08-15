@@ -22,7 +22,7 @@
 
 | Workflow | Trigger | AWS 권한 | 책임 |
 |---|---|---|---|
-| `ci.yml` | PR, push | 없음 | lint, type, unit, data, build, local E2E |
+| `ci.yml` | PR, push, manual | 없음 | lint, type, unit, data, build, local E2E |
 | `terraform-plan.yml` | 신뢰 PR | Plan Role OIDC | Production read-only Plan |
 | `deploy-production.yml` | main 수동/승인 | Deploy Role OIDC | Apply, Catalog·Web 배포, Smoke |
 | `drift.yml` | 주 1회, 수동 | Plan Role OIDC | 변경 없는 Plan 기대 |
