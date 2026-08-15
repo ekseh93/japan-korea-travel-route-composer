@@ -1,0 +1,94 @@
+{
+  "cityId": "SEOUL",
+  "routeMatrixVersion": "route-synthetic-v1",
+  "checkedAt": "2026-08-15",
+  "methodology": "SYNTHETIC_TEST_ONLY",
+  "sourceRefs": [],
+  "zones": ["SEOUL_HONGDAE_YEONNAM", "SEOUL_JONGNO_BUKCHON", "SEOUL_GANGNAM", "SEOUL_YEOUIDO"],
+  "routes": [
+    {
+      "originZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "destinationZoneId": "SEOUL_JONGNO_BUKCHON",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_JONGNO_BUKCHON",
+      "destinationZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "destinationZoneId": "SEOUL_GANGNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_GANGNAM",
+      "destinationZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "destinationZoneId": "SEOUL_YEOUIDO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_YEOUIDO",
+      "destinationZoneId": "SEOUL_HONGDAE_YEONNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_JONGNO_BUKCHON",
+      "destinationZoneId": "SEOUL_GANGNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 45,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_GANGNAM",
+      "destinationZoneId": "SEOUL_JONGNO_BUKCHON",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 45,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_JONGNO_BUKCHON",
+      "destinationZoneId": "SEOUL_YEOUIDO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_YEOUIDO",
+      "destinationZoneId": "SEOUL_JONGNO_BUKCHON",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_GANGNAM",
+      "destinationZoneId": "SEOUL_YEOUIDO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "SEOUL_YEOUIDO",
+      "destinationZoneId": "SEOUL_GANGNAM",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    }
+  ]
+}

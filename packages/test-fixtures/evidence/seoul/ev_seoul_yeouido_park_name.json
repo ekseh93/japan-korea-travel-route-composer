@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_yeouido_park_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_yeouido_park",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/yeouido-park",
+  "sourceTitle": "Synthetic Seoul Yeouido Park",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 공원 장소입니다.",
+    "ja": "合成の公園スポットです。",
+    "en": "A synthetic park."
+  },
+  "publicationStatus": "APPROVED"
+}

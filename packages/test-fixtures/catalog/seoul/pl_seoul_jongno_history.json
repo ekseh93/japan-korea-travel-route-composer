@@ -1,0 +1,35 @@
+{
+  "placeId": "pl_seoul_jongno_history",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_JONGNO_BUKCHON",
+  "names": {
+    "ko": "합성 종로 역사길",
+    "ja": "合成鍾路歴史路",
+    "en": "Synthetic Jongno History Walk"
+  },
+  "coordinates": { "latitude": 37.5796, "longitude": 126.977 },
+  "category": "CULTURE_SITE",
+  "themeTags": ["CULTURE_HISTORY", "LOCAL_MOOD"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "FREE",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_jongno_history_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 역사 장소입니다.",
+    "ja": "合成Fixtureの歴史スポットです。",
+    "en": "A synthetic fixture history place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

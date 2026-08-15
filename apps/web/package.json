@@ -1,0 +1,15 @@
+{
+  "name": "@route-composer/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@route-composer/contracts": "workspace:*"
+  }
+}

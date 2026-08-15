@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_seoul_hongdae_cafe",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_HONGDAE_YEONNAM",
+  "names": { "ko": "합성 연남 카페", "ja": "合成延南カフェ", "en": "Synthetic Yeonnam Cafe" },
+  "coordinates": { "latitude": 37.5637, "longitude": 126.9235 },
+  "category": "CAFE_DESSERT",
+  "themeTags": ["CAFE", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE"],
+  "costBand": "LOW",
+  "indoorOutdoor": "INDOOR",
+  "typicalDurationMinutes": 75,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_hongdae_cafe_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 카페입니다.",
+    "ja": "合成Fixtureのカフェです。",
+    "en": "A synthetic fixture cafe."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

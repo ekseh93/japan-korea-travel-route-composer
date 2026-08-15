@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_seoul_yeouido_park",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_YEOUIDO",
+  "names": { "ko": "합성 여의도 공원", "ja": "合成汝矣島公園", "en": "Synthetic Yeouido Park" },
+  "coordinates": { "latitude": 37.5219, "longitude": 126.9245 },
+  "category": "PARK_NATURE",
+  "themeTags": ["NATURE_PARK", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "FREE",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_yeouido_park_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 공원입니다.",
+    "ja": "合成Fixtureの公園です。",
+    "en": "A synthetic fixture park."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

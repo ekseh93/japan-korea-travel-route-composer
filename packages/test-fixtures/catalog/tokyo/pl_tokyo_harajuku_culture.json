@@ -1,0 +1,35 @@
+{
+  "placeId": "pl_tokyo_harajuku_culture",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_SHIBUYA_HARAJUKU",
+  "names": {
+    "ko": "합성 하라주쿠 문화관",
+    "ja": "合成原宿文化館",
+    "en": "Synthetic Harajuku Culture Hall"
+  },
+  "coordinates": { "latitude": 35.6702, "longitude": 139.7027 },
+  "category": "MUSEUM_GALLERY",
+  "themeTags": ["CULTURE_HISTORY", "ART_DESIGN"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "LOW",
+  "indoorOutdoor": "INDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_harajuku_culture_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 문화 장소입니다.",
+    "ja": "合成Fixtureの文化スポットです。",
+    "en": "A synthetic fixture culture place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

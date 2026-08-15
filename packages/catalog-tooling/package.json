@@ -1,0 +1,19 @@
+{
+  "name": "@route-composer/catalog-tooling",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json",
+    "validate": "tsc -p tsconfig.build.json && node dist/cli.js"
+  },
+  "dependencies": {
+    "@route-composer/contracts": "workspace:*",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0"
+  }
+}

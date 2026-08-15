@@ -1,0 +1,41 @@
+name: Teardown Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type DESTROY-PRODUCTION to continue"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  teardown:
+    if: inputs.confirmation == 'DESTROY-PRODUCTION'
+    runs-on: ubuntu-24.04
+    environment:
+      name: production-teardown
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Configure AWS OIDC
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: teardown-${{ github.run_id }}
+      - name: Destroy application stack only
+        run: |
+          echo "Bootstrap state bucket is intentionally outside this destroy target."
+          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+            -chdir=infra/environments/production init -input=false
+          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+            -chdir=infra/environments/production destroy -input=false -auto-approve \
+            -var="project_slug=${{ vars.PROJECT_SLUG }}" \
+            -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
+            -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
+            -var="lambda_s3_key=${{ vars.LAMBDA_ARTIFACT_KEY }}" \
+            -var="lambda_source_code_hash=${{ vars.LAMBDA_SOURCE_CODE_HASH }}"

@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_hongdae_walk_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_hongdae_walk",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/hongdae-walk",
+  "sourceTitle": "Synthetic Seoul Hongdae Walk",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 서울 산책 장소입니다.",
+    "ja": "合成のソウル散策スポットです。",
+    "en": "A synthetic Seoul walking place."
+  },
+  "publicationStatus": "APPROVED"
+}

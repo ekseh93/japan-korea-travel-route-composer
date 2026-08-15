@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_tokyo_harajuku_culture_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_tokyo_harajuku_culture",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/tokyo/harajuku-culture",
+  "sourceTitle": "Synthetic Tokyo Harajuku Culture",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 문화 장소입니다.",
+    "ja": "合成の文化スポットです。",
+    "en": "A synthetic culture place."
+  },
+  "publicationStatus": "APPROVED"
+}

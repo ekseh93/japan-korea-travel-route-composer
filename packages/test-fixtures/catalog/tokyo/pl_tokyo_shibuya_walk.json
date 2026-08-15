@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_tokyo_shibuya_walk",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_SHIBUYA_HARAJUKU",
+  "names": { "ko": "합성 시부야 산책", "ja": "合成渋谷散策", "en": "Synthetic Shibuya Walk" },
+  "coordinates": { "latitude": 35.6595, "longitude": 139.7005 },
+  "category": "DISTRICT_WALK",
+  "themeTags": ["LOCAL_MOOD", "NATURE_PARK"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE"],
+  "costBand": "FREE",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_shibuya_walk_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 산책 장소입니다.",
+    "ja": "合成Fixtureの散策スポットです。",
+    "en": "A synthetic fixture walking place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

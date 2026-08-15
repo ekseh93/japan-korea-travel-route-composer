@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_jongno_history_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_jongno_history",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/jongno-history",
+  "sourceTitle": "Synthetic Seoul Jongno History",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 역사 장소입니다.",
+    "ja": "合成の歴史スポットです。",
+    "en": "A synthetic history place."
+  },
+  "publicationStatus": "APPROVED"
+}

@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_tokyo_shinjuku_view",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_SHINJUKU",
+  "names": { "ko": "합성 신주쿠 전망대", "ja": "合成新宿展望台", "en": "Synthetic Shinjuku View" },
+  "coordinates": { "latitude": 35.6896, "longitude": 139.6917 },
+  "category": "VIEWPOINT",
+  "themeTags": ["NIGHT_VIEW", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE"],
+  "costBand": "FREE",
+  "indoorOutdoor": "MIXED",
+  "typicalDurationMinutes": 75,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_shinjuku_view_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 전망 장소입니다.",
+    "ja": "合成Fixtureの展望スポットです。",
+    "en": "A synthetic fixture viewpoint."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "japan-korea-travel-route-composer",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24.18.0 <25",
+    "pnpm": ">=11.19.0 <12"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "catalog:validate": "pnpm --filter @route-composer/contracts build && pnpm --filter @route-composer/catalog-tooling validate",
+    "dev": "pnpm --filter @route-composer/web dev",
+    "format": "prettier --write \"**/*.{js,mjs,ts,tsx,json,yaml,yml,css,html}\"",
+    "format:check": "prettier --check \"**/*.{js,mjs,ts,tsx,json,yaml,yml,css,html}\"",
+    "lint": "eslint .",
+    "test": "pnpm -r test",
+    "test:e2e": "playwright test",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.55.1",
+    "@types/node": "26.2.0",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.5",
+    "eslint": "10.8.1",
+    "prettier": "3.9.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.67.0",
+    "vite": "8.2.1",
+    "vitest": "4.1.10"
+  }
+}

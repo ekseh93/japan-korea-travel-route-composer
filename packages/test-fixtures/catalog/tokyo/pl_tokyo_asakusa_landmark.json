@@ -1,0 +1,35 @@
+{
+  "placeId": "pl_tokyo_asakusa_landmark",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_ASAKUSA_UENO",
+  "names": {
+    "ko": "합성 아사쿠사 랜드마크",
+    "ja": "合成浅草ランドマーク",
+    "en": "Synthetic Asakusa Landmark"
+  },
+  "coordinates": { "latitude": 35.7148, "longitude": 139.7967 },
+  "category": "LANDMARK",
+  "themeTags": ["CULTURE_HISTORY", "LOCAL_MOOD"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "FREE",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 60,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_asakusa_landmark_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 랜드마크입니다.",
+    "ja": "合成Fixtureのランドマークです。",
+    "en": "A synthetic fixture landmark."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

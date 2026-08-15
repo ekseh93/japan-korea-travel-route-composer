@@ -1,0 +1,35 @@
+{
+  "placeId": "pl_seoul_gangnam_shopping",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_GANGNAM",
+  "names": {
+    "ko": "합성 강남 쇼핑길",
+    "ja": "合成江南ショッピング街",
+    "en": "Synthetic Gangnam Shopping"
+  },
+  "coordinates": { "latitude": 37.4979, "longitude": 127.0276 },
+  "category": "SHOPPING",
+  "themeTags": ["SHOPPING", "CAFE"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE"],
+  "costBand": "MEDIUM",
+  "indoorOutdoor": "MIXED",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_gangnam_shopping_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 쇼핑 장소입니다.",
+    "ja": "合成Fixtureのショッピングスポットです。",
+    "en": "A synthetic fixture shopping place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

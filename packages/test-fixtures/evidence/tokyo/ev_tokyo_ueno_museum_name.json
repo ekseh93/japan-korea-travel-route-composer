@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_tokyo_ueno_museum_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_tokyo_ueno_museum",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/tokyo/ueno-museum",
+  "sourceTitle": "Synthetic Tokyo Ueno Museum",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 박물관 장소입니다.",
+    "ja": "合成の博物館です。",
+    "en": "A synthetic museum."
+  },
+  "publicationStatus": "APPROVED"
+}

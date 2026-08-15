@@ -1,0 +1,57 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: "Reviewed commit SHA to build and deploy"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    environment:
+      name: production
+    steps:
+      - name: Checkout reviewed commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.release_sha }}
+      - name: Verify and build immutable artifact
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.19.0 --activate
+          pnpm install --frozen-lockfile
+          pnpm format:check
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm build
+          pnpm catalog:validate
+      - name: Configure AWS OIDC
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: deploy-${{ github.run_id }}
+      - name: Fresh Terraform plan and apply
+        run: |
+          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+            -chdir=infra/environments/production init -input=false
+          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+            -chdir=infra/environments/production apply -input=false -auto-approve \
+            -var="project_slug=${{ vars.PROJECT_SLUG }}" \
+            -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
+            -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
+            -var="lambda_s3_key=${{ vars.LAMBDA_ARTIFACT_KEY }}" \
+            -var="lambda_source_code_hash=${{ vars.LAMBDA_SOURCE_CODE_HASH }}" \
+            -var="release_sha=${{ inputs.release_sha }}"

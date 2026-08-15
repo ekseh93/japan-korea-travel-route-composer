@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_seoul_jongno_museum",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_JONGNO_BUKCHON",
+  "names": { "ko": "합성 종로 박물관", "ja": "合成鍾路博物館", "en": "Synthetic Jongno Museum" },
+  "coordinates": { "latitude": 37.586, "longitude": 126.9784 },
+  "category": "MUSEUM_GALLERY",
+  "themeTags": ["CULTURE_HISTORY", "ART_DESIGN"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "MEDIUM",
+  "indoorOutdoor": "INDOOR",
+  "typicalDurationMinutes": 120,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_jongno_museum_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 박물관입니다.",
+    "ja": "合成Fixtureの博物館です。",
+    "en": "A synthetic fixture museum."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

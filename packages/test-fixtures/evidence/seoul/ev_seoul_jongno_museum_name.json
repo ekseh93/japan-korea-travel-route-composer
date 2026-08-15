@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_jongno_museum_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_jongno_museum",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/jongno-museum",
+  "sourceTitle": "Synthetic Seoul Jongno Museum",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 서울 박물관입니다.",
+    "ja": "合成のソウル博物館です。",
+    "en": "A synthetic Seoul museum."
+  },
+  "publicationStatus": "APPROVED"
+}

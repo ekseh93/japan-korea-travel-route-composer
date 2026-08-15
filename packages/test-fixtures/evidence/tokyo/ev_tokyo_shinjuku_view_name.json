@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_tokyo_shinjuku_view_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_tokyo_shinjuku_view",
+  "evidenceTier": "B_LICENSED_EDITORIAL",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/tokyo/shinjuku-view",
+  "sourceTitle": "Synthetic Tokyo Shinjuku View",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 전망 장소입니다.",
+    "ja": "合成の展望スポットです。",
+    "en": "A synthetic viewpoint."
+  },
+  "publicationStatus": "APPROVED"
+}

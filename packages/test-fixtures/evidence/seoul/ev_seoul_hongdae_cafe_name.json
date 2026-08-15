@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_hongdae_cafe_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_hongdae_cafe",
+  "evidenceTier": "B_LICENSED_EDITORIAL",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/hongdae-cafe",
+  "sourceTitle": "Synthetic Seoul Hongdae Cafe",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 카페 장소입니다.",
+    "ja": "合成のカフェです。",
+    "en": "A synthetic cafe."
+  },
+  "publicationStatus": "APPROVED"
+}

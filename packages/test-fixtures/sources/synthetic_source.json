@@ -1,0 +1,33 @@
+{
+  "sourceId": "synthetic_source",
+  "providerName": "Synthetic Fixture Provider",
+  "baseUrl": "https://example.com",
+  "termsUrl": "https://example.com/terms",
+  "robotsUrl": "https://example.com/robots.txt",
+  "licenseId": "TEST_FIXTURE_ONLY",
+  "collectionMode": "DATASET_DOWNLOAD",
+  "allowedFields": [
+    "NAME",
+    "COORDINATES",
+    "OPENING_HOURS",
+    "CATEGORY",
+    "COST_BAND",
+    "TYPICAL_DURATION",
+    "EDITORIAL_FEATURE"
+  ],
+  "forbiddenFields": [
+    "REVIEW_TEXT",
+    "USER_PROFILE",
+    "USER_NAME",
+    "PHOTO_BINARY",
+    "RATING_AGGREGATE",
+    "HTML_SNAPSHOT",
+    "SEARCH_SNIPPET"
+  ],
+  "attributionTemplate": "Synthetic Fixture Provider; tests only",
+  "reviewStatus": "APPROVED_OPEN",
+  "checkedAt": "2026-08-15",
+  "nextReviewAt": "2026-11-13",
+  "removalContact": "https://example.com/contact",
+  "reviewNotes": "Synthetic fixture only. Production projection must reject TEST_FIXTURE_ONLY and example.com."
+}

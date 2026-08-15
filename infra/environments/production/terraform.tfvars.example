@@ -1,0 +1,10 @@
+project_slug             = "japan-korea-route-composer"
+environment              = "production"
+aws_region               = "ap-northeast-1"
+owner                    = "portfolio-owner"
+budget_email             = "REPLACE_WITH_APPROVED_EMAIL"
+monthly_budget_usd       = 5
+lambda_s3_bucket         = "REPLACE_WITH_RELEASE_ARTIFACT_BUCKET"
+lambda_s3_key            = "REPLACE_WITH_IMMUTABLE_LAMBDA_KEY"
+lambda_source_code_hash  = "REPLACE_WITH_BASE64_SHA256"
+release_sha              = "REPLACE_WITH_GIT_SHA"

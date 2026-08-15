@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_seoul_gangnam_shopping_name",
+  "sourceId": "synthetic_source",
+  "placeId": "pl_seoul_gangnam_shopping",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY", "TYPICAL_DURATION", "EDITORIAL_FEATURE"],
+  "sourceUrl": "https://example.com/seoul/gangnam-shopping",
+  "sourceTitle": "Synthetic Seoul Gangnam Shopping",
+  "rightsBasis": "TEST_FIXTURE_ONLY",
+  "checkedAt": "2026-08-15",
+  "reviewDueAt": "2026-11-13",
+  "editorialSummary": {
+    "ko": "합성 쇼핑 장소입니다.",
+    "ja": "合成のショッピングスポットです。",
+    "en": "A synthetic shopping place."
+  },
+  "publicationStatus": "APPROVED"
+}

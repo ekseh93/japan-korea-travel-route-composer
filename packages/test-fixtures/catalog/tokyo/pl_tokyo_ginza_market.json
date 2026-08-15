@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_tokyo_ginza_market",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_GINZA_MARUNOUCHI",
+  "names": { "ko": "합성 긴자 시장", "ja": "合成銀座市場", "en": "Synthetic Ginza Market" },
+  "coordinates": { "latitude": 35.6717, "longitude": 139.765 },
+  "category": "MARKET_FOOD",
+  "themeTags": ["FOOD", "SHOPPING"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "MEDIUM",
+  "indoorOutdoor": "INDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_ginza_market_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 시장 장소입니다.",
+    "ja": "合成Fixtureの市場スポットです。",
+    "en": "A synthetic fixture market place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

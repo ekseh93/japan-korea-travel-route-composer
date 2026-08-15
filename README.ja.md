@@ -1,0 +1,169 @@
+# 日韓旅行ルートコンポーザー
+
+[한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
+
+> 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
+> 実装状態: LUN-001~010 workspace・契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Webを実装、Terraform/CI workflowコードを作成済み、AWSリソース検証・配信は未実行  
+> 公開URL・ユーザー指標: なし  
+> LUN-010ローカル検証: format・lint・typecheck・40テスト・ブラウザE2E 2件・build・catalog:validate・frozen install・依存関係監査・Terraform fmt/validate・TFLintに合格 (2026-08-15)
+
+## プロジェクト概要
+
+旅行期間、到着・出発時刻、興味、同行者、予算、徒歩許容度を入力し、
+`組み合わせる`を押すと、東京またはソウルの実行可能な日別ルートを構成する
+非営利の就職ポートフォリオです。場所の順序、滞在・移動時間、推薦理由、
+公式情報、Evidence品質、確認可能な出典を同時に表示します。
+
+## 課題とユーザー
+
+旅行者は場所の推薦、実体験、営業時間、経路を複数サービスで確認し、自分で
+一日の旅程に組み立てる必要があります。本プロジェクトは初訪問の一人旅、
+友人、カップル、家族に対し、`大量の場所一覧`ではなく制約を守る説明可能な
+ルートを提供します。
+
+## MVPスコープ
+
+- 地域: 東京、ソウル
+- 期間: 1～4泊、つまり2～5日
+- 条件: 時刻、テーマ、同行者、予算、ペース、徒歩量、必須・除外場所、雨天考慮
+- 結果: 日別Visit、移動区間、休憩、推薦理由、出典・確認日、屋内代替候補
+- データ: 公式API、公共・オープンデータ、手動確認リンク、独自要約
+- 対象外: ログイン、決済・予約、広告・提携、ユーザーレビュー、全国検索、リアルタイム天気
+
+## 主要な設計判断
+
+| 領域 | 決定 | 理由 |
+|---|---|---|
+| 言語・Web | TypeScript、React、Vite | Web・API・Schemaの単一言語と静的配信 |
+| Domain | DDDモジュラーモノリス | 明確な境界と個人運用に適した配信単純性 |
+| API | API Gateway HTTP API + Lambda | アイドル固定費とサーバー運用を回避 |
+| データ | Git審査原本 + DynamoDB公開Projection | 不変CatalogVersionとキー検索 |
+| Hosting | 非公開S3 + CloudFront OAC | Terraform、IAM、Cache境界を直接説明 |
+| 地図・経路 | MapLibre/OpenFreeMap + 審査済みZone行列 | 無料の基本経路とProvider障害縮退 |
+| AI | 初期無効、意図解析・説明のみ | 場所・時刻・出典の任意生成を防止 |
+
+## アーキテクチャ
+
+~~~mermaid
+flowchart LR
+    User["旅行者"] --> Web["React/Vite Web\nS3 + CloudFront"]
+    Web --> API["API Gateway HTTP API"]
+    API --> Lambda["TypeScript Lambda\nモジュラーモノリス"]
+    Lambda --> Catalog["DynamoDB Catalog"]
+    Lambda --> Cache["DynamoDB Cache + TTL"]
+    Lambda -.-> Route["任意のRoute/AI Adapter"]
+    GitHub["GitHub Actions"] -->|OIDC| AWS["Terraform AWS"]
+~~~
+
+Trip Compositionを中核Domainとし、Place Catalog、Evidence Governance、Routing、
+Curationを同じデプロイ単位のコード境界として維持します。不要なMicroservice、
+Event Bus、常時稼働Serverは作りません。
+
+## 推薦と出典ポリシー
+
+推薦はAIではなく、ハードフィルター、100点適合度、Zoneクラスタリング、
+移動時間行列、営業時間・滞在時間、Beam Searchで計算します。同じ入力、
+CatalogVersion、AlgorithmVersion、DiversitySeedは同じ結果を生成し、新しい
+組み合わせも有効な上位候補内でのみ変化します。
+
+出典表示は利用許諾ではありません。レビュー本文・写真・ユーザー情報を
+クロール・複製しません。Tripleと確認対象のコミュニティは根拠がなければ
+BLOCKEDまたはUNVERIFIEDとし、公開推薦には公式・公共・許諾済みEvidence
+Tier A/Bを必須とします。
+
+## AWSコストとセキュリティ
+
+目標運用費は月0 USDですが、AWS Free Tierはアカウント・期間・サービス条件で
+異なり、0円を保証しません。1 USD・5 USD Budget通知、API 1 request/second、
+Lambda同時実行1、7日ログ、外部有料Provider初期無効、全撤去手順を設計しました。
+
+GitHub ActionsはAWS OIDC短期認証とPlan/Deploy Role分離を使い、長期Access Keyを
+禁止します。NAT Gateway、RDS、ECS、OpenSearch、WAF、有料Domain、常設Stagingは
+初期対象外です。
+
+## デリバリーと品質
+
+PRではFormat、lint、typecheck、Domain property test、Golden Recommendation、
+Source権利Gate、アクセシビリティE2E、Terraformセキュリティ検査を必須とします。
+Production Applyは保護Environment承認後、同じCommitの不変Artifactのみを配信する
+設計です。現在はLUN-001のworkspace・単体テスト・ローカルbuild、LUN-002の
+API/Domain Catalog契約・contract test、LUN-003のDomain Value Object・TripPlan不変条件テストを
+実装・実行済みです。LUN-004では合成FixtureとGolden入力、LUN-005ではSource/Evidence/Place/Routeの
+権利・スキーマ検証、LUN-006ではIn-memory・DynamoDB Catalog/Cache AdapterとTTL契約テスト、LUN-007では
+Zone Matrix・Haversine・fallback Routing Adapterと失敗契約テスト、LUN-008の決定論的な候補スコア・
+Zone制限・Beam Search・時間編成・Must/Exclude・雨天代替、LUN-009の純粋HTTP Handlerと
+契約ベースのエラー処理、LUN-010のレスポンシブ入力・結果・出典Web UIを追加しました。
+Terraform/CI workflowコードを作成し、Terraform fmt/validateとTFLintをローカル実行しました。
+Trivyセキュリティ検査、実AWS Plan、実Lambda/API Gateway統合・配信は未実行です。
+
+## 現在の状態
+
+| 項目 | 状態 |
+|---|---|
+| 会社形式の要件定義 | v1.0 BASELINED |
+| プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
+| アプリケーション・インフラコード | LUN-001~010 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UXを実装、Terraform/CIコードは作成 |
+| 実データ150～250件のCatalog | 未収集、Source承認が必要 |
+| テスト・ビルド | LUN-001~010 format・lint・typecheck・40テスト・ブラウザE2E 2件・build・catalog:validate・frozen install・依存関係監査・Terraform fmt/validate・TFLintを実行、Trivy・実Planは未実行 |
+| AWSリソース・公開URL | なし |
+| 実測性能・可用性・ユーザー指標 | なし |
+
+## 設計ドキュメント
+
+- [Sol Phase Gate](docs/00-governance/SOL_PHASE_GATES.md)、[要件トレーサビリティ](docs/00-governance/REQUIREMENTS_TRACEABILITY_MATRIX.md)、[文書管理台帳](docs/00-governance/DOCUMENT_REGISTER.md)
+- [製品要求](docs/01-product/PRD.md)、[業務・システム要件定義書](docs/01-product/REQUIREMENTS_DEFINITION.md)、[要件仕様](docs/01-product/REQUIREMENTS.md)、[用語集](docs/01-product/GLOSSARY.md)
+- [UX仕様](docs/02-ux/UX_SPEC.md)、[レスポンシブWireframe](docs/02-ux/WIREFRAMES.md)、[情報アーキテクチャ](docs/02-ux/INFORMATION_ARCHITECTURE.md)
+- [DDD設計](docs/03-domain/DDD.md)
+- [AWSアーキテクチャ](docs/04-architecture/ARCHITECTURE.md)、[API契約](docs/04-architecture/API_CONTRACT.md)、[セキュリティ](docs/04-architecture/SECURITY.md)、[ADRs](docs/04-architecture/ADRs/)
+- [データモデル](docs/05-data/DATA_MODEL.md)、[Domain Catalog](docs/05-data/DOMAIN_CATALOG.md)、[Seed仕様](docs/05-data/SEED_SPEC.md)、[出典ポリシー](docs/05-data/SOURCE_POLICY.md)、[Source Registry](docs/05-data/SOURCE_REGISTRY.md)、[推薦エンジン](docs/05-data/RECOMMENDATION.md)
+- [Terraform](docs/06-infrastructure/TERRAFORM.md)、[コストモデル](docs/06-infrastructure/COST_MODEL.md)、[Runbook](docs/06-infrastructure/RUNBOOK.md)
+- [CI/CD](docs/07-delivery/CI_CD.md)、[テスト](docs/07-delivery/TEST_STRATEGY.md)、[可観測性](docs/07-delivery/OBSERVABILITY.md)
+- [Luna実装引継ぎ](docs/08-handoff/LUNA_HANDOFF.md)、[Luna新規チャットContext](docs/08-handoff/LUNA_INITIAL_CONTEXT.md)
+
+## ローカル実行とデプロイ
+
+LUN-001~010により、Vite開発サーバーと次のローカル検証コマンドを提供します。Node.js
+24 LTS系(`>=24.18.0 <25`)とpnpm 11(`11.19.0`)を使用します。
+
+```text
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm test:e2e
+pnpm build
+pnpm catalog:validate
+pnpm audit --audit-level high
+```
+
+Webは都市・期間・時刻・言語・ペース・同行者・雨天を入力し、Compose APIを呼び出して
+日別Visit、移動時間、理由、Evidenceリンクを表示します。ローカルWebは
+`VITE_API_BASE_URL`で接続先HTTP APIを指定します。合成Fixtureはテスト専用であり、実公開Catalogはありません。
+純粋HTTP Handler契約テストとブラウザのアクセシビリティ・レスポンシブE2E 2件は実行済みですが、
+実Lambda/API Gateway接続検証は未実行です。
+AWSアカウント・Budget・OIDC・Source Gateの確認前にProduction手順を追加・実行しません。
+
+## ロードマップ
+
+1. LUN-001~010 TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Webの実装とローカル検証を完了
+2. Trivyを含むTerraform security scan・planとOIDC CI/CDの静的検証
+3. 許可Sourceで東京・ソウル合計150件以上のPlaceを審査
+4. ユーザー承認後のAWS配信・Smoke・Rollback検証
+5. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価
+
+## ライセンスと目的
+
+個人の就職ポートフォリオを目的とする非営利・非商用プロジェクトであり、販売、
+広告、決済、提携収益はありません。Source codeライセンスは未選択のため、別途
+LICENSEが作成されるまで再利用許諾は付与しません。外部データ・地図・リンクは
+各提供者の規約、ライセンス、Attribution条件に従います。
+
+## 実装引継ぎ
+
+要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。
+Lunaは合成FixtureによるLocal実装を開始できますが、AWS Applyと実Catalog公開は
+アカウント費用・Repository窓口・Source別利用根拠の確認まで停止します。
+
+`LUNA HANDOFF: READY`

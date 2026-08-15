@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_seoul_hongdae_walk",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_HONGDAE_YEONNAM",
+  "names": { "ko": "합성 홍대 산책", "ja": "合成弘大散策", "en": "Synthetic Hongdae Walk" },
+  "coordinates": { "latitude": 37.5563, "longitude": 126.9236 },
+  "category": "DISTRICT_WALK",
+  "themeTags": ["LOCAL_MOOD", "SHOPPING"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE"],
+  "costBand": "FREE",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 90,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_hongdae_walk_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 산책 장소입니다.",
+    "ja": "合成Fixtureの散策スポットです。",
+    "en": "A synthetic fixture walking place."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}

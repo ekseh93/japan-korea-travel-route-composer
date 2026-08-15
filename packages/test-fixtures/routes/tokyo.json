@@ -1,0 +1,99 @@
+{
+  "cityId": "TOKYO",
+  "routeMatrixVersion": "route-synthetic-v1",
+  "checkedAt": "2026-08-15",
+  "methodology": "SYNTHETIC_TEST_ONLY",
+  "sourceRefs": [],
+  "zones": [
+    "TOKYO_SHIBUYA_HARAJUKU",
+    "TOKYO_SHINJUKU",
+    "TOKYO_GINZA_MARUNOUCHI",
+    "TOKYO_ASAKUSA_UENO"
+  ],
+  "routes": [
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 45,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 45,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    }
+  ]
+}

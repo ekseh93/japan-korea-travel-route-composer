@@ -1,0 +1,31 @@
+{
+  "placeId": "pl_tokyo_ueno_museum",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_ASAKUSA_UENO",
+  "names": { "ko": "합성 우에노 박물관", "ja": "合成上野博物館", "en": "Synthetic Ueno Museum" },
+  "coordinates": { "latitude": 35.7148, "longitude": 139.7732 },
+  "category": "MUSEUM_GALLERY",
+  "themeTags": ["CULTURE_HISTORY", "ART_DESIGN"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "MEDIUM",
+  "indoorOutdoor": "INDOOR",
+  "typicalDurationMinutes": 120,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-15"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_ueno_museum_name"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "합성 Fixture 박물관입니다.",
+    "ja": "合成Fixtureの博物館です。",
+    "en": "A synthetic fixture museum."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-15"
+}
