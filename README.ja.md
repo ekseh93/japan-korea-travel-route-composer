@@ -14,7 +14,8 @@
 > Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E
 > 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform
 > fmt/validate・TFLint・Trivyは直前のCIで合格、Production Catalog validate/buildとOSM Source Gateにも合格
-> (2026-08-16、Source checksum `6d0d...6f6ea`、Projection checksum `6d236...c440a`)
+> (2026-08-16、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum
+> `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`)
 >
 > GitHub CI検証:
 > quality・browser-e2e・terraform-static、Smoke contract tests、Release contract tests、Workflow
@@ -127,7 +128,7 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 | 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                        |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                    |
 | アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成済み、実AWS適用は未実行 |
-| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d...6f6ea`、Projection checksum `6d236...c440a`                                                                                                                                                                                                           |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
 | テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build合格、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
 | AWSリソース・公開URL                         | なし                                                                                                                                                                                                                                                                                                                  |
 | 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                  |

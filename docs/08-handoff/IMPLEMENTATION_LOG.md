@@ -59,6 +59,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `a36dabc` | Terraform 비용·보존·철거·IAM 안전성 계약 테스트와 CI 단계 추가 | GitHub CI 성공 (`31913227825`) |
 | `09ab3e5` | CI 수동 실행 경로와 재검증 문서화 | GitHub CI 성공 (`31913749177`, workflow_dispatch) |
 | `c86e755` | LUN-015 Source·AWS 승인 전제와 실행 순서를 정리한 승인 체크리스트 추가 | GitHub CI 성공 (`31914519023`) |
+| `cc90968` | 승인된 OSM Source 160개 반입·Attribution·Production Catalog Projection 생성 | Production validate/build 성공; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
 
 ### LUN-014 Catalog Rollback 구현 결과
 
@@ -94,7 +95,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Validation report에 전체·도시별 PUBLISHED Place 수를 포함해 승인 PR의 규모 증거를 남긴다.
 - 합성 Fixture는 기존 권리 Gate와 새 규모 Gate 모두에서 Production 검증을 통과하지 못한다.
 - OSM Source에서 도쿄·서울 각 80개 Place를 반입해 총 160개를 구성했고, Production Gate를 통과했다.
-- Source checksum은 `6d0d...6f6ea`, Projection checksum은 `6d236...c440a`다.
+- Source checksum은 `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum은 `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`다.
 
 ### LUN-015 실제 Source Catalog 반입 결과
 

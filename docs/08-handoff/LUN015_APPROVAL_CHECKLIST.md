@@ -12,7 +12,7 @@
 - [x] OpenStreetMap Copyright·ODbL·Attribution·허용 필드를 확인하고 [Source Registry](../05-data/SOURCE_REGISTRY.md)와 `data/catalog-v1/NOTICE.md`에 기록했다.
 - [x] 리뷰 원문·사진·사용자 정보·HTML을 반입하지 않았고, 무단 크롤링·로그인·CAPTCHA 우회를 사용하지 않았다.
 - [x] `pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16`가 통과했다.
-- [ ] Projection checksum과 Release SHA가 승인된 PR 및 검토 기록과 일치한다.
+- [x] Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`과 Release SHA `cc90968`가 검토 기록과 일치한다.
 
 ## 2. AWS 비용·계정 승인
 

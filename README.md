@@ -12,8 +12,9 @@
 >
 > LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow
 > 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·의존성 감사
-> 통과; Production Catalog validate/build와 OSM Source Gate 통과; Source checksum `6d0d...6f6ea`,
-> Projection checksum `6d236...c440a`; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
+> 통과; Production Catalog validate/build와 OSM Source Gate 통과; Source checksum
+> `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum
+> `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
 >
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업과 Smoke contract tests·Release contract
 > tests·Workflow contract tests·Terraform contract tests 통과
@@ -129,7 +130,7 @@ Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보�
 | 회사형 요건정의                    | v1.0 BASELINED                                                                                                                                                                                                                                                                                                      |
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                |
 | 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 완료, 실제 AWS 적용은 미실행 |
-| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d...6f6ea`, Projection checksum `6d236...c440a`                                                                                                                                                                                                            |
+| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
 | 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Production Catalog validate/build 통과, Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
 | AWS 리소스·배포 URL                | 없음                                                                                                                                                                                                                                                                                                                |
 | 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                |
