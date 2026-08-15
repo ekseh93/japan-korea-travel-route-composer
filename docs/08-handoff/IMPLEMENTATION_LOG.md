@@ -54,6 +54,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `8f82130` | Terraform Plan·Deploy·Rollback·Teardown의 원격 State backend 계약 고정 | GitHub CI 성공 (`31910331173`) |
 | `b52fa63` | Node 24-compatible actions/checkout v5.0.1 고정과 Workflow 계약 보강 | GitHub CI 성공 (`31911537593`) |
 | `2d5bfed` | 360px·768px·1280px 반응형 브라우저 E2E 범위 확장 | GitHub CI 성공 (`31911939084`) |
+| `1ff3744` | MapLibre 선택 청크 지연 로딩과 초기 Web 번들 분리 | GitHub CI 성공 (`31912171277`) |
 
 ### LUN-014 Catalog Rollback 구현 결과
 
