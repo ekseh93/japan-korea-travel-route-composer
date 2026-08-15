@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate와 Projection Build tooling 완료 |
-| 로컬 검증 | format, lint, typecheck, 57 Vitest tests, smoke contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 로컬 검증 | format, lint, typecheck, 61 Vitest tests, smoke contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -51,6 +51,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Validation report에 전체·도시별 PUBLISHED Place 수를 포함해 승인 PR의 규모 증거를 남긴다.
 - 합성 Fixture는 기존 권리 Gate와 새 규모 Gate 모두에서 Production 검증을 통과하지 못한다.
 - 실제 Source·Catalog는 추가하지 않았으며, 실제 150개 Catalog 검수는 별도 승인 대기다.
+
+### LUN-014 Current pointer 계약 구현 결과
+
+- 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.
+- 초기 승격과 기대 이전 Version 일치 기반 compare-and-swap 계약을 순수 함수로 검증한다.
+- AWS `UpdateItem` 통합, 실제 pointer Rollback과 배포 Smoke는 사용자 승인 전 미실행이다.
 
 ## 다음 단계
 

@@ -274,6 +274,9 @@ Seed의 Place·Evidence는 contracts의 `publishedPlaceSchema`와 공개 Evidenc
 Source 원본과 내부 `reviewNotes`, `rightsBasis`는 공개 Projection에 포함하지 않고,
 runtime에 필요한 provider·attribution·확인일과 허용 Claim만 남긴다. `production: true`
 에서는 합성 Fixture를 거부하며, 현재 구현은 파일 게시나 AWS 업로드를 수행하지 않는다.
+`current-pointer.ts`는 검증이 끝난 Projection에서만 도시별 pointer 후보를 만들고,
+기대 이전 Version과 실제 Version이 다르면 compare-and-swap 승격을 거부한다. AWS
+`UpdateItem` 통합과 실제 pointer Rollback은 배포 승인 후 검증 대상이다.
 
 검수 PR은 다음 CLI로 대상 Seed, Production Gate와 검수 기준일을 명시한다.
 
@@ -320,7 +323,8 @@ Artifact로 기록하며, 기본 출력은 합성 Fixture용 `packages/catalog-t
 - [x] BLOCKED·UNVERIFIED Source와 만료 Evidence가 게시되지 않는다.
 - [x] Review text·사용자명·사진·HTML·Base64 Pattern이 차단된다.
 - [ ] 모든 Place와 Evidence 파일명이 내부 ID와 일치한다.
-- [ ] Current pointer는 완전한 Version 검증 전 변경되지 않는다.
+- [x] Local Current pointer 계약은 완전한 Projection 검증 후 후보를 만들고 stale Version 승격을 거부한다.
+- [ ] AWS Conditional Update와 실제 Current pointer Rollback을 검증한다.
 - [x] 실패는 파일·JSON path·Validation Code를 보고한다.
 
 판정: `SEED CONTRACT BASELINED`.

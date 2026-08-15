@@ -121,8 +121,9 @@ URL Smoke는 Production 배포 후에만 보호된 Workflow에서 실행하며, 
 6. 정적 Asset을 S3에 올리고 `index.html`을 마지막에 교체한다.
 7. Versioned Asset은 무효화하지 않고 HTML 경로만 최소 무효화한다.
 8. API, Web, Source 링크, 지도 장애 축소 Smoke Test를 실행한다.
-9. Catalog Current pointer를 안전한 순서로 활성화한다. 정확한 시점은 구현 Spike로
-   검증하되 부분 Catalog가 사용자에게 보이면 안 된다.
+9. Catalog Current pointer를 안전한 순서로 활성화한다. 로컬 `current-pointer` 계약은
+   검증 완료 Projection과 기대 이전 Version을 확인한다. AWS Conditional Update와 실제
+   Rollback은 배포 승인 후 검증하며, 부분 Catalog가 사용자에게 보이면 안 된다.
 10. 변경 없는 Terraform Plan과 Release metadata를 남긴다.
 
 Catalog와 API Schema 변경이 호환되지 않으면 Expand/Contract 순서를 사용한다.
