@@ -10,7 +10,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~011 완료 |
+| 구현 | LUN-001~012 완료 |
 | 로컬 검증 | format, lint, typecheck, 40 tests, browser E2E 3건, build, catalog validation, audit, Terraform fmt/validate, TFLint 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
@@ -33,11 +33,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `d76aec0` | LUN-001~010 애플리케이션·테스트·Terraform·CI 기반 구현 | 로컬 검증 기록 |
 | `bb609b6` | 깨끗한 CI 체크아웃에서 contracts 빌드를 명시 | GitHub CI 성공 |
 | `8649ce7` | LUN-011 MapLibre/OpenFreeMap 지도와 타일 장애 축소 | 로컬 검증 기록 |
+| `6cf0c19` | LUN-012 Terraform 비용·관측성 구현 계약 | 구현 전 문서 기준선 |
+| `d4b598c` | LUN-012 API Deployment·Log·Alarm·Budget·비용 제한 구현 | GitHub CI 성공 |
 
 ## 다음 단계
 
-다음 구현 단위는 LUN-012 Terraform Bootstrap·Production·Budget 검증이다. 실제
-AWS 리소스 생성과 `terraform apply`는 여전히 사용자 승인 전에는 실행하지 않는다.
+다음 구현 단위는 LUN-013 Build once·OIDC 배포 산출물과 보호된 Production Workflow다.
+실제 AWS 리소스 생성과 `terraform apply`는 여전히 사용자 승인 전에는 실행하지 않는다.
 
 ### LUN-012 구현 전 계약
 

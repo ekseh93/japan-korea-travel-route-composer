@@ -3,7 +3,7 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > Status: Sol phased design complete; Luna implementation handoff READY  
-> Implementation: LUN-001~011 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, Web, and resilient map enhancement implemented; Terraform/CI workflows written, AWS resource validation and deployment not run
+> Implementation: LUN-001~012 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, Web, resilient map enhancement, and Terraform cost/observability controls implemented; AWS resource validation and deployment not run
 > Public URL and user metrics: none  
 > LUN-011 local verification: format, lint, typecheck, 40 tests, 3 browser E2E tests, build, catalog:validate, frozen install, dependency audit, Terraform fmt/validate, and TFLint passed (2026-08-15)
 > GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139), 2026-08-15)
@@ -101,8 +101,8 @@ adds deterministic candidate scoring, zone limits, bounded beam scheduling, time
 Must/Exclude handling, and rain alternatives; LUN-009 adds a pure HTTP Handler with
 contract-based error mapping; LUN-010 adds the responsive input, result, and source Web UI;
 LUN-011 adds the optional MapLibre/OpenFreeMap map and tile-failure degradation.
-Terraform/CI workflows are written, and Terraform fmt/validate plus TFLint ran locally.
-The Trivy security scan, real AWS plan, Lambda/API Gateway integration, and deployment were not run.
+Terraform/CI workflows are written, and Terraform fmt/validate, TFLint, and Trivy ran in GitHub CI.
+The real AWS plan, Lambda/API Gateway integration, deployment, and operational alarm delivery were not run.
 
 ## Current Status
 
@@ -110,9 +110,9 @@ The Trivy security scan, real AWS plan, Lambda/API Gateway integration, and depl
 |---|---|
 | Company-style requirements definition | v1.0 BASELINED |
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
-| Application and infrastructure code | LUN-001~011 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, and resilient map enhancement implemented; Terraform/CI code written |
+| Application and infrastructure code | LUN-001~012 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, and Terraform cost/observability controls implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~011 format, lint, typecheck, 40 tests, 3 browser E2E tests, build, catalog:validate, frozen install, dependency audit, Terraform fmt/validate, and TFLint run; real plan not run |
+| Tests and builds | LUN-001~012 format, lint, typecheck, 40 tests, 3 browser E2E tests, build, catalog:validate, frozen install, dependency audit, Terraform fmt/validate, TFLint, and Trivy run; real plan not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 
@@ -158,7 +158,7 @@ be added or run before the AWS account, budget, OIDC, and source gates are verif
 
 ## Roadmap
 
-1. Implement and locally verify the LUN-001~011 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, and resilient map enhancement
+1. Implement and verify the LUN-001~012 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, resilient map enhancement, and Terraform cost/observability controls
 2. Run the Trivy Terraform security scan, plan, and OIDC CI/CD static verification
 3. Review at least 150 approved Tokyo and Seoul places
 4. Deploy only after user approval, then verify smoke tests and rollback
