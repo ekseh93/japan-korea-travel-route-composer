@@ -58,6 +58,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `1268653` | Production 승인 입력·Protected Environment·철거 확인 Workflow 계약 보강 | GitHub CI 성공 (`31912459180`) |
 | `a36dabc` | Terraform 비용·보존·철거·IAM 안전성 계약 테스트와 CI 단계 추가 | GitHub CI 성공 (`31913227825`) |
 | `09ab3e5` | CI 수동 실행 경로와 재검증 문서화 | GitHub CI 성공 (`31913749177`, workflow_dispatch) |
+| `c86e755` | LUN-015 Source·AWS 승인 전제와 실행 순서를 정리한 승인 체크리스트 추가 | GitHub CI 성공 (`31914519023`) |
 
 ### LUN-014 Catalog Rollback 구현 결과
 

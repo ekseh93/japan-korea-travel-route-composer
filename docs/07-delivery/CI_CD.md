@@ -4,7 +4,7 @@
 > 기준일: 2026-08-16
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
 
-현재 확인된 GitHub CI 실행은 [31913749177](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31913749177)이며,
+현재 확인된 GitHub CI 실행은 [31914519023](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31914519023)이며,
 `quality`, `browser-e2e`, `terraform-static` 작업과 Workflow·Terraform contract tests가 모두 통과했다. 이 결과는 AWS
 자격 증명, Terraform Plan/Apply 또는 Production 배포를 검증한 결과가 아니다.
 
