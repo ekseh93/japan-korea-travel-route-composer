@@ -48,6 +48,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `8f0437b` | Production Catalog Artifact와 Release checksum/SBOM 검증 Workflow | GitHub CI 성공 |
 | `2d44969` | Release Artifact CI 검증 결과와 README 상태 동기화 | GitHub CI 성공 |
 | `ca7feb5` | DynamoDB Catalog Publisher, 조건부 Current 승격과 배포 Workflow 연결 | GitHub CI 성공 |
+| `8d5cf93` | META 예약으로 동일 CatalogVersion 재작성 차단 | GitHub CI 성공 |
 
 ### LUN-014 Catalog Publisher 구현 결과
 

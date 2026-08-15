@@ -6,7 +6,7 @@
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisherを実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
 > LUN-014検証: format・lint・typecheck・64 Vitestテスト・Smoke契約4件・Release契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
-> GitHub CI検証: quality・browser-e2e・terraform-static、Smoke contract tests、Release contract testsに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909038493)、2026-08-16)
+> GitHub CI検証: quality・browser-e2e・terraform-static、Smoke contract tests、Release contract testsに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909295562)、2026-08-16)
 
 ## プロジェクト概要
 
