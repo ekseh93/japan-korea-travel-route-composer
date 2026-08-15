@@ -39,3 +39,11 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 progressive enhancement다. 지도 타일 장애 시 텍스트 일정과 외부 지도 링크가
 유지되는지 먼저 검증하고, 실제 공개 배포나 최신 Provider 약관 확인 없이는
 운영 타일 사용을 완료 상태로 표시하지 않는다.
+
+### LUN-011 구현 전 계약
+
+- 지도는 Compose 결과를 읽기만 하며 Domain·Application·추천 점수에 관여하지 않는다.
+- 장소 좌표와 순서는 API 응답의 `VISIT` 항목에서만 가져온다.
+- 스타일·타일 요청이 실패하거나 WebGL을 사용할 수 없으면 텍스트 일정과 OpenStreetMap 좌표 링크를 유지한다.
+- 지도에는 OpenFreeMap Attribution을 표시하고, 타일 차단 브라우저 E2E로 축소 동작을 검증한다.
+- `maplibre-gl` 버전과 `VITE_MAP_STYLE_URL`은 고정·설정 가능하게 하며 유료 Provider는 추가하지 않는다.
