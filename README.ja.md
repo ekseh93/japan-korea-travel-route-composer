@@ -6,7 +6,7 @@
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection Build toolingを実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
 > LUN-014検証: format・lint・typecheck・57 Vitestテスト・Smoke契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
-> GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31865898259)、2026-08-15)
+> GitHub CI検証: quality・browser-e2e・terraform-staticとSmoke contract testsに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31905149490)、2026-08-16)
 
 ## プロジェクト概要
 
