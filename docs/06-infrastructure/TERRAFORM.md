@@ -1,6 +1,6 @@
 # Terraform 전략
 
-> 상태: 설계 승인, 코드 미작성  
+> 상태: 설계 승인, LUN-012 Terraform 코드 구현·정적 검증 진행 중, AWS Apply 미실행  
 > 기준일: 2026-08-15  
 > 목표: 모든 AWS 인프라를 코드로 재현하고 Console Drift를 금지
 
@@ -169,6 +169,15 @@ Terraform 관리 대상으로 켠다. Monitor와 Email Subscription은 Budget을
 - [ ] 고정비 제외 목록의 리소스가 Plan에 없다.
 - [ ] Production destroy가 Bootstrap과 State Bucket을 삭제하지 않는다.
 - [ ] Budget과 선택 Anomaly Monitor가 State·Runbook에 추적된다.
+
+## 12.1 LUN-012 구현 범위
+
+- Production HTTP API에 명시적 Deployment를 연결하고 `$default` Stage를 관리한다.
+- API Gateway access log와 Lambda log를 7일 보존한다.
+- API 5xx, Lambda Error·Duration·Throttle, Catalog DynamoDB Throttle 기본 Alarm을 SNS email 경로에 연결한다.
+- Budget은 5 USD 기준 실제 비용 20%와 예측 비용 100% 알림을 유지한다. Budget과 Alarm은 결제를 강제로 차단하지 않는다.
+- CloudFront는 `PriceClass_200`, Web S3의 non-current version은 30일 후 정리한다.
+- Lambda artifact 입력은 현재 Release 산출물 경계로 남아 있으며, bucket·zip 생성과 Build once 연결은 LUN-013에서 구현한다.
 
 ## 13. G6 Terraform Gate
 

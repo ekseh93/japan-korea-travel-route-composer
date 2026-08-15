@@ -39,6 +39,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 다음 구현 단위는 LUN-012 Terraform Bootstrap·Production·Budget 검증이다. 실제
 AWS 리소스 생성과 `terraform apply`는 여전히 사용자 승인 전에는 실행하지 않는다.
 
+### LUN-012 구현 전 계약
+
+- HTTP API `$default` Stage는 명시적 Deployment를 사용하고 access log를 7일 보존한다.
+- API 5xx, Lambda Error·Duration·Throttle, Catalog DynamoDB Throttle Alarm은 기존 Budget SNS 경로를 사용한다.
+- Budget은 실제 비용 20%와 예측 비용 100%를 알리며, 결제 차단 기능으로 표현하지 않는다.
+- CloudFront와 Web S3는 비용·버전 보존 제한을 사용한다.
+- Lambda artifact bucket과 immutable zip packaging은 LUN-013의 Build once·OIDC 배포 단계에서 다룬다.
+
 ### LUN-011 구현 계약
 
 - 지도는 Compose 결과를 읽기만 하며 Domain·Application·추천 점수에 관여하지 않는다.
