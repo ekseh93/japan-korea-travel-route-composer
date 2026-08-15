@@ -2,7 +2,12 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
-import { algorithmConstants, cityIdSchema } from "@route-composer/contracts";
+import {
+  algorithmConstants,
+  cityIdSchema,
+  publishedEvidenceSchema,
+  publishedPlaceSchema,
+} from "@route-composer/contracts";
 import { z } from "zod";
 
 import {
@@ -10,6 +15,7 @@ import {
   placeSeedSchema,
   routeMatrixSchema,
   SeedValidationError,
+  sourceRecordSchema,
   validateSeedDirectory,
 } from "./seed.js";
 
@@ -32,8 +38,8 @@ export type CatalogProjection = {
     readonly reviewedBy: string;
     readonly releaseNotes: string;
   };
-  readonly places: readonly z.infer<typeof placeSeedSchema>[];
-  readonly evidence: readonly z.infer<typeof evidenceRecordSchema>[];
+  readonly places: readonly z.infer<typeof publishedPlaceSchema>[];
+  readonly evidence: readonly z.infer<typeof publishedEvidenceSchema>[];
   readonly routes: readonly z.infer<typeof routeMatrixSchema>[];
 };
 
@@ -78,9 +84,15 @@ function canonicalize(value: unknown): unknown {
   return value;
 }
 
-function readValidatedRecords(
-  root: string,
-): Pick<CatalogProjection, "places" | "evidence" | "routes"> {
+function readValidatedRecords(root: string): {
+  readonly sources: readonly z.infer<typeof sourceRecordSchema>[];
+  readonly places: readonly z.infer<typeof placeSeedSchema>[];
+  readonly evidence: readonly z.infer<typeof evidenceRecordSchema>[];
+  readonly routes: readonly z.infer<typeof routeMatrixSchema>[];
+} {
+  const sources = jsonFiles(join(root, "sources")).map((file) =>
+    readJson<z.infer<typeof sourceRecordSchema>>(file),
+  );
   const evidence = ["tokyo", "seoul"].flatMap((city) =>
     jsonFiles(join(root, "evidence", city)).map((file) =>
       readJson<z.infer<typeof evidenceRecordSchema>>(file),
@@ -94,7 +106,71 @@ function readValidatedRecords(
   const routes = ["tokyo", "seoul"].map((city) =>
     readJson<z.infer<typeof routeMatrixSchema>>(join(root, "routes", `${city}.json`)),
   );
-  return { places, evidence, routes };
+  return { sources, places, evidence, routes };
+}
+
+function publicEvidenceRecords(
+  records: readonly z.infer<typeof evidenceRecordSchema>[],
+  sources: readonly z.infer<typeof sourceRecordSchema>[],
+): Map<string, z.infer<typeof publishedEvidenceSchema>> {
+  const sourcesById = new Map(sources.map((source) => [source.sourceId, source]));
+  return new Map(
+    records
+      .filter(
+        (record) =>
+          record.publicationStatus === "APPROVED" &&
+          (record.evidenceTier === "A_OFFICIAL_OPEN" ||
+            record.evidenceTier === "B_LICENSED_EDITORIAL"),
+      )
+      .map((record) => {
+        const source = sourcesById.get(record.sourceId);
+        if (source === undefined) {
+          throw new Error(`Validated evidence ${record.evidenceId} has no Source.`);
+        }
+        const evidence = publishedEvidenceSchema.parse({
+          evidenceId: record.evidenceId,
+          tier: record.evidenceTier,
+          active: true,
+          providerName: source.providerName,
+          supportedClaims: record.supportedClaims,
+          checkedAt: record.checkedAt,
+          url: record.sourceUrl,
+          attribution: source.attributionTemplate,
+        });
+        return [record.evidenceId, evidence] as const;
+      }),
+  );
+}
+
+function publicPlaceRecords(
+  places: readonly z.infer<typeof placeSeedSchema>[],
+  evidenceById: ReadonlyMap<string, z.infer<typeof publishedEvidenceSchema>>,
+): z.infer<typeof publishedPlaceSchema>[] {
+  return places
+    .filter((place) => place.publicationStatus === "PUBLISHED")
+    .map((place) => {
+      const evidence = place.evidenceRefs
+        .map((evidenceId) => evidenceById.get(evidenceId))
+        .filter((value): value is z.infer<typeof publishedEvidenceSchema> => value !== undefined);
+      return publishedPlaceSchema.parse({
+        placeId: place.placeId,
+        cityId: place.cityId,
+        zoneId: place.zoneId,
+        names: place.names,
+        category: place.category,
+        latitude: place.coordinates.latitude,
+        longitude: place.coordinates.longitude,
+        costBand: place.costBand,
+        indoorOutdoor: place.indoorOutdoor,
+        themeTags: place.themeTags,
+        companionFit: place.companionFit,
+        typicalDurationMinutes: place.typicalDurationMinutes,
+        openingStatus: place.openingSchedule.status,
+        officialUrl: place.officialUrl,
+        published: true,
+        evidence,
+      });
+    });
 }
 
 function cityStats(
@@ -122,6 +198,11 @@ export function buildProjection(
     ...(options.asOf === undefined ? {} : { asOf: options.asOf }),
   });
   const records = readValidatedRecords(root);
+  const evidenceById = publicEvidenceRecords(records.evidence, records.sources);
+  const places = publicPlaceRecords(records.places, evidenceById);
+  const evidenceIds = new Set(
+    places.flatMap((place) => place.evidence.map((evidence) => evidence.evidenceId)),
+  );
   const projection: CatalogProjection = {
     metadata: {
       version: options.catalogVersion,
@@ -135,8 +216,8 @@ export function buildProjection(
       reviewedBy: options.reviewedBy,
       releaseNotes: options.releaseNotes,
     },
-    places: records.places,
-    evidence: records.evidence,
+    places,
+    evidence: [...evidenceById.values()].filter((evidence) => evidenceIds.has(evidence.evidenceId)),
     routes: records.routes,
   };
   const canonicalJson = JSON.stringify(canonicalize(projection));

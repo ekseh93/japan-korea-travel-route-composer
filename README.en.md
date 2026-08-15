@@ -108,8 +108,10 @@ GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Sourc
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and MANUAL_LINK_ONLY/Tier mismatches with contract tests. The real AWS plan, OIDC AssumeRole, artifact upload, Lambda/API Gateway integration,
 deployment, and operational alarm delivery were not run. The LUN-014 Projection Build tooling builds a canonical Projection from
 validated Seed data, injects catalog metadata and city statistics, computes a source and final SHA-256
-checksum, and excludes internal Source review notes from the public Projection. Synthetic fixtures are
-allowed only for tests and are rejected in Production mode.
+checksum, and excludes internal Source review notes from the public Projection. The tooling converts
+Seed records into the shared `publishedPlaceSchema` and public Evidence shape, retaining only provider,
+attribution, and checked-date fields needed at runtime. Synthetic fixtures are allowed only for tests and
+are rejected in Production mode.
 
 ## Current Status
 

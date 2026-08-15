@@ -1,16 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import {
-  companionTypeSchema,
-  cityIdSchema,
-  claimTypeSchema,
-  costBandSchema,
-  indoorOutdoorSchema,
-  openingStatusSchema,
-  placeCategorySchema,
-  themeTagSchema,
-  zoneIdSchema,
-} from "@route-composer/contracts";
+import { cityIdSchema, publishedPlaceSchema } from "@route-composer/contracts";
 import { z } from "zod";
 
 import type { CatalogRepository, CatalogVersion } from "../application/ports/catalog-repository.js";
@@ -30,50 +20,10 @@ const currentVersionItemSchema = z
   })
   .strict();
 
-const projectedPlaceItemSchema = z
-  .object({
-    itemType: z.literal("PLACE"),
-    cityId: cityIdSchema,
-    catalogVersion: z.string().min(1),
-    placeId: z.string().min(1),
-    zoneId: zoneIdSchema,
-    names: z
-      .object({
-        ko: z.string().min(1).optional(),
-        ja: z.string().min(1).optional(),
-        en: z.string().min(1).optional(),
-      })
-      .strict()
-      .refine((value) => Object.values(value).some((text) => text !== undefined)),
-    category: placeCategorySchema,
-    latitude: z.number().finite().min(-90).max(90),
-    longitude: z.number().finite().min(-180).max(180),
-    costBand: costBandSchema,
-    indoorOutdoor: indoorOutdoorSchema,
-    themeTags: z.array(themeTagSchema).min(1),
-    companionFit: z.array(companionTypeSchema).min(1),
-    typicalDurationMinutes: z.number().int().min(15).max(360),
-    openingStatus: openingStatusSchema,
-    officialUrl: z.string().url().startsWith("https://").nullable(),
-    published: z.literal(true),
-    evidence: z
-      .array(
-        z
-          .object({
-            evidenceId: z.string().min(1),
-            tier: z.enum(["A_OFFICIAL_OPEN", "B_LICENSED_EDITORIAL"]),
-            active: z.boolean(),
-            providerName: z.string().min(1),
-            supportedClaims: z.array(claimTypeSchema).min(1),
-            checkedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-            url: z.string().url().startsWith("https://"),
-            attribution: z.string().nullable(),
-          })
-          .strict(),
-      )
-      .min(1),
-  })
-  .strict();
+const projectedPlaceItemSchema = publishedPlaceSchema.extend({
+  itemType: z.literal("PLACE"),
+  catalogVersion: z.string().min(1),
+});
 
 type ProjectedPlaceItem = z.infer<typeof projectedPlaceItemSchema>;
 

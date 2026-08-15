@@ -35,6 +35,21 @@ describe("catalog projection build", () => {
     expect(first.projection.evidence).toHaveLength(12);
     expect(first.projection.routes).toHaveLength(2);
     expect(first.projection).not.toHaveProperty("sources");
+    expect(first.projection.places[0]).toMatchObject({
+      published: true,
+      openingStatus: "OPEN_SPACE",
+      evidence: [{ tier: "A_OFFICIAL_OPEN", active: true }],
+    });
+    expect(first.projection.places[0]).not.toHaveProperty("publicationStatus");
+    expect(first.projection.places[0]).not.toHaveProperty("evidenceRefs");
+    expect(first.projection.evidence[0]).toMatchObject({
+      providerName: "Synthetic Fixture Provider",
+      attribution: "Synthetic Fixture Provider; tests only",
+      url: "https://example.com/tokyo/asakusa-landmark",
+    });
+    expect(first.projection.evidence[0]).not.toHaveProperty("sourceId");
+    expect(first.projection.evidence[0]).not.toHaveProperty("rightsBasis");
+    expect(first.projection.evidence[0]).not.toHaveProperty("editorialSummary");
   });
 
   it("keeps synthetic fixtures out of a production projection", () => {

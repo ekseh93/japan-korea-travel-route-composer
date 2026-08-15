@@ -100,7 +100,8 @@ Terraformコスト・可観測性制御とLUN-013 Build once・OIDC Workflowを�
 LUN-014ではBLOCKED/UNVERIFIED Source参照、期限切れSource/Evidence、未登録Source Host、
 Production Route SourceRef欠落、MANUAL_LINK_ONLYとTierの不一致を`asOf`基準で遮断するValidatorと契約テストを追加しました。
 LUN-014のProjection Build toolingでは検証済みSeedから`catalogVersion`、`schemaVersion`、`sourceChecksum`、都市別統計を
-注入したcanonical Projectionと最終SHA-256 checksumを生成し、公開ProjectionからSource内部の審査メモを除外します。
+注入したcanonical Projectionと最終SHA-256 checksumを生成し、Seedレコードを共有`publishedPlaceSchema`と公開Evidence形式へ変換します。
+公開ProjectionにはSource内部の審査メモと権利判断フィールドを含めず、runtimeに必要なprovider・attribution・確認日だけを残します。
 合成Fixtureはテストでのみ許可し、Production Projectionでは拒否します。
 Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。
 実AWS Plan、OIDC AssumeRole、Artifactアップロード、実Lambda/API Gateway統合・配信、

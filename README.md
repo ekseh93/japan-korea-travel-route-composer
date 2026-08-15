@@ -102,8 +102,9 @@ Commit에서 생성한 Web/Lambda Artifact·checksum·SBOM을 보호된 Deploy j
 `asOf` 기준으로 차단하는 Validator와 계약 테스트를 추가했습니다.
 LUN-014의 Projection Build tooling은 검증된 Seed에서 `catalogVersion`, `schemaVersion`, `sourceChecksum`,
 도시별 통계를 주입한 canonical Projection과 최종 SHA-256 checksum을 생성하며,
-공개 Projection에서 Source 내부 검수 메모를 제외합니다. 합성 Fixture는 테스트에서만
-허용되고 Production Projection에서는 차단됩니다.
+Seed 원형을 `publishedPlaceSchema`와 공개 Evidence 형태로 변환합니다. 공개 Projection에서
+Source 내부 검수 메모·권리 판단 필드는 제외하고 provider·attribution·확인일만 남깁니다.
+합성 Fixture는 테스트에서만 허용되고 Production Projection에서는 차단됩니다.
 Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
 GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact 업로드,
 Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.

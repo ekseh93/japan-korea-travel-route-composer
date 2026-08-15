@@ -82,7 +82,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 - `buildProjection`이 Seed validation을 먼저 실행한 뒤 canonical `metadata`, `places`, `evidence`, `routes` Projection을 생성한다.
 - Projection metadata에 `catalogVersion`, `schemaVersion`, `generatedAt`, `sourceChecksum`, 도시별 통계, 검수자와 release notes를 기록하고 최종 SHA-256 checksum을 계산한다.
-- 공개 Projection에는 Source 원본과 내부 `reviewNotes`를 포함하지 않는다.
+- 공개 Projection은 contracts의 `publishedPlaceSchema`와 공개 Evidence shape를 사용하며, Seed의 publication status·opening schedule·좌표 구조를 runtime 필드로 변환한다.
+- Source 원본과 내부 `reviewNotes`·`rightsBasis`를 포함하지 않고 provider·attribution·확인일과 허용 Claim만 남긴다. DynamoDB Adapter도 같은 공개 Place Schema를 사용한다.
 - 동일한 Seed와 고정 옵션의 결과가 동일한지, 도시별 Place·Evidence 통계가 맞는지, Production 모드에서 합성 Fixture가 거부되는지를 테스트했다.
 - `pnpm catalog:build`가 checksum·sourceChecksum·통계와 JSON Artifact 경로를 출력하고, 기본 산출물을 tooling `dist` 아래에 기록한다.
 - `--` 인자 구분자, metadata 옵션, 출력 디렉터리 생성과 Production Fixture 거부를 CLI 계약 테스트로 검증했다.

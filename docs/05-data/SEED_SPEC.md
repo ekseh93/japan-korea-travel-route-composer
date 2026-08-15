@@ -269,7 +269,9 @@ Generated Projection은 사람이 직접 편집하지 않는다.
 Seed에서 `metadata`, `places`, `evidence`, `routes`를 생성한다. `metadata`에는
 `catalogVersion`, `schemaVersion`, `generatedAt`, `sourceChecksum`, 도시별 통계,
 검수자와 release notes가 포함되며, Projection 자체에도 SHA-256 checksum을 계산한다.
-Source 원본과 내부 `reviewNotes`는 공개 Projection에 포함하지 않는다. `production: true`
+Seed의 Place·Evidence는 contracts의 `publishedPlaceSchema`와 공개 Evidence shape로 변환한다.
+Source 원본과 내부 `reviewNotes`, `rightsBasis`는 공개 Projection에 포함하지 않고,
+runtime에 필요한 provider·attribution·확인일과 허용 Claim만 남긴다. `production: true`
 에서는 합성 Fixture를 거부하며, 현재 구현은 파일 게시나 AWS 업로드를 수행하지 않는다.
 
 검수 PR은 다음 CLI로 대상 Seed, Production Gate와 검수 기준일을 명시한다.

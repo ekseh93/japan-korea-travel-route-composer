@@ -126,6 +126,51 @@ export const warningCodeSchema = z.enum([
   "NO_DIVERSE_ALTERNATIVE",
 ]);
 
+const catalogIsoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const catalogHttpsUrlSchema = z.string().url().startsWith("https://");
+const catalogLocalizedTextSchema = z
+  .object({
+    ko: z.string().min(1).optional(),
+    ja: z.string().min(1).optional(),
+    en: z.string().min(1).optional(),
+  })
+  .strict()
+  .refine((value) => Object.values(value).some((text) => text !== undefined));
+
+export const publishedEvidenceSchema = z
+  .object({
+    evidenceId: z.string().min(1),
+    tier: z.enum(["A_OFFICIAL_OPEN", "B_LICENSED_EDITORIAL"]),
+    active: z.boolean(),
+    providerName: z.string().min(1),
+    supportedClaims: z.array(claimTypeSchema).min(1),
+    checkedAt: catalogIsoDateSchema,
+    url: catalogHttpsUrlSchema,
+    attribution: z.string().nullable(),
+  })
+  .strict();
+
+export const publishedPlaceSchema = z
+  .object({
+    placeId: z.string().min(1),
+    cityId: cityIdSchema,
+    zoneId: zoneIdSchema,
+    names: catalogLocalizedTextSchema,
+    category: placeCategorySchema,
+    latitude: z.number().finite().min(-90).max(90),
+    longitude: z.number().finite().min(-180).max(180),
+    costBand: costBandSchema,
+    indoorOutdoor: indoorOutdoorSchema,
+    themeTags: z.array(themeTagSchema).min(1),
+    companionFit: z.array(companionTypeSchema).min(1),
+    typicalDurationMinutes: z.number().int().min(15).max(360),
+    openingStatus: openingStatusSchema,
+    officialUrl: catalogHttpsUrlSchema.nullable(),
+    published: z.literal(true),
+    evidence: z.array(publishedEvidenceSchema).min(1),
+  })
+  .strict();
+
 export const algorithmConstants = {
   algorithmVersion: "algorithm-v1",
   schemaVersion: "api-v1",
