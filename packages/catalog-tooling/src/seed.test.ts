@@ -1,4 +1,6 @@
-import { resolve } from "node:path";
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
@@ -29,6 +31,85 @@ describe("seed schema and rights gate", () => {
           (issue) => issue.code === "FIXTURE_IN_PRODUCTION",
         ),
       ).toBe(true);
+    }
+  });
+
+  it.each([
+    ["BLOCKED", "BLOCKED_SOURCE_REFERENCE"],
+    ["UNVERIFIED", "BLOCKED_SOURCE_REFERENCE"],
+  ] as const)("rejects a %s Source reference", (reviewStatus, expectedCode) => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-source-gate-"));
+    try {
+      cpSync(fixtureRoot, root, { recursive: true });
+      const sourceFile = join(root, "sources", "synthetic_source.json");
+      const source = JSON.parse(readFileSync(sourceFile, "utf8")) as Record<string, unknown>;
+      source.reviewStatus = reviewStatus;
+      writeFileSync(sourceFile, `${JSON.stringify(source, null, 2)}\n`);
+
+      expect(() => validateSeedDirectory(root, { production: false, asOf: "2026-08-15" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: false, asOf: "2026-08-15" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some((issue) => issue.code === expectedCode),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects approved evidence after its review due date", () => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-expiry-gate-"));
+    try {
+      cpSync(fixtureRoot, root, { recursive: true });
+      const evidenceFile = join(root, "evidence", "tokyo", "ev_tokyo_ueno_museum_name.json");
+      const evidence = JSON.parse(readFileSync(evidenceFile, "utf8")) as Record<string, unknown>;
+      evidence.reviewDueAt = "2026-08-14";
+      writeFileSync(evidenceFile, `${JSON.stringify(evidence, null, 2)}\n`);
+
+      expect(() => validateSeedDirectory(root, { production: false, asOf: "2026-08-15" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: false, asOf: "2026-08-15" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some(
+            (issue) => issue.code === "EVIDENCE_REVIEW_EXPIRED",
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects official evidence from a manual-link-only Source", () => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-manual-link-gate-"));
+    try {
+      cpSync(fixtureRoot, root, { recursive: true });
+      const sourceFile = join(root, "sources", "synthetic_source.json");
+      const source = JSON.parse(readFileSync(sourceFile, "utf8")) as Record<string, unknown>;
+      source.reviewStatus = "MANUAL_LINK_ONLY";
+      writeFileSync(sourceFile, `${JSON.stringify(source, null, 2)}\n`);
+
+      expect(() => validateSeedDirectory(root, { production: false, asOf: "2026-08-15" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: false, asOf: "2026-08-15" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some(
+            (issue) => issue.code === "MANUAL_LINK_PUBLICATION_INVALID",
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
     }
   });
 });

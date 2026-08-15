@@ -156,6 +156,11 @@ export type ValidationReport = {
   readonly routeCount: number;
 };
 
+export type SeedValidationOptions = {
+  readonly production: boolean;
+  readonly asOf?: string;
+};
+
 export class SeedValidationError extends Error {
   public readonly issues: readonly ValidationIssue[];
 
@@ -245,10 +250,11 @@ function validateDateOrder(
 
 export function validateSeedDirectory(
   rootDirectory: string,
-  options: { readonly production: boolean },
+  options: SeedValidationOptions,
 ): ValidationReport {
   const root = resolve(rootDirectory);
   const issues: ValidationIssue[] = [];
+  const asOf = options.asOf ?? new Date().toISOString().slice(0, 10);
   const values: unknown[] = [];
   const sourceById = new Map<string, z.infer<typeof sourceRecordSchema>>();
   const evidenceById = new Map<string, z.infer<typeof evidenceRecordSchema>>();
@@ -297,11 +303,51 @@ export function validateSeedDirectory(
           file: relative(root, file),
           message: `Unknown Source ${evidence.sourceId}.`,
         });
-      } else if (!source.allowedFields.some((field) => evidence.supportedClaims.includes(field))) {
+      } else {
+        if (!source.allowedFields.some((field) => evidence.supportedClaims.includes(field))) {
+          issues.push({
+            code: "CLAIM_NOT_ALLOWED",
+            file: relative(root, file),
+            message: "Evidence claims do not overlap Source allowed fields.",
+          });
+        }
+        if (source.reviewStatus === "BLOCKED" || source.reviewStatus === "UNVERIFIED") {
+          issues.push({
+            code: "BLOCKED_SOURCE_REFERENCE",
+            file: relative(root, file),
+            message: `Evidence references ${source.reviewStatus} Source ${source.sourceId}.`,
+          });
+        }
+        if (
+          evidence.publicationStatus === "APPROVED" &&
+          source.reviewStatus === "MANUAL_LINK_ONLY" &&
+          (evidence.evidenceTier !== "C_COMMUNITY_POINTER" ||
+            evidence.rightsBasis !== "MANUAL_LINK_ONLY")
+        ) {
+          issues.push({
+            code: "MANUAL_LINK_PUBLICATION_INVALID",
+            file: relative(root, file),
+            message:
+              "MANUAL_LINK_ONLY Source requires a C_COMMUNITY_POINTER and MANUAL_LINK_ONLY rights basis.",
+          });
+        }
+        if (
+          evidence.evidenceTier === "C_COMMUNITY_POINTER" &&
+          (source.reviewStatus !== "MANUAL_LINK_ONLY" ||
+            evidence.rightsBasis !== "MANUAL_LINK_ONLY")
+        ) {
+          issues.push({
+            code: "COMMUNITY_POINTER_SOURCE_INVALID",
+            file: relative(root, file),
+            message: "C_COMMUNITY_POINTER requires MANUAL_LINK_ONLY Source and rights basis.",
+          });
+        }
+      }
+      if (evidence.publicationStatus === "APPROVED" && evidence.reviewDueAt <= asOf) {
         issues.push({
-          code: "CLAIM_NOT_ALLOWED",
+          code: "EVIDENCE_REVIEW_EXPIRED",
           file: relative(root, file),
-          message: "Evidence claims do not overlap Source allowed fields.",
+          message: `Evidence reviewDueAt ${evidence.reviewDueAt} is not after ${asOf}.`,
         });
       }
       if (

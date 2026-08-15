@@ -10,8 +10,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~013 완료 |
-| 로컬 검증 | format, lint, typecheck, 40 tests, browser E2E 3건, build, catalog validation, audit, Terraform fmt/validate, TFLint 완료 |
+| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate 강화 완료 |
+| 로컬 검증 | format, lint, typecheck, 44 tests, browser E2E 3건, build, catalog validation, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -37,10 +37,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `d4b598c` | LUN-012 API Deployment·Log·Alarm·Budget·비용 제한 구현 | GitHub CI 성공 |
 | `ea6cbc1` | LUN-013 Build once·OIDC 배포 계약 문서화 | 구현 기준선 |
 | `ccc03f7` | LUN-013 Bootstrap Artifact bucket·Build once·보호된 OIDC Deploy Workflow 구현 | GitHub CI 성공 |
+| `TBD` | LUN-014 BLOCKED/UNVERIFIED Source·만료 Evidence·MANUAL_LINK_ONLY Tier Gate와 계약 테스트 | 로컬 검증 완료, CI 대기 |
 
 ## 다음 단계
 
 다음 설계 순서의 구현 단위는 LUN-014 허용 Source 기반 공개 Catalog 검수다.
+이번 단계에서는 실제 Source를 반입하지 않고 Source Governance Gate만 강화했다.
 사용자 지시에 따라 실제 Source 반입·커뮤니티 크롤링·유료 Provider 활성화는 승인 전
 시작하지 않으며, AWS 리소스 생성과 `terraform apply`도 실행하지 않는다.
 
@@ -61,6 +63,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Terraform Docker 실행에 OIDC 임시 자격 증명을 명시적으로 전달하고, protected Production 및 Fork guard를 적용했다.
 - 로컬 format·lint·typecheck·unit·browser E2E·build와 GitHub CI의 quality·browser-e2e·terraform-static이 통과했다.
 - 실제 OIDC AssumeRole, artifact 업로드, Terraform Plan/Apply, AWS Smoke와 운영 Alarm 수신은 미실행이다.
+
+### LUN-014 구현 결과
+
+- Validator에 결정론적 `asOf` 기준을 추가하고, 기본 실행에서는 현재 날짜를 사용한다.
+- `BLOCKED`·`UNVERIFIED` Source를 참조하는 Evidence를 차단한다.
+- `APPROVED` 상태의 만료 Evidence를 차단한다.
+- `MANUAL_LINK_ONLY` Source는 `C_COMMUNITY_POINTER`와 `MANUAL_LINK_ONLY` 권리 근거만 허용한다.
+- 실제 Source·Catalog 파일은 추가하지 않았으며, 150개 공개 Catalog 검수는 승인 대기다.
 
 ### LUN-012 구현 전 계약
 

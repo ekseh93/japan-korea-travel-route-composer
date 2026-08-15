@@ -8,7 +8,7 @@
 | 버전 | `v1.0` |
 | 상태 | BASELINED |
 | 형식 | UTF-8 JSON, LF, 2-space indent |
-| 구현 상태 | Schema·Validator 미구현 |
+| 구현 상태 | Schema·Validator 구현, 실제 공개 Catalog 미반입 |
 
 ## 1. 목표 파일 구조
 
@@ -287,10 +287,10 @@ Generated Projection은 사람이 직접 편집하지 않는다.
 
 - [ ] 같은 Seed에서 canonical Projection checksum이 동일하다.
 - [ ] Fixture가 Production Build에 들어가면 반드시 실패한다.
-- [ ] BLOCKED·UNVERIFIED Source와 만료 Evidence가 게시되지 않는다.
-- [ ] Review text·사용자명·사진·HTML·Base64 Pattern이 차단된다.
+- [x] BLOCKED·UNVERIFIED Source와 만료 Evidence가 게시되지 않는다.
+- [x] Review text·사용자명·사진·HTML·Base64 Pattern이 차단된다.
 - [ ] 모든 Place와 Evidence 파일명이 내부 ID와 일치한다.
 - [ ] Current pointer는 완전한 Version 검증 전 변경되지 않는다.
-- [ ] 실패는 파일·JSON path·Validation Code를 보고한다.
+- [x] 실패는 파일·JSON path·Validation Code를 보고한다.
 
 판정: `SEED CONTRACT BASELINED`.
