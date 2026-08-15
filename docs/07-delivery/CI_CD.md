@@ -98,6 +98,10 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 - Package lockfile과 Terraform provider lockfile을 커밋한다.
 - Artifact에 source map, `.env`, Terraform State와 테스트 개인정보를 넣지 않는다.
 
+로컬과 CI는 `pnpm smoke:test`로 배포와 무관한 Smoke 계약을 검증한다. 실제 Web/API
+URL Smoke는 Production 배포 후에만 보호된 Workflow에서 실행하며, URL이 없을 때
+성공으로 표시하지 않는다.
+
 ## 7. OIDC와 Environment 보호
 
 - Plan Role Trust: 정확한 Repository와 승인된 Branch Pattern

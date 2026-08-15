@@ -37,6 +37,8 @@ jobs:
         run: pnpm catalog:validate
       - name: Dependency audit
         run: pnpm audit --audit-level high
+      - name: Smoke contract tests
+        run: pnpm smoke:test
 
   browser-e2e:
     runs-on: ubuntu-24.04

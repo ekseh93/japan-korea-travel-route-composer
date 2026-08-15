@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate와 Projection Build tooling 완료 |
-| 로컬 검증 | format, lint, typecheck, 57 tests, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 로컬 검증 | format, lint, typecheck, 57 Vitest tests, smoke contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -86,6 +86,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `pnpm catalog:build`가 checksum·sourceChecksum·통계와 JSON Artifact 경로를 출력하고, 기본 산출물을 tooling `dist` 아래에 기록한다.
 - `--` 인자 구분자, metadata 옵션, 출력 디렉터리 생성과 Production Fixture 거부를 CLI 계약 테스트로 검증했다.
 - 실제 Source 파일, Projection 게시, AWS 업로드와 DynamoDB 반입은 실행하지 않았다.
+
+### 배포 전 Smoke 계약 구현 결과
+
+- `pnpm smoke -- --base-url <web-host> --api-base-url <api-host>`가 Web marker와 API `/health`를 검사한다.
+- 네트워크 오류와 5xx 응답에 대한 제한 재시도, timeout, 4xx 즉시 실패를 구현했다.
+- 로컬 HTTP 서버에서 health 성공, Web marker, 일시적 503 재시도, marker 누락 실패를 4건의 계약 테스트로 검증했다.
+- 실제 CloudFront·API Gateway URL과 AWS 배포 Smoke는 사용자 승인 전 실행하지 않았다.
 
 ### LUN-012 구현 전 계약
 
