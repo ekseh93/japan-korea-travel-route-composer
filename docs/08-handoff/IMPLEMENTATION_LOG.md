@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate 강화 완료 |
-| 로컬 검증 | format, lint, typecheck, 44 tests, browser E2E 3건, build, catalog validation, audit 완료 |
+| 로컬 검증 | format, lint, typecheck, 46 tests, browser E2E 3건, build, catalog validation, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -70,6 +70,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `BLOCKED`·`UNVERIFIED` Source를 참조하는 Evidence를 차단한다.
 - `APPROVED` 상태의 만료 Evidence를 차단한다.
 - `MANUAL_LINK_ONLY` Source는 `C_COMMUNITY_POINTER`와 `MANUAL_LINK_ONLY` 권리 근거만 허용한다.
+- Source `nextReviewAt`, Evidence URL Host allowlist와 Production Route `sourceRefs`를 검증한다.
 - 실제 Source·Catalog 파일은 추가하지 않았으며, 150개 공개 Catalog 검수는 승인 대기다.
 
 ### LUN-012 구현 전 계약

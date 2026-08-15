@@ -112,4 +112,56 @@ describe("seed schema and rights gate", () => {
       rmSync(root, { recursive: true, force: true });
     }
   });
+
+  it("rejects an evidence URL outside the registered Source host", () => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-host-gate-"));
+    try {
+      cpSync(fixtureRoot, root, { recursive: true });
+      const evidenceFile = join(root, "evidence", "tokyo", "ev_tokyo_ueno_museum_name.json");
+      const evidence = JSON.parse(readFileSync(evidenceFile, "utf8")) as Record<string, unknown>;
+      evidence.sourceUrl = "https://unregistered.example/place";
+      writeFileSync(evidenceFile, `${JSON.stringify(evidence, null, 2)}\n`);
+
+      expect(() => validateSeedDirectory(root, { production: false, asOf: "2026-08-15" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: false, asOf: "2026-08-15" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some(
+            (issue) => issue.code === "SOURCE_HOST_MISMATCH",
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects an expired Source review", () => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-source-expiry-gate-"));
+    try {
+      cpSync(fixtureRoot, root, { recursive: true });
+      const sourceFile = join(root, "sources", "synthetic_source.json");
+      const source = JSON.parse(readFileSync(sourceFile, "utf8")) as Record<string, unknown>;
+      source.nextReviewAt = "2026-08-14";
+      writeFileSync(sourceFile, `${JSON.stringify(source, null, 2)}\n`);
+
+      expect(() => validateSeedDirectory(root, { production: false, asOf: "2026-08-15" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: false, asOf: "2026-08-15" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some(
+            (issue) => issue.code === "SOURCE_REVIEW_EXPIRED",
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });

@@ -5,7 +5,7 @@
 > Status: Sol phased design complete; Luna implementation handoff READY  
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate hardening implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 44 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy also passed (2026-08-15)
+> LUN-014 verification: format, lint, typecheck, 46 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-15)
 > GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863763499), 2026-08-15)
 
 ## Project Overview
@@ -105,7 +105,7 @@ Terraform cost/observability controls and the LUN-013 Build once OIDC workflow a
 The protected deploy job consumes Web/Lambda artifacts, checksums, and SBOMs produced from the
 same commit. Terraform fmt/validate, TFLint, Trivy, and the quality/browser-e2e workflows ran in
 GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Source references,
-expired Evidence, and MANUAL_LINK_ONLY/Tier mismatches with contract tests. The real AWS plan, OIDC AssumeRole, artifact upload, Lambda/API Gateway integration,
+expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and MANUAL_LINK_ONLY/Tier mismatches with contract tests. The real AWS plan, OIDC AssumeRole, artifact upload, Lambda/API Gateway integration,
 deployment, and operational alarm delivery were not run.
 
 ## Current Status
@@ -116,7 +116,7 @@ deployment, and operational alarm delivery were not run.
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
 | Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate hardening implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 44 tests, 3 browser E2E tests, build, catalog:validate, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan not run |
+| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 46 tests, 3 browser E2E tests, build, catalog:validate, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 

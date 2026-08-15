@@ -5,7 +5,7 @@
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY  
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate 강화 구현; 실제 Catalog 반입·AWS 리소스 검증·배포 미실행
 > 공개 URL·사용자 지표: 없음  
-> LUN-014 검증: format·lint·typecheck·44개 테스트·브라우저 E2E 3건·build·catalog:validate·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy도 통과 (2026-08-15)
+> LUN-014 검증: format·lint·typecheck·46개 테스트·브라우저 E2E 3건·build·catalog:validate·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-15)
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업 통과 ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863763499), 2026-08-15)
 
 ## 프로젝트 개요
@@ -97,8 +97,9 @@ HTTP Handler와 계약 기반 오류 매핑, LUN-010의 반응형 입력·결과
 MapLibre/OpenFreeMap 선택 지도와 타일 장애 축소를 구현·실행했습니다.
 Terraform 비용·관측성 제어와 LUN-013 Build once·OIDC Workflow 코드를 작성했고, 동일
 Commit에서 생성한 Web/Lambda Artifact·checksum·SBOM을 보호된 Deploy job이 사용하도록
-구성했습니다. LUN-014는 BLOCKED/UNVERIFIED Source 참조, 만료 Evidence,
-MANUAL_LINK_ONLY와 Tier 불일치를 `asOf` 기준으로 차단하는 Validator와 계약 테스트를 추가했습니다.
+구성했습니다. LUN-014는 BLOCKED/UNVERIFIED Source 참조, 만료 Source/Evidence,
+미등록 Source Host, Production Route SourceRef 누락, MANUAL_LINK_ONLY와 Tier 불일치를
+`asOf` 기준으로 차단하는 Validator와 계약 테스트를 추가했습니다.
 Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
 GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact 업로드,
 Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
@@ -111,7 +112,7 @@ Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료 |
 | 애플리케이션·인프라 코드 | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate 강화 구현; 실제 AWS 적용은 미실행 |
 | 실제 150~250개 Catalog | 미수집, Source 승인 필요 |
-| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·44개 테스트·브라우저 E2E 3건·build·catalog:validate·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan은 미실행 |
+| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·46개 테스트·브라우저 E2E 3건·build·catalog:validate·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan은 미실행 |
 | AWS 리소스·배포 URL | 없음 |
 | 실제 성능·가용성·사용자 지표 | 없음 |
 

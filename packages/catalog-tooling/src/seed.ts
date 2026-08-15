@@ -66,8 +66,8 @@ export const sourceRecordSchema = z
     robotsUrl: urlSchema.nullable(),
     licenseId: z.string().min(1).nullable(),
     collectionMode: sourceCollectionModeSchema,
-    allowedFields: z.array(claimTypeSchema),
-    forbiddenFields: z.array(z.string().min(1)),
+    allowedFields: z.array(claimTypeSchema).min(1),
+    forbiddenFields: z.array(z.string().min(1)).min(1),
     attributionTemplate: z.string().min(1),
     reviewStatus: sourceReviewStatusSchema,
     checkedAt: isoDateSchema,
@@ -271,6 +271,13 @@ export function validateSeedDirectory(
     if (source === undefined) continue;
     checkFileId(file, source.sourceId, issues);
     validateDateOrder(source.checkedAt, source.nextReviewAt, relative(root, file), issues);
+    if (source.nextReviewAt <= asOf) {
+      issues.push({
+        code: "SOURCE_REVIEW_EXPIRED",
+        file: relative(root, file),
+        message: `Source nextReviewAt ${source.nextReviewAt} is not after ${asOf}.`,
+      });
+    }
     if (
       options.production &&
       (source.licenseId === "TEST_FIXTURE_ONLY" || source.baseUrl.includes("example.com"))
@@ -304,6 +311,13 @@ export function validateSeedDirectory(
           message: `Unknown Source ${evidence.sourceId}.`,
         });
       } else {
+        if (new URL(evidence.sourceUrl).hostname !== new URL(source.baseUrl).hostname) {
+          issues.push({
+            code: "SOURCE_HOST_MISMATCH",
+            file: relative(root, file),
+            message: `Evidence URL host is not registered for Source ${source.sourceId}.`,
+          });
+        }
         if (!source.allowedFields.some((field) => evidence.supportedClaims.includes(field))) {
           issues.push({
             code: "CLAIM_NOT_ALLOWED",
@@ -425,6 +439,36 @@ export function validateSeedDirectory(
     const matrix = parseWithSchema(routeMatrixSchema, readJson(file), relative(root, file), issues);
     if (matrix === undefined) continue;
     routeCount += matrix.routes.length;
+    if (options.production && matrix.sourceRefs.length === 0) {
+      issues.push({
+        code: "ROUTE_SOURCE_REQUIRED",
+        file: relative(root, file),
+        message: "Production route matrix requires at least one SourceRef.",
+      });
+    }
+    for (const sourceRef of matrix.sourceRefs) {
+      const source = sourceById.get(sourceRef);
+      if (source === undefined) {
+        issues.push({
+          code: "UNKNOWN_SOURCE",
+          file: relative(root, file),
+          message: `Unknown route Source ${sourceRef}.`,
+        });
+      } else if (source.reviewStatus === "BLOCKED" || source.reviewStatus === "UNVERIFIED") {
+        issues.push({
+          code: "BLOCKED_SOURCE_REFERENCE",
+          file: relative(root, file),
+          message: `Route matrix references ${source.reviewStatus} Source ${source.sourceId}.`,
+        });
+      }
+    }
+    if (options.production && matrix.methodology === "SYNTHETIC_TEST_ONLY") {
+      issues.push({
+        code: "FIXTURE_IN_PRODUCTION",
+        file: relative(root, file),
+        message: "Synthetic route matrix cannot enter production projection.",
+      });
+    }
     const pairs = new Set<string>();
     for (const route of matrix.routes) {
       const pair = `${route.originZoneId}->${route.destinationZoneId}`;
@@ -440,13 +484,6 @@ export function validateSeedDirectory(
         });
       }
       pairs.add(pair);
-      if (options.production && matrix.methodology === "SYNTHETIC_TEST_ONLY") {
-        issues.push({
-          code: "FIXTURE_IN_PRODUCTION",
-          file: relative(root, file),
-          message: "Synthetic route matrix cannot enter production projection.",
-        });
-      }
     }
     for (const origin of matrix.zones) {
       for (const destination of matrix.zones) {
