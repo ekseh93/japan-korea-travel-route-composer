@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 
 import { algorithmConstants, cityIdSchema } from "@route-composer/contracts";
 import { z } from "zod";
@@ -49,6 +49,11 @@ export type ProjectionBuildResult = {
   readonly canonicalJson: string;
   readonly projection: CatalogProjection;
 };
+
+export type ProjectionArtifact = Pick<
+  ProjectionBuildResult,
+  "checksum" | "sourceChecksum" | "projection"
+>;
 
 function jsonFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true })
@@ -141,6 +146,20 @@ export function buildProjection(
     canonicalJson,
     projection,
   };
+}
+
+export function serializeProjectionArtifact(result: ProjectionBuildResult): string {
+  const artifact: ProjectionArtifact = {
+    checksum: result.checksum,
+    sourceChecksum: result.sourceChecksum,
+    projection: result.projection,
+  };
+  return `${JSON.stringify(artifact, null, 2)}\n`;
+}
+
+export function writeProjectionArtifact(outputFile: string, result: ProjectionBuildResult): void {
+  mkdirSync(dirname(outputFile), { recursive: true });
+  writeFileSync(outputFile, serializeProjectionArtifact(result), "utf8");
 }
 
 export { SeedValidationError };

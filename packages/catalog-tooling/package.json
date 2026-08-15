@@ -7,7 +7,8 @@
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "validate": "tsc -p tsconfig.build.json && node dist/cli.js"
+    "validate": "tsc -p tsconfig.build.json && node dist/cli.js",
+    "build-projection": "tsc -p tsconfig.build.json && node dist/build-cli.js"
   },
   "dependencies": {
     "@route-composer/contracts": "workspace:*",

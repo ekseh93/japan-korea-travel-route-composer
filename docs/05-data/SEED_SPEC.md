@@ -276,10 +276,14 @@ Source 원본과 내부 `reviewNotes`는 공개 Projection에 포함하지 않�
 
 ```text
 pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
+pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
 ```
 
 `--as-of`를 지정하면 Source와 Evidence 만료 판정이 재현되며, 지정하지 않으면
-현재 날짜를 사용한다. 합성 Fixture는 Production 모드에서 의도적으로 실패한다.
+현재 날짜를 사용한다. `catalog:build`는 검증된 Projection을 checksum과 함께 JSON
+Artifact로 기록하며, 기본 출력은 합성 Fixture용 `packages/catalog-tooling/dist` 아래다.
+합성 Fixture는 Production 모드에서 의도적으로 실패한다. 실제 게시나 AWS 업로드는
+별도 승인 단계다.
 
 ## 9. 정적 Validation Code
 

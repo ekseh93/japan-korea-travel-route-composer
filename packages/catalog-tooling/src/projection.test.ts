@@ -1,8 +1,10 @@
-import { resolve } from "node:path";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { buildProjection } from "./projection";
+import { buildProjection, writeProjectionArtifact } from "./projection";
 import { SeedValidationError } from "./seed";
 
 const fixtureRoot = resolve(process.cwd(), "../test-fixtures");
@@ -39,5 +41,25 @@ describe("catalog projection build", () => {
     expect(() => buildProjection(fixtureRoot, { ...buildOptions, production: true })).toThrow(
       SeedValidationError,
     );
+  });
+
+  it("writes an artifact without Source internals", () => {
+    const directory = mkdtempSync(join(tmpdir(), "catalog-projection-"));
+    const outputFile = join(directory, "nested", "catalog.json");
+
+    try {
+      const result = buildProjection(fixtureRoot, buildOptions);
+      writeProjectionArtifact(outputFile, result);
+      const artifact = JSON.parse(readFileSync(outputFile, "utf8")) as Record<string, unknown>;
+
+      expect(artifact).toMatchObject({
+        checksum: result.checksum,
+        sourceChecksum: result.sourceChecksum,
+      });
+      expect(artifact).not.toHaveProperty("canonicalJson");
+      expect(artifact.projection).not.toHaveProperty("sources");
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 });

@@ -16,7 +16,8 @@
     "lint": "eslint .",
     "test": "pnpm -r test",
     "test:e2e": "pnpm --filter @route-composer/contracts build && playwright test",
-    "typecheck": "pnpm --filter @route-composer/contracts build && pnpm -r typecheck"
+    "typecheck": "pnpm --filter @route-composer/contracts build && pnpm -r typecheck",
+    "catalog:build": "pnpm --filter @route-composer/contracts build && pnpm --filter @route-composer/catalog-tooling build && node packages/catalog-tooling/dist/build-cli.js"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
