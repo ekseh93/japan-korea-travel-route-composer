@@ -6,6 +6,7 @@
 > 実装状態: LUN-001~010 workspace・契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Webを実装、Terraform/CI workflowコードを作成済み、AWSリソース検証・配信は未実行  
 > 公開URL・ユーザー指標: なし  
 > LUN-010ローカル検証: format・lint・typecheck・40テスト・ブラウザE2E 2件・build・catalog:validate・frozen install・依存関係監査・Terraform fmt/validate・TFLintに合格 (2026-08-15)
+> GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139)、2026-08-15)
 
 ## プロジェクト概要
 
@@ -119,6 +120,7 @@ Trivyセキュリティ検査、実AWS Plan、実Lambda/API Gateway統合・配�
 - [Terraform](docs/06-infrastructure/TERRAFORM.md)、[コストモデル](docs/06-infrastructure/COST_MODEL.md)、[Runbook](docs/06-infrastructure/RUNBOOK.md)
 - [CI/CD](docs/07-delivery/CI_CD.md)、[テスト](docs/07-delivery/TEST_STRATEGY.md)、[可観測性](docs/07-delivery/OBSERVABILITY.md)
 - [Luna実装引継ぎ](docs/08-handoff/LUNA_HANDOFF.md)、[Luna新規チャットContext](docs/08-handoff/LUNA_INITIAL_CONTEXT.md)
+- [実装更新ログ](docs/08-handoff/IMPLEMENTATION_LOG.md)
 
 ## ローカル実行とデプロイ
 

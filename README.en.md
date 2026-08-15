@@ -6,6 +6,7 @@
 > Implementation: LUN-001~010 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, and Web implemented; Terraform/CI workflows written, AWS resource validation and deployment not run  
 > Public URL and user metrics: none  
 > LUN-010 local verification: format, lint, typecheck, 40 tests, 2 browser E2E tests, build, catalog:validate, frozen install, dependency audit, Terraform fmt/validate, and TFLint passed (2026-08-15)
+> GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139), 2026-08-15)
 
 ## Project Overview
 
@@ -125,6 +126,7 @@ The Trivy security scan, real AWS plan, Lambda/API Gateway integration, and depl
 - [Terraform](docs/06-infrastructure/TERRAFORM.md), [cost model](docs/06-infrastructure/COST_MODEL.md), [runbook](docs/06-infrastructure/RUNBOOK.md)
 - [CI/CD](docs/07-delivery/CI_CD.md), [testing](docs/07-delivery/TEST_STRATEGY.md), [observability](docs/07-delivery/OBSERVABILITY.md)
 - [Luna implementation handoff](docs/08-handoff/LUNA_HANDOFF.md), [Luna new-task context](docs/08-handoff/LUNA_INITIAL_CONTEXT.md)
+- [Implementation update log](docs/08-handoff/IMPLEMENTATION_LOG.md)
 
 ## Local Development and Deployment
 

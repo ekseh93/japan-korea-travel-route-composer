@@ -1,8 +1,12 @@
 # GitHub Actions CI/CD 설계
 
-> 상태: 설계 승인, Workflow 코드 구현·로컬 정적 검증 완료, GitHub 실행 미확인  
+> 상태: 설계 승인, Workflow 코드 구현·로컬 정적 검증·GitHub CI 실행 완료; OIDC Plan/Deploy는 AWS 승인 전 미실행
 > 기준일: 2026-08-15  
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
+
+현재 확인된 GitHub CI 실행은 [31861912139](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139)이며,
+`quality`, `browser-e2e`, `terraform-static` 작업이 모두 통과했다. 이 결과는 AWS
+자격 증명, Terraform Plan/Apply 또는 Production 배포를 검증한 결과가 아니다.
 
 ## 1. 목표
 
