@@ -3,9 +3,9 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > Status: Sol phased design complete; Luna implementation handoff READY  
-> Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate hardening implemented; real catalog ingestion, AWS resource validation, and deployment not run
+> Implementation: LUN-001~013 application/infrastructure, LUN-014 Source Governance Gate, and LUN-015 deterministic Projection Build implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 50 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-15)
+> LUN-015 verification: format, lint, typecheck, 52 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-15)
 > GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31864902189), 2026-08-15)
 
 ## Project Overview
@@ -106,7 +106,10 @@ The protected deploy job consumes Web/Lambda artifacts, checksums, and SBOMs pro
 same commit. Terraform fmt/validate, TFLint, Trivy, and the quality/browser-e2e workflows ran in
 GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Source references,
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and MANUAL_LINK_ONLY/Tier mismatches with contract tests. The real AWS plan, OIDC AssumeRole, artifact upload, Lambda/API Gateway integration,
-deployment, and operational alarm delivery were not run.
+deployment, and operational alarm delivery were not run. LUN-015 builds a canonical Projection from
+validated Seed data, injects catalog metadata and city statistics, computes a source and final SHA-256
+checksum, and excludes internal Source review notes from the public Projection. Synthetic fixtures are
+allowed only for tests and are rejected in Production mode.
 
 ## Current Status
 
@@ -114,9 +117,9 @@ deployment, and operational alarm delivery were not run.
 |---|---|
 | Company-style requirements definition | v1.0 BASELINED |
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
-| Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate hardening implemented; AWS application not run |
+| Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, LUN-014 Source Governance Gate, and LUN-015 deterministic Projection Build implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 50 tests, 3 browser E2E tests, build, catalog:validate, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan not run |
+| Tests and builds | LUN-001~015 Gate format, lint, typecheck, 52 tests, 3 browser E2E tests, build, catalog:validate, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 
@@ -135,7 +138,7 @@ deployment, and operational alarm delivery were not run.
 
 ## Local Development and Deployment
 
-LUN-001~013 provide a Vite development server and the following local verification
+LUN-001~015 provide a Vite development server and the following local verification
 commands. It uses the Node.js 24 LTS line (`>=24.18.0 <25`) and pnpm 11
 (`11.19.0`).
 
@@ -164,7 +167,7 @@ be added or run before the AWS account, budget, OIDC, and source gates are verif
 
 ## Roadmap
 
-1. Implement and verify the LUN-001~014 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, Terraform, CI, and Source Governance Gate
+1. Implement and verify the LUN-001~015 TypeScript monorepo, quality foundation, executable contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose, HTTP API, Web adapters, Terraform, CI, Source Governance Gate, and Projection Build
 2. Manually review at least 150 places from approved Sources in Tokyo and Seoul
 3. Deploy only after user approval, then verify smoke tests and rollback
 4. Re-evaluate city expansion and optional route/AI adapters from real feedback

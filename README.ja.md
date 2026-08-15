@@ -3,9 +3,9 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
-> 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate強化を実装、実Catalog取込・AWSリソース検証・配信は未実行
+> 実装状態: LUN-001~013のアプリケーション・インフラ、LUN-014 Source Governance Gate、LUN-015決定論的Projection Buildを実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
-> LUN-014検証: format・lint・typecheck・50テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-15)
+> LUN-015検証: format・lint・typecheck・52テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-15)
 > GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31864902189)、2026-08-15)
 
 ## プロジェクト概要
@@ -99,6 +99,9 @@ Terraformコスト・可観測性制御とLUN-013 Build once・OIDC Workflowを�
 生成したWeb/Lambda Artifact・checksum・SBOMを保護されたDeploy jobが利用する構成にしました。
 LUN-014ではBLOCKED/UNVERIFIED Source参照、期限切れSource/Evidence、未登録Source Host、
 Production Route SourceRef欠落、MANUAL_LINK_ONLYとTierの不一致を`asOf`基準で遮断するValidatorと契約テストを追加しました。
+LUN-015では検証済みSeedから`catalogVersion`、`schemaVersion`、`sourceChecksum`、都市別統計を
+注入したcanonical Projectionと最終SHA-256 checksumを生成し、公開ProjectionからSource内部の審査メモを除外します。
+合成Fixtureはテストでのみ許可し、Production Projectionでは拒否します。
 Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。
 実AWS Plan、OIDC AssumeRole、Artifactアップロード、実Lambda/API Gateway統合・配信、
 運用Alarmの受信検証は未実行です。
@@ -109,9 +112,9 @@ Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGit
 |---|---|
 | 会社形式の要件定義 | v1.0 BASELINED |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
-| アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate強化を実装、実AWS適用は未実行 |
+| アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC Workflow、LUN-014 Source Governance Gate、LUN-015決定論的Projection Buildを実装、実AWS適用は未実行 |
 | 実データ150～250件のCatalog | 未収集、Source承認が必要 |
-| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・50テスト・ブラウザE2E 3件・build・catalog:validate・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Planは未実行 |
+| テスト・ビルド | LUN-001~015 Gate基準のformat・lint・typecheck・52テスト・ブラウザE2E 3件・build・catalog:validate・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Planは未実行 |
 | AWSリソース・公開URL | なし |
 | 実測性能・可用性・ユーザー指標 | なし |
 
@@ -130,7 +133,7 @@ Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGit
 
 ## ローカル実行とデプロイ
 
-LUN-001~013により、Vite開発サーバーと次のローカル検証コマンドを提供します。Node.js
+LUN-001~015により、Vite開発サーバーと次のローカル検証コマンドを提供します。Node.js
 24 LTS系(`>=24.18.0 <25`)とpnpm 11(`11.19.0`)を使用します。
 
 ```text
@@ -157,7 +160,7 @@ AWSアカウント・Budget・OIDC・Source Gateの確認前にProduction手順�
 
 ## ロードマップ
 
-1. LUN-001~014 TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Web・Terraform・CIとSource Governance Gateの実装・検証を完了
+1. LUN-001~015 TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP API・Web・Terraform・CI、Source Governance GateとProjection Buildの実装・検証を完了
 2. 承認済みSourceで東京・ソウル合計150件以上のPlaceを手動審査
 3. ユーザー承認後のAWS配信・Smoke・Rollback検証
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価

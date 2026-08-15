@@ -10,8 +10,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 |---|---|
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate 강화 완료 |
-| 로컬 검증 | format, lint, typecheck, 50 tests, browser E2E 3건, build, catalog validation, audit 완료 |
+| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate 강화, LUN-015 결정론적 Projection Build 완료 |
+| 로컬 검증 | format, lint, typecheck, 52 tests, browser E2E 3건, build, catalog validation, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -43,8 +43,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 다음 단계
 
-다음 설계 순서의 구현 단위는 LUN-014 허용 Source 기반 공개 Catalog 검수다.
-이번 단계에서는 실제 Source를 반입하지 않고 Source Governance Gate만 강화했다.
+다음 설계 순서의 구현 단위는 승인된 Source 기반 공개 Catalog 검수다.
+이번 단계에서는 실제 Source를 반입하지 않고 검증된 Seed의 Projection Build만 구현했다.
 사용자 지시에 따라 실제 Source 반입·커뮤니티 크롤링·유료 Provider 활성화는 승인 전
 시작하지 않으며, AWS 리소스 생성과 `terraform apply`도 실행하지 않는다.
 
@@ -75,6 +75,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Source `nextReviewAt`, Evidence URL Host allowlist와 Production Route `sourceRefs`를 검증한다.
 - `catalog:validate` CLI가 `--root`, `--production`, `--as-of`를 받아 승인 PR의 Seed와 checksum을 재현한다.
 - 실제 Source·Catalog 파일은 추가하지 않았으며, 150개 공개 Catalog 검수는 승인 대기다.
+
+### LUN-015 구현 결과
+
+- `buildProjection`이 Seed validation을 먼저 실행한 뒤 canonical `metadata`, `places`, `evidence`, `routes` Projection을 생성한다.
+- Projection metadata에 `catalogVersion`, `schemaVersion`, `generatedAt`, `sourceChecksum`, 도시별 통계, 검수자와 release notes를 기록하고 최종 SHA-256 checksum을 계산한다.
+- 공개 Projection에는 Source 원본과 내부 `reviewNotes`를 포함하지 않는다.
+- 동일한 Seed와 고정 옵션의 결과가 동일한지, 도시별 Place·Evidence 통계가 맞는지, Production 모드에서 합성 Fixture가 거부되는지를 테스트했다.
+- 실제 Source 파일, Projection 게시, AWS 업로드와 DynamoDB 반입은 실행하지 않았다.
 
 ### LUN-012 구현 전 계약
 

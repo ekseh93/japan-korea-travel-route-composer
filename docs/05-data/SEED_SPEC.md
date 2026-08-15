@@ -265,6 +265,13 @@ Public MVP Matrix는 [Domain Catalog](DOMAIN_CATALOG.md)의 같은 도시 인접
 
 Generated Projection은 사람이 직접 편집하지 않는다.
 
+`packages/catalog-tooling/src/projection.ts`의 `buildProjection`은 위 검증을 통과한
+Seed에서 `metadata`, `places`, `evidence`, `routes`를 생성한다. `metadata`에는
+`catalogVersion`, `schemaVersion`, `generatedAt`, `sourceChecksum`, 도시별 통계,
+검수자와 release notes가 포함되며, Projection 자체에도 SHA-256 checksum을 계산한다.
+Source 원본과 내부 `reviewNotes`는 공개 Projection에 포함하지 않는다. `production: true`
+에서는 합성 Fixture를 거부하며, 현재 구현은 파일 게시나 AWS 업로드를 수행하지 않는다.
+
 검수 PR은 다음 CLI로 대상 Seed, Production Gate와 검수 기준일을 명시한다.
 
 ```text
@@ -297,8 +304,8 @@ pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
 
 ## 10. 인수 조건
 
-- [ ] 같은 Seed에서 canonical Projection checksum이 동일하다.
-- [ ] Fixture가 Production Build에 들어가면 반드시 실패한다.
+- [x] 같은 Seed에서 canonical Projection checksum이 동일하다.
+- [x] Fixture가 Production Build에 들어가면 반드시 실패한다.
 - [x] BLOCKED·UNVERIFIED Source와 만료 Evidence가 게시되지 않는다.
 - [x] Review text·사용자명·사진·HTML·Base64 Pattern이 차단된다.
 - [ ] 모든 Place와 Evidence 파일명이 내부 ID와 일치한다.
