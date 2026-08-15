@@ -1,8 +1,10 @@
 # Infrastructure
 
 Terraform code is implemented for static hosting, HTTP API, Lambda, DynamoDB,
-logs, budget alerts, and the production cost/security boundaries. No Terraform
-apply or AWS resource creation has been run in this repository.
+logs, budget alerts, the production cost/security boundaries, and the Bootstrap-
+managed versioned Lambda artifact bucket. The LUN-013 workflow builds Web/Lambda
+artifacts once and deploys only the verified artifact. No Terraform apply or AWS
+resource creation has been run in this repository.
 
 Use an approved short-lived AWS session only after reviewing the plan. Copy the
 example backend and variables files locally; never commit the resulting files.

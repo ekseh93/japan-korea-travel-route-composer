@@ -3,10 +3,10 @@
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY  
-> 구현 상태: LUN-001~012 workspace·계약·Domain·합성 Fixture·권리 검증·Repository·Routing·Compose·HTTP API·Web·장애 축소 지도·Terraform 비용/관측성 제어 구현; AWS 리소스 검증·배포 미실행
+> 구현 상태: LUN-001~013 workspace·계약·Domain·합성 Fixture·권리 검증·Repository·Routing·Compose·HTTP API·Web·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow 구현; AWS 리소스 검증·배포 미실행
 > 공개 URL·사용자 지표: 없음  
-> LUN-011 로컬 검증: format·lint·typecheck·40개 테스트·브라우저 E2E 3건·build·catalog:validate·frozen install·의존성 감사·Terraform fmt/validate·TFLint 통과 (2026-08-15)
-> GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업 통과 ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139), 2026-08-15)
+> LUN-013 검증: format·lint·typecheck·40개 테스트·브라우저 E2E 3건·build 통과; catalog:validate·frozen install·의존성 감사와 Terraform fmt/validate·TFLint·Trivy는 GitHub CI에서 통과 (2026-08-15)
+> GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업 통과 ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863107004), 2026-08-15)
 
 ## 프로젝트 개요
 
@@ -95,8 +95,11 @@ Zone Matrix·Haversine·fallback Routing Adapter와 실패 계약 테스트, LUN
 후보 점수·Zone 제한·Beam Search·시간 편성·Must/Exclude·우천 대체, LUN-009의 순수
 HTTP Handler와 계약 기반 오류 매핑, LUN-010의 반응형 입력·결과·출처 Web UI, LUN-011의
 MapLibre/OpenFreeMap 선택 지도와 타일 장애 축소를 구현·실행했습니다.
-Terraform/CI workflow 코드를 작성했고 Terraform fmt/validate·TFLint·Trivy는 GitHub CI에서 실행했습니다.
-실제 AWS Plan, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
+Terraform 비용·관측성 제어와 LUN-013 Build once·OIDC Workflow 코드를 작성했고, 동일
+Commit에서 생성한 Web/Lambda Artifact·checksum·SBOM을 보호된 Deploy job이 사용하도록
+구성했습니다. Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
+GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact 업로드,
+Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
 
 ## 현재 상태
 
@@ -104,9 +107,9 @@ Terraform/CI workflow 코드를 작성했고 Terraform fmt/validate·TFLint·Tri
 |---|---|
 | 회사형 요건정의 | v1.0 BASELINED |
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료 |
-| 애플리케이션·인프라 코드 | LUN-001~012 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어 구현; 실제 AWS 적용은 미실행 |
+| 애플리케이션·인프라 코드 | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow 구현; 실제 AWS 적용은 미실행 |
 | 실제 150~250개 Catalog | 미수집, Source 승인 필요 |
-| 테스트·빌드 | LUN-001~012 format·lint·typecheck·40개 테스트·브라우저 E2E 3건·build·catalog:validate·frozen install·의존성 감사·Terraform fmt/validate·TFLint·Trivy 실행; 실제 Plan은 미실행 |
+| 테스트·빌드 | LUN-001~013 format·lint·typecheck·40개 테스트·브라우저 E2E 3건·build·catalog:validate·frozen install·의존성 감사·Terraform fmt/validate·TFLint·Trivy 실행; 실제 Plan은 미실행 |
 | AWS 리소스·배포 URL | 없음 |
 | 실제 성능·가용성·사용자 지표 | 없음 |
 
@@ -125,7 +128,7 @@ Terraform/CI workflow 코드를 작성했고 Terraform fmt/validate·TFLint·Tri
 
 ## 로컬 실행과 배포
 
-LUN-001~011 기준으로 Web의 Vite 개발 서버와 다음 로컬 검증 명령을 제공합니다. Node.js
+LUN-001~013 기준으로 Web의 Vite 개발 서버와 다음 로컬 검증 명령을 제공합니다. Node.js
 24 LTS 계열(`>=24.18.0 <25`)과 pnpm 11(`11.19.0`)을 사용합니다.
 
 ```text
@@ -151,11 +154,10 @@ AWS 계정·Budget·OIDC·Source Gate를 확인하기 전에는 Production 배�
 
 ## 로드맵
 
-1. LUN-001~012 TypeScript 모노레포·품질 기반·실행 계약·Domain·합성 Fixture·권리 검증기·Repository·Routing·Compose·HTTP API·Web·장애 축소 지도·Terraform 비용/관측성 제어 구현 및 검증 완료
-2. Trivy를 포함한 Terraform security scan·plan과 OIDC CI/CD 정적 검증
-3. 허용 Source로 도쿄·서울 최소 150개 Place 검수
-4. 사용자 승인 후 AWS 배포·Smoke·Rollback 검증
-5. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가
+1. LUN-001~013 TypeScript 모노레포·품질 기반·실행 계약·Domain·합성 Fixture·권리 검증기·Repository·Routing·Compose·HTTP API·Web·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow 구현 및 검증 완료
+2. 허용 Source로 도쿄·서울 최소 150개 Place 검수
+3. 사용자 승인 후 AWS 배포·Smoke·Rollback 검증
+4. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가
 
 ## 라이선스와 목적
 

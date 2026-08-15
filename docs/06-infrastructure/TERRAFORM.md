@@ -1,6 +1,6 @@
 # Terraform 전략
 
-> 상태: 설계 승인, LUN-012 Terraform 코드 구현·GitHub 정적 검증 완료, AWS Apply 미실행
+> 상태: 설계 승인, LUN-012 Terraform 및 LUN-013 Bootstrap/Artifact 연결 코드 구현·GitHub 정적 검증 완료, AWS Apply 미실행
 > 기준일: 2026-08-15  
 > 목표: 모든 AWS 인프라를 코드로 재현하고 Console Drift를 금지
 
@@ -177,7 +177,15 @@ Terraform 관리 대상으로 켠다. Monitor와 Email Subscription은 Budget을
 - API 5xx, Lambda Error·Duration·Throttle, Catalog DynamoDB Throttle 기본 Alarm을 SNS email 경로에 연결한다.
 - Budget은 5 USD 기준 실제 비용 20%와 예측 비용 100% 알림을 유지한다. Budget과 Alarm은 결제를 강제로 차단하지 않는다.
 - CloudFront는 `PriceClass_200`, Web S3의 non-current version은 30일 후 정리한다.
-- Lambda artifact bucket은 Bootstrap State가 관리하고, zip 생성과 Build once 연결은 LUN-013에서 구현한다.
+- Lambda artifact bucket은 Bootstrap State가 관리한다. LUN-013 Workflow는 Build job에서 Lambda zip·Web dist·checksum·SBOM을 한 번 생성하고, 보호된 Deploy job에서 검증 후 사용한다.
+
+## 12.2 LUN-013 구현 범위
+
+- Bootstrap에 versioned Lambda artifact bucket, TLS-only 정책, non-current version 30일 정리를 추가했다.
+- Deploy job은 Build job의 30일 보존 Artifact를 다운로드하고 checksum·SBOM을 검증한 뒤, 동일 SHA 경로로 Lambda zip을 업로드한다.
+- Web의 API endpoint는 배포 시 생성하는 `public/config.js`로 주입해 Web 재빌드 없이 Terraform 출력과 연결한다.
+- Docker Terraform 실행에는 OIDC 임시 자격 증명을 명시적으로 전달하고, Fork Repository에서는 Deploy job이 실행되지 않는다.
+- 실제 OIDC AssumeRole, artifact 업로드, Terraform Plan/Apply, Smoke는 사용자 승인 전 실행하지 않았다.
 
 ## 13. G6 Terraform Gate
 

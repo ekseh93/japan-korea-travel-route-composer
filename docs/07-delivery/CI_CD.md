@@ -1,10 +1,10 @@
 # GitHub Actions CI/CD 설계
 
-> 상태: 설계 승인, LUN-013 Build once·OIDC Workflow 코드 구현 진행 중; GitHub CI 실행 완료, AWS OIDC/배포 미실행
+> 상태: 설계 승인, LUN-013 Build once·OIDC Workflow 코드 구현 및 GitHub CI 정적 검증 완료; AWS OIDC/배포 미실행
 > 기준일: 2026-08-15  
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
 
-현재 확인된 GitHub CI 실행은 [31861912139](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31861912139)이며,
+현재 확인된 GitHub CI 실행은 [31863107004](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863107004)이며,
 `quality`, `browser-e2e`, `terraform-static` 작업이 모두 통과했다. 이 결과는 AWS
 자격 증명, Terraform Plan/Apply 또는 Production 배포를 검증한 결과가 아니다.
 
@@ -167,4 +167,5 @@ Rollback에 데이터 복구 작업이 필요하지 않아야 한다.
 - [x] Catalog·API·Web 배포 순서와 실패·Rollback 책임이 정의됐다.
 - [x] Workflow 성공과 실제 Smoke 성공을 구분한다.
 
-판정: 설계 PASS. Workflow 파일과 OIDC 실행 증거는 Luna가 생성한다.
+판정: 설계 PASS_WITH_GATE. Workflow 파일과 정적 검증은 완료했지만 실제 OIDC AssumeRole,
+Artifact 업로드, Terraform Plan/Apply와 Smoke 실행 증거는 아직 없다.
