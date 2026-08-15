@@ -105,6 +105,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `data/catalog-v1/NOTICE.md`와 Web 지도에 OSM Attribution을 추가했다.
 - `pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16` 및 Production Projection Build를 실행했다.
 
+### LUN-015 AWS 사전 검증 결과
+
+- GitHub CLI는 `ekseh93` 계정으로 인증되어 있고 Repository push와 Actions 조회가 가능하다.
+- 현재 Repository Variables와 `terraform-plan`, `production`, `production-teardown` Environment가 없다.
+- 로컬에는 AWS CLI·Terraform·TFLint와 AWS 환경변수·`%USERPROFILE%\\.aws` 자격 증명 파일이 없다.
+- 따라서 AWS Account ID 조회, Bootstrap State/OIDC 생성, Terraform Plan/Apply, 배포 Smoke는 실행하지 않았다.
+- AWS Console 브라우저 로그인은 셸 자격 증명을 자동으로 만들지 않으므로 AWS SSO 또는 승인된 단기 OIDC 경로를 사용해야 한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

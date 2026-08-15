@@ -1,8 +1,30 @@
 # 인프라 운영 Runbook
 
 > 상태: 설계 승인, Terraform 정적 검증 완료, AWS 운영 절차 미검증  
-> 기준일: 2026-08-15  
+> 기준일: 2026-08-16
 > 범위: 배포 전 확인, 비상 중지, Rollback, Production·Account 철거
+
+## 0. Local AWS Preflight
+
+AWS Console의 브라우저 로그인은 PowerShell·GitHub Actions의 셸 자격 증명을 만들지 않는다.
+로컬 검증과 계정 식별에는 AWS CLI v2, Terraform 1.9.8, TFLint 0.55.1이 필요하다.
+
+권장 인증은 AWS IAM Identity Center(SSO) 또는 승인된 단기 세션이다. 장기 Access Key를
+발급하거나 `.env`, GitHub Secret, 로컬 파일에 저장하지 않는다.
+
+```powershell
+aws configure sso --profile portfolio
+aws sso login --profile portfolio
+$env:AWS_PROFILE = "portfolio"
+aws sts get-caller-identity
+aws configure get region
+terraform version
+tflint --version
+```
+
+`aws sts get-caller-identity`로 Account ID와 호출 주체를 확인하기 전에는 Bootstrap State,
+OIDC Role, Budget, Terraform Plan/Apply를 실행하지 않는다. GitHub Actions 배포는 별도
+OIDC Role과 Protected Environment가 필요하며 로컬 AWS Profile을 사용하지 않는다.
 
 ## 1. Do Not Deploy Gate
 
