@@ -6,7 +6,7 @@
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate plus Projection Build tooling implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
 > LUN-014 verification: format, lint, typecheck, 57 Vitest tests, 4 smoke contract tests, 3 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
-> GitHub CI verification: quality, browser-e2e, terraform-static, and Smoke contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31905149490), 2026-08-16)
+> GitHub CI verification: quality, browser-e2e, terraform-static, and Smoke contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31906880059), 2026-08-16)
 
 ## Project Overview
 

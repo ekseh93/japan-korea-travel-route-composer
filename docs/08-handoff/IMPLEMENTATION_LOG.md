@@ -42,6 +42,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `c219f5c` | LUN-014 재현 가능한 catalog validation CLI와 옵션 계약 테스트 | GitHub CI 성공 |
 | `437cf05` | LUN-014 결정론적 Catalog Projection Build와 계약 테스트 | GitHub CI 성공 |
 | `44517af` | 배포 전 Smoke 계약 명령·재시도 테스트와 CI 단계 | GitHub CI 성공 |
+| `550ebb2` | 공개 Place/Evidence 계약과 DynamoDB Adapter를 공유하는 Projection 변환 | GitHub CI 성공 |
 
 ## 다음 단계
 
