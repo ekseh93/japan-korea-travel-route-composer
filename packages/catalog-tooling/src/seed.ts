@@ -153,8 +153,16 @@ export type ValidationReport = {
   readonly sourceCount: number;
   readonly evidenceCount: number;
   readonly placeCount: number;
+  readonly publishedPlaceCount: number;
+  readonly publishedPlaceCountByCity: Readonly<Record<"TOKYO" | "SEOUL", number>>;
   readonly routeCount: number;
 };
+
+export const publicCatalogSizePolicy = {
+  minPublishedPlacesTotal: 150,
+  minPublishedPlacesPerCity: 75,
+  maxPublishedPlacesTotal: 250,
+} as const;
 
 export type SeedValidationOptions = {
   readonly production: boolean;
@@ -434,6 +442,41 @@ export function validateSeedDirectory(
     }
   }
 
+  const publishedPlaceCountByCity = {
+    TOKYO: places.filter(
+      (place) => place.cityId === "TOKYO" && place.publicationStatus === "PUBLISHED",
+    ).length,
+    SEOUL: places.filter(
+      (place) => place.cityId === "SEOUL" && place.publicationStatus === "PUBLISHED",
+    ).length,
+  } as const;
+  const publishedPlaceCount = publishedPlaceCountByCity.TOKYO + publishedPlaceCountByCity.SEOUL;
+  if (options.production) {
+    if (publishedPlaceCount < publicCatalogSizePolicy.minPublishedPlacesTotal) {
+      issues.push({
+        code: "CATALOG_MIN_PLACES",
+        file: "catalog",
+        message: `Production catalog requires at least ${publicCatalogSizePolicy.minPublishedPlacesTotal} published Places.`,
+      });
+    }
+    for (const [city, count] of Object.entries(publishedPlaceCountByCity)) {
+      if (count < publicCatalogSizePolicy.minPublishedPlacesPerCity) {
+        issues.push({
+          code: "CITY_MIN_PLACES",
+          file: `catalog/${city.toLowerCase()}`,
+          message: `${city} requires at least ${publicCatalogSizePolicy.minPublishedPlacesPerCity} published Places.`,
+        });
+      }
+    }
+    if (publishedPlaceCount > publicCatalogSizePolicy.maxPublishedPlacesTotal) {
+      issues.push({
+        code: "CATALOG_MAX_PLACES",
+        file: "catalog",
+        message: `Production catalog cannot exceed ${publicCatalogSizePolicy.maxPublishedPlacesTotal} published Places.`,
+      });
+    }
+  }
+
   for (const city of ["tokyo", "seoul"]) {
     const file = join(root, "routes", `${city}.json`);
     const matrix = parseWithSchema(routeMatrixSchema, readJson(file), relative(root, file), issues);
@@ -507,6 +550,8 @@ export function validateSeedDirectory(
     sourceCount: sourceById.size,
     evidenceCount: evidenceById.size,
     placeCount: places.length,
+    publishedPlaceCount,
+    publishedPlaceCountByCity,
     routeCount,
   };
 }

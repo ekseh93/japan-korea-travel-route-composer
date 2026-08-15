@@ -258,10 +258,11 @@ Public MVP Matrix는 [Domain Catalog](DOMAIN_CATALOG.md)의 같은 도시 인접
 3. Evidence가 Source allowedFields와 Claim을 위반하지 않는지 확인한다.
 4. PUBLISHED Place의 Tier A/B, 이름·좌표·시간·Zone·duration을 확인한다.
 5. 도시 Current 후보의 Route Matrix Coverage를 확인한다.
-6. 정렬된 canonical JSON을 만들고 SHA-256 checksum을 계산한다.
-7. `schemaVersion`, `catalogVersion`, `generatedAt`, 통계를 주입한다.
-8. PR에서 Projection diff와 Source 만료 보고서를 검토한다.
-9. 새 Version 전체 게시·checksum 확인 후 Current pointer를 조건부 변경한다.
+6. Production에서는 총 150~250개 PUBLISHED Place와 도시별 최소 75개를 확인한다.
+7. 정렬된 canonical JSON을 만들고 SHA-256 checksum을 계산한다.
+8. `schemaVersion`, `catalogVersion`, `generatedAt`, 통계를 주입한다.
+9. PR에서 Projection diff와 Source 만료 보고서를 검토한다.
+10. 새 Version 전체 게시·checksum 확인 후 Current pointer를 조건부 변경한다.
 
 Generated Projection은 사람이 직접 편집하지 않는다.
 
@@ -306,12 +307,16 @@ Artifact로 기록하며, 기본 출력은 합성 Fixture용 `packages/catalog-t
 - ROUTE_MATRIX_INCOMPLETE
 - ROUTE_SOURCE_REQUIRED
 - FIXTURE_IN_PRODUCTION
+- CATALOG_MIN_PLACES
+- CITY_MIN_PLACES
+- CATALOG_MAX_PLACES
 - DUPLICATE_STABLE_ID
 
 ## 10. 인수 조건
 
 - [x] 같은 Seed에서 canonical Projection checksum이 동일하다.
 - [x] Fixture가 Production Build에 들어가면 반드시 실패한다.
+- [x] Production Catalog가 총 150~250개 및 도시별 최소 75개 조건을 만족하지 않으면 실패한다.
 - [x] BLOCKED·UNVERIFIED Source와 만료 Evidence가 게시되지 않는다.
 - [x] Review text·사용자명·사진·HTML·Base64 Pattern이 차단된다.
 - [ ] 모든 Place와 Evidence 파일명이 내부 ID와 일치한다.

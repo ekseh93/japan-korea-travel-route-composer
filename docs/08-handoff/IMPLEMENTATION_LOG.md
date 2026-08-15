@@ -44,6 +44,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `44517af` | 배포 전 Smoke 계약 명령·재시도 테스트와 CI 단계 | GitHub CI 성공 |
 | `550ebb2` | 공개 Place/Evidence 계약과 DynamoDB Adapter를 공유하는 Projection 변환 | GitHub CI 성공 |
 
+### LUN-014 Catalog 규모 Gate 구현 결과
+
+- Production Seed 검증이 PUBLISHED Place 총 150~250개, 도쿄·서울 각 75개 이상 조건을 검사한다.
+- Validation report에 전체·도시별 PUBLISHED Place 수를 포함해 승인 PR의 규모 증거를 남긴다.
+- 합성 Fixture는 기존 권리 Gate와 새 규모 Gate 모두에서 Production 검증을 통과하지 못한다.
+- 실제 Source·Catalog는 추가하지 않았으며, 실제 150개 Catalog 검수는 별도 승인 대기다.
+
 ## 다음 단계
 
 다음 설계 순서의 구현 단위는 승인된 Source 기반 공개 Catalog 검수다.

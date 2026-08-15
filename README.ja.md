@@ -99,7 +99,7 @@ Terraformコスト・可観測性制御とLUN-013 Build once・OIDC Workflowを�
 生成したWeb/Lambda Artifact・checksum・SBOMを保護されたDeploy jobが利用する構成にしました。
 LUN-014ではBLOCKED/UNVERIFIED Source参照、期限切れSource/Evidence、未登録Source Host、
 Production Route SourceRef欠落、MANUAL_LINK_ONLYとTierの不一致を`asOf`基準で遮断するValidatorと契約テストを追加しました。
-LUN-014のProjection Build toolingでは検証済みSeedから`catalogVersion`、`schemaVersion`、`sourceChecksum`、都市別統計を
+LUN-014のSource GateはProduction Catalogの合計150～250件・都市別最低75件の規模も検証し、Projection Build toolingでは検証済みSeedから`catalogVersion`、`schemaVersion`、`sourceChecksum`、都市別統計を
 注入したcanonical Projectionと最終SHA-256 checksumを生成し、Seedレコードを共有`publishedPlaceSchema`と公開Evidence形式へ変換します。
 公開ProjectionにはSource内部の審査メモと権利判断フィールドを含めず、runtimeに必要なprovider・attribution・確認日だけを残します。
 合成Fixtureはテストでのみ許可し、Production Projectionでは拒否します。

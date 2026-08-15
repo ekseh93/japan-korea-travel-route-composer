@@ -14,6 +14,8 @@ describe("seed schema and rights gate", () => {
     expect(report.sourceCount).toBe(1);
     expect(report.evidenceCount).toBe(12);
     expect(report.placeCount).toBe(12);
+    expect(report.publishedPlaceCount).toBe(12);
+    expect(report.publishedPlaceCountByCity).toEqual({ TOKYO: 6, SEOUL: 6 });
     expect(report.routeCount).toBe(24);
     expect(report.checksum).toMatch(/^[a-f0-9]{64}$/);
   });
@@ -30,6 +32,12 @@ describe("seed schema and rights gate", () => {
         (error as SeedValidationError).issues.some(
           (issue) => issue.code === "FIXTURE_IN_PRODUCTION",
         ),
+      ).toBe(true);
+      expect(
+        (error as SeedValidationError).issues.some((issue) => issue.code === "CATALOG_MIN_PLACES"),
+      ).toBe(true);
+      expect(
+        (error as SeedValidationError).issues.some((issue) => issue.code === "CITY_MIN_PLACES"),
       ).toBe(true);
     }
   });

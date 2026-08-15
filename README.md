@@ -100,7 +100,8 @@ Commit에서 생성한 Web/Lambda Artifact·checksum·SBOM을 보호된 Deploy j
 구성했습니다. LUN-014는 BLOCKED/UNVERIFIED Source 참조, 만료 Source/Evidence,
 미등록 Source Host, Production Route SourceRef 누락, MANUAL_LINK_ONLY와 Tier 불일치를
 `asOf` 기준으로 차단하는 Validator와 계약 테스트를 추가했습니다.
-LUN-014의 Projection Build tooling은 검증된 Seed에서 `catalogVersion`, `schemaVersion`, `sourceChecksum`,
+LUN-014의 Source Gate는 Production Catalog의 총 150~250개·도시별 최소 75개 규모도 검사하며,
+Projection Build tooling은 검증된 Seed에서 `catalogVersion`, `schemaVersion`, `sourceChecksum`,
 도시별 통계를 주입한 canonical Projection과 최종 SHA-256 checksum을 생성하며,
 Seed 원형을 `publishedPlaceSchema`와 공개 Evidence 형태로 변환합니다. 공개 Projection에서
 Source 내부 검수 메모·권리 판단 필드는 제외하고 provider·attribution·확인일만 남깁니다.
