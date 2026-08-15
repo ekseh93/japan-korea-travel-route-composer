@@ -52,6 +52,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `ea1e3b4` | 불변 Catalog CI 검증 결과와 문서 동기화 | GitHub CI 성공 |
 | `2f8ae02` | 보호된 Catalog rollback Workflow와 Rollback adapter 구현 | GitHub CI 성공 |
 | `8f82130` | Terraform Plan·Deploy·Rollback·Teardown의 원격 State backend 계약 고정 | GitHub CI 성공 (`31910331173`) |
+| `b52fa63` | Node 24-compatible actions/checkout v5.0.1 고정과 Workflow 계약 보강 | GitHub CI 성공 (`31911537593`) |
 
 ### LUN-014 Catalog Rollback 구현 결과
 
