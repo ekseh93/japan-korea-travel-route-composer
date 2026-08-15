@@ -1,0 +1,411 @@
+{
+  "cityId": "TOKYO",
+  "routeMatrixVersion": "route-osm-centroid-2026-08-16",
+  "checkedAt": "2026-08-16",
+  "methodology": "CURATED_ZONE_MATRIX_FROM_OSM_COORDINATES: directional estimates are conservative editorial bounds derived from zone centroids; they are not provider travel times.",
+  "sourceRefs": ["geo_osm"],
+  "zones": [
+    "TOKYO_SHIBUYA_HARAJUKU",
+    "TOKYO_SHINJUKU",
+    "TOKYO_GINZA_MARUNOUCHI",
+    "TOKYO_ASAKUSA_UENO",
+    "TOKYO_AKIHABARA_KANDA",
+    "TOKYO_ROPPONGI_AKASAKA",
+    "TOKYO_ODAIBA_TOYOSU",
+    "TOKYO_NAKAMEGURO_DAIKANYAMA"
+  ],
+  "routes": [
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_SHINJUKU",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ASAKUSA_UENO",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_AKIHABARA_KANDA",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "destinationZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_SHIBUYA_HARAJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_SHINJUKU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 25,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_GINZA_MARUNOUCHI",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 30,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_ASAKUSA_UENO",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 40,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_AKIHABARA_KANDA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_ROPPONGI_AKASAKA",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 20,
+      "confidence": "LOW"
+    },
+    {
+      "originZoneId": "TOKYO_NAKAMEGURO_DAIKANYAMA",
+      "destinationZoneId": "TOKYO_ODAIBA_TOYOSU",
+      "mode": "TRANSIT_ESTIMATE",
+      "durationMinutes": 35,
+      "confidence": "LOW"
+    }
+  ]
+}

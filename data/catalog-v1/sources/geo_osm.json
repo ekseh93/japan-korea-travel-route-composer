@@ -1,0 +1,25 @@
+{
+  "sourceId": "geo_osm",
+  "providerName": "OpenStreetMap contributors",
+  "baseUrl": "https://www.openstreetmap.org",
+  "termsUrl": "https://www.openstreetmap.org/copyright",
+  "robotsUrl": "https://www.openstreetmap.org/robots.txt",
+  "licenseId": "ODbL-1.0",
+  "collectionMode": "API",
+  "allowedFields": ["NAME", "COORDINATES", "CATEGORY"],
+  "forbiddenFields": [
+    "REVIEW_TEXT",
+    "USER_PROFILE",
+    "USER_NAME",
+    "PHOTO_BINARY",
+    "RATING_AGGREGATE",
+    "HTML_SNAPSHOT",
+    "SEARCH_SNIPPET"
+  ],
+  "attributionTemplate": "© OpenStreetMap contributors; data available under the Open Database License (ODbL)",
+  "reviewStatus": "APPROVED_OPEN",
+  "checkedAt": "2026-08-16",
+  "nextReviewAt": "2026-11-16",
+  "removalContact": "https://www.openstreetmap.org/fixthemap",
+  "reviewNotes": "Checked 2026-08-16. Queried the public Overpass API for named tourism, historic, leisure, amenity, and shop objects within the defined Tokyo and Seoul bounding boxes. Only name, coordinates, and OSM tag-derived category are imported. Reviews, photos, user data, HTML, snippets, opening hours, prices, and accessibility claims are excluded. Attribution and ODbL share-alike obligations are recorded in data/catalog-v1/NOTICE.md."
+}

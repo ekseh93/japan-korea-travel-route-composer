@@ -1,6 +1,6 @@
 # Source Registry
 
-> 상태: 초기 정책 검토 완료, 실제 데이터 반입 전 항목별 재검증 필요  
+> 상태: OSM 실제 반입 검토 완료, 다른 Source는 실제 사용 전 항목별 재검증 필요
 > 기준일: 2026-08-15  
 > 원칙: UNVERIFIED는 BLOCKED와 동일하게 취급
 
@@ -10,7 +10,7 @@
 |---|---|---|---|---|---|
 | KR-TOURAPI | 한국관광공사 TourAPI | 서울 장소 기본 사실 | CONDITIONAL | API만 | 승인된 응답 필드·표시 조건 범위 |
 | JP-TOKYO-OD | 도쿄도 오픈데이터 | 도쿄 관광 기초 데이터 | APPROVED_OPEN | Dataset download | 해당 Dataset의 CC BY 범위 |
-| GEO-OSM | OpenStreetMap | 좌표·지리 파생 데이터 | CONDITIONAL | 라이선스 준수 시 | ODbL·Attribution 범위 |
+| GEO-OSM | OpenStreetMap | 이름·좌표·OSM 태그 분류 | APPROVED_OPEN | 제한된 API 반입·ODbL 준수 | ODbL·Attribution·Share-Alike 범위 |
 | MAP-OFM | OpenFreeMap | 지도 타일 표시 | CONDITIONAL | Tile 호출 | 지도 표시, Attribution, SLA 없음 |
 | KR-KAKAO | Kakao Maps API | 서울 선택적 경로 | CONDITIONAL | API만 | 앱·쿼터·표시 조건 충족 시 |
 | GLOBAL-GOOGLE | Google Routes | 선택적 경로 | CONDITIONAL | API만 | Billing·약관·표시 조건 충족 시 |
@@ -69,11 +69,14 @@ Production에 게시하지 않는다. Source별 `removalContact`는 단순 제�
 
 - 제공자: OpenStreetMap contributors
 - 근거: [Copyright and License](https://www.openstreetmap.org/copyright)
-- 확인 내용: ODbL, Attribution 및 파생 데이터베이스 의무가 존재한다.
-- 사용 범위: 지도 기초 데이터 또는 좌표를 사용할 때 별도 NOTICE와 귀속 표시
-- 주의: 외부 데이터와 섞어 파생 Database를 배포할 경우 Share-Alike 범위를
-  검토한다. 라이선스 검토 없이 Seed 좌표를 대량 반입하지 않는다.
-- 다음 검토: 좌표 Pipeline 결정 전
+- 확인일: 2026-08-16
+- 확인 내용: ODbL, Attribution 및 파생 Database의 Share-Alike 의무를 확인했다.
+- 실제 반입 범위: 공개 Overpass API로 도쿄·서울의 이름이 있는 tourism, historic,
+  leisure, amenity, shop 객체에서 이름·좌표·OSM 태그 기반 분류만 반입했다.
+- 제외 범위: 리뷰, 사진, 사용자 정보, HTML, 검색 스니펫, 영업시간, 가격, 접근성 주장
+- 사용 조건: [Catalog NOTICE](../../data/catalog-v1/NOTICE.md)와 Web 지도에 OSM Attribution을
+  표시하며, ODbL 적용 범위와 파생 Database 의무를 유지한다.
+- 다음 검토: 2026-11-16 또는 OSM 반입 범위 변경 시 더 이른 날
 
 ### MAP-OFM
 
@@ -155,7 +158,7 @@ MVP Seed에는 포함하지 않으며 필요 시 Source 검토 PR을 별도로 �
 
 ## 6. 미확정 사항
 
-- 실제 초기 Place 수와 사용할 Tokyo Dataset 목록
+- 추가 Source를 사용할 경우의 Place 수와 Dataset 목록
 - TourAPI 운영계정 승인 및 필드별 이미지 조건
 - OSM 좌표 사용 시 Catalog 전체에 미치는 ODbL 범위
 - 공개 정정·삭제 연락처

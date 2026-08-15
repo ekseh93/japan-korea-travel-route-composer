@@ -1,0 +1,36 @@
+{
+  "placeId": "pl_seoul_osm_node_10685091679",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_GANGNAM",
+  "names": {
+    "en": "ESC by SMON"
+  },
+  "coordinates": {
+    "latitude": 37.50338,
+    "longitude": 127.0398273
+  },
+  "category": "CAFE_DESSERT",
+  "themeTags": ["CAFE", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "UNKNOWN",
+  "typicalDurationMinutes": 60,
+  "openingSchedule": {
+    "status": "UNKNOWN",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_osm_node_10685091679"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 cafe or dessert place ESC by SMON입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたcafe or dessert place「ESC by SMON」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "ESC by SMON is listed in OpenStreetMap as a cafe or dessert place in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

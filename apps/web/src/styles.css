@@ -254,6 +254,16 @@ button:disabled {
 .map-fallback strong {
   color: #172b2b;
 }
+.map-attribution {
+  margin: 0;
+  color: #6d827d;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+.map-attribution a {
+  color: #287b73;
+  font-weight: 800;
+}
 .map-place-list {
   display: grid;
   gap: 0.35rem;

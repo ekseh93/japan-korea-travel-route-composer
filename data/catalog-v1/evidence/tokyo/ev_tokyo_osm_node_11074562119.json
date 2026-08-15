@@ -1,0 +1,18 @@
+{
+  "evidenceId": "ev_tokyo_osm_node_11074562119",
+  "sourceId": "geo_osm",
+  "placeId": "pl_tokyo_osm_node_11074562119",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
+  "sourceUrl": "https://www.openstreetmap.org/node/11074562119",
+  "sourceTitle": "OpenStreetMap node/11074562119: ペガサス",
+  "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",
+  "checkedAt": "2026-08-16",
+  "reviewDueAt": "2026-11-16",
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 cafe or dessert place ペガサス입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたcafe or dessert place「ペガサス」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "ペガサス is listed in OpenStreetMap as a cafe or dessert place in Tokyo. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "APPROVED"
+}

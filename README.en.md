@@ -5,15 +5,17 @@
 > Status: Sol phased design complete; Luna implementation handoff READY  
 >
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
-> Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; real catalog
-> ingestion, AWS resource validation, and deployment not run
+> Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
+> catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; AWS resource
+> validation, Terraform Plan/Apply, and deployment not run
 >
 > Public URL and user metrics: none  
 >
 > LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release
 > contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build,
 > catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and
-> Trivy passed in the preceding CI (2026-08-16)
+> Trivy passed in the preceding CI; the Production Catalog validate/build and OSM Source Gate passed
+> (2026-08-16; source checksum `6d0d...6f6ea`; projection checksum `6d236...c440a`)
 >
 > GitHub CI verification: quality, browser-e2e,
 > terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and
@@ -141,9 +143,9 @@ without a chunk warning.
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                 |
 | Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                 |
-| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; AWS application not run                    |
-| Real catalog of 150-250 places                       | Not collected; source approval required                                                                                                                                                                                                                                                                                                                                                        |
-| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
+| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; AWS application not run |
+| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d...6f6ea`; projection checksum `6d236...c440a`                                                                                                                                                                                                                                                               |
+| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Production Catalog validate/build passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
 | AWS resources and deployment URL                     | None                                                                                                                                                                                                                                                                                                                                                                                           |
 | Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                           |
 
@@ -189,11 +191,12 @@ pnpm typecheck
 pnpm test
 pnpm test:e2e
 pnpm build
+pnpm catalog:import:osm
 pnpm catalog:validate
-pnpm catalog:validate --as-of 2026-08-15
-pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
+pnpm catalog:validate --as-of 2026-08-16
+pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16
 pnpm catalog:build
-pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
+pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-16 --catalog-version catalog-osm-20260816 --output release/catalog-projection.json
 pnpm workflow:verify:test
 pnpm terraform:contract:test
 pnpm smoke:test
@@ -203,13 +206,13 @@ pnpm audit --audit-level high
 
 The Web accepts city, duration, time windows, locale, pace, companion, and rain preferences, then
 displays daily visits, travel time, reasons, and Evidence links from the Compose API. Set
-`VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only and do not constitute a
-public catalog. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
+`VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only, while the pre-publication
+catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
 cost/security boundary contract tests, and 4 browser accessibility/responsive/map-degradation E2E
 tests ran, but real Lambda/API Gateway integration and deployment URL smoke verification have not
-run. Production instructions will not be added or run before the AWS account, budget, OIDC, and
-source gates are verified. The Catalog Publisher is a deployment-workflow component that requires
-the immutable artifact and AWS credentials; it has not called AWS locally.
+run. Production deployment will not run before the AWS account, budget, and OIDC are verified. The
+Catalog Publisher is a deployment-workflow component that requires the immutable artifact and AWS
+credentials; it has not called AWS locally.
 
 ## Roadmap
 
@@ -217,8 +220,8 @@ the immutable artifact and AWS credentials; it has not called AWS locally.
    contracts, domain foundation, synthetic fixtures, rights validator, repository, routing, Compose,
    HTTP API, Web adapters, Terraform, CI, Source Governance Gate, Projection Build, Catalog
    Publisher, and Rollback
-2. Manually review at least 150 places from approved Sources in Tokyo and Seoul
-3. Deploy only after user approval, then verify smoke tests and rollback
+2. Import 160 places from the approved OSM Source in Tokyo and Seoul; Production Gate verification complete
+3. Verify the AWS account, budget, and OIDC, then deploy and verify smoke tests and rollback
 4. Re-evaluate city expansion and optional route/AI adapters from real feedback
 
 ## License and Purpose
@@ -230,8 +233,8 @@ terms, licenses, and attribution requirements.
 
 ## Implementation Handoff
 
-Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. Luna may
-begin local implementation with synthetic fixtures, while AWS apply and real catalog publication
-remain blocked pending account, contact, and source-specific permission verification.
+Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. The OSM-based
+catalog and Production Projection are built, while AWS apply and public deployment remain blocked
+pending account, budget, and OIDC verification.
 
 `LUNA HANDOFF: READY`

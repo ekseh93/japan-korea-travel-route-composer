@@ -13,8 +13,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료 |
 | 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
-| 실제 Source 반입 | 미실행, 별도 승인 필요 |
-| AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
+| 실제 Source 반입 | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과 |
+| AWS 리소스·배포 | 미실행, AWS Account ID·Budget·OIDC 사전 검증 대기 |
 
 ## 커밋 기준
 
@@ -93,7 +93,16 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Production Seed 검증이 PUBLISHED Place 총 150~250개, 도쿄·서울 각 75개 이상 조건을 검사한다.
 - Validation report에 전체·도시별 PUBLISHED Place 수를 포함해 승인 PR의 규모 증거를 남긴다.
 - 합성 Fixture는 기존 권리 Gate와 새 규모 Gate 모두에서 Production 검증을 통과하지 못한다.
-- 실제 Source·Catalog는 추가하지 않았으며, 실제 150개 Catalog 검수는 별도 승인 대기다.
+- OSM Source에서 도쿄·서울 각 80개 Place를 반입해 총 160개를 구성했고, Production Gate를 통과했다.
+- Source checksum은 `6d0d...6f6ea`, Projection checksum은 `6d236...c440a`다.
+
+### LUN-015 실제 Source Catalog 반입 결과
+
+- OpenStreetMap Copyright와 ODbL 조건을 2026-08-16에 확인하고 `geo_osm` Source를 `APPROVED_OPEN`으로 기록했다.
+- 공개 Overpass API에서 이름이 있는 tourism·historic·leisure·amenity·shop 객체를 제한된 Bounding Box로 조회했다.
+- 이름·좌표·OSM 태그 기반 분류만 Seed에 저장했으며, 리뷰·사진·사용자 정보·HTML·검색 스니펫·영업시간·가격·접근성 주장은 저장하지 않았다.
+- `data/catalog-v1/NOTICE.md`와 Web 지도에 OSM Attribution을 추가했다.
+- `pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16` 및 Production Projection Build를 실행했다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
@@ -103,10 +112,9 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 다음 단계
 
-다음 설계 순서의 구현 단위는 승인된 Source 기반 공개 Catalog 검수다.
-이번 단계에서는 실제 Source를 반입하지 않고 검증된 Seed의 Projection Build와 게시 Adapter 계약만 구현했다.
-사용자 지시에 따라 실제 Source 반입·커뮤니티 크롤링·유료 Provider 활성화는 승인 전
-시작하지 않으며, AWS 리소스 생성과 `terraform apply`도 실행하지 않는다.
+다음 설계 순서의 구현 단위는 AWS Account·Budget·OIDC 사전 검증과 Bootstrap Plan이다.
+실제 Source 반입과 Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Provider 활성화는
+하지 않았다. AWS 자격 증명과 계정 경계가 확인되기 전에는 AWS 리소스 생성과 `terraform apply`를 실행하지 않는다.
 
 ### LUN-013 구현 전 계약
 

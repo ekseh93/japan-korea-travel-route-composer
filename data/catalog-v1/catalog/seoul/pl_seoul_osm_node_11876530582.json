@@ -1,0 +1,36 @@
+{
+  "placeId": "pl_seoul_osm_node_11876530582",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_GANGNAM",
+  "names": {
+    "en": "Euros Coffee Roasters"
+  },
+  "coordinates": {
+    "latitude": 37.5027775,
+    "longitude": 127.0406707
+  },
+  "category": "CAFE_DESSERT",
+  "themeTags": ["CAFE", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "UNKNOWN",
+  "typicalDurationMinutes": 60,
+  "openingSchedule": {
+    "status": "UNKNOWN",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_osm_node_11876530582"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 cafe or dessert place Euros Coffee Roasters입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたcafe or dessert place「Euros Coffee Roasters」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "Euros Coffee Roasters is listed in OpenStreetMap as a cafe or dessert place in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

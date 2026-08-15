@@ -5,14 +5,15 @@
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY  
 >
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
-> Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 Catalog 반입·AWS 리소스 검증·배포
-> 미실행
+> Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
+> 반입·Production Projection 생성 완료; AWS 리소스 검증·Terraform Plan/Apply·배포 미실행
 >
 > 공개 URL·사용자 지표: 없음  
 >
 > LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow
 > 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·의존성 감사
-> 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
+> 통과; Production Catalog validate/build와 OSM Source Gate 통과; Source checksum `6d0d...6f6ea`,
+> Projection checksum `6d236...c440a`; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
 >
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업과 Smoke contract tests·Release contract
 > tests·Workflow contract tests·Terraform contract tests 통과
@@ -102,7 +103,8 @@ Matrix·Haversine·fallback Routing Adapter와 실패 계약 테스트, LUN-008�
 작성했고, 동일 Commit에서 생성한 Web/Lambda Artifact·checksum·SBOM을 보호된 Deploy job이 사용하도록
 구성했습니다. LUN-014는 BLOCKED/UNVERIFIED Source 참조, 만료 Source/Evidence, 미등록 Source Host,
 Production Route SourceRef 누락, MANUAL_LINK_ONLY와 Tier 불일치를 `asOf` 기준으로 차단하는
-Validator와 계약 테스트를 추가했습니다. LUN-014의 Source Gate는 Production Catalog의 총
+Validator와 계약 테스트를 추가했습니다. 2026-08-16에는 OSM ODbL 정책을 확인하고 이름·좌표·태그 기반
+분류만 포함한 Tokyo·Seoul Catalog 160개를 반입했습니다. LUN-014의 Source Gate는 Production Catalog의 총
 150~250개·도시별 최소 75개 규모도 검사하며, Projection Build tooling은 검증된 Seed에서
 `catalogVersion`, `schemaVersion`, `sourceChecksum`, 도시별 통계를 주입한 canonical Projection과
 최종 SHA-256 checksum을 생성하며, Seed 원형을 `publishedPlaceSchema`와 공개 Evidence 형태로
@@ -126,9 +128,9 @@ Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보�
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 회사형 요건정의                    | v1.0 BASELINED                                                                                                                                                                                                                                                                                                      |
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                |
-| 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 AWS 적용은 미실행                        |
-| 실제 150~250개 Catalog             | 미수집, Source 승인 필요                                                                                                                                                                                                                                                                                            |
-| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
+| 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 완료, 실제 AWS 적용은 미실행 |
+| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d...6f6ea`, Projection checksum `6d236...c440a`                                                                                                                                                                                                            |
+| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Production Catalog validate/build 통과, Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
 | AWS 리소스·배포 URL                | 없음                                                                                                                                                                                                                                                                                                                |
 | 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                |
 
@@ -172,11 +174,12 @@ pnpm typecheck
 pnpm test
 pnpm test:e2e
 pnpm build
+pnpm catalog:import:osm
 pnpm catalog:validate
-pnpm catalog:validate --as-of 2026-08-15
-pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
+pnpm catalog:validate --as-of 2026-08-16
+pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16
 pnpm catalog:build
-pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
+pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-16 --catalog-version catalog-osm-20260816 --output release/catalog-projection.json
 pnpm workflow:verify:test
 pnpm terraform:contract:test
 pnpm smoke:test
@@ -186,19 +189,20 @@ pnpm audit --audit-level high
 
 Web은 도시·기간·시간·언어·속도·동행·우천 여부를 입력하고 Compose API를 호출해 일자별 Visit,
 이동시간, 이유와 Evidence 링크를 표시합니다. 로컬 Web 실행은 `VITE_API_BASE_URL`로 연결할 HTTP API를
-지정해야 하며, 합성 Fixture는 테스트 전용이라 실제 공개 Catalog를 제공하지 않습니다. 순수 HTTP
+지정해야 하며, 합성 Fixture는 테스트 전용입니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
+Evidence가 있으며, 순수 HTTP
 Handler 계약 테스트, 로컬 HTTP 서버 기반 Smoke 계약 4건, Terraform 비용·보안 경계 계약 3건, 브라우저
 접근성·반응형·지도 장애 축소 E2E 4건은 실행했지만 실제 Lambda/API Gateway 연결과 배포 URL Smoke
 검증은 아직 실행하지 않았습니다. Catalog Publisher는 Production Artifact와 AWS 자격 증명이 필요한
-배포 Workflow 전용이며, 로컬에서 AWS를 호출하지 않았습니다. AWS 계정·Budget·OIDC·Source Gate를
-확인하기 전에는 Production 배포 절차를 추가하거나 실행하지 않습니다.
+배포 Workflow 전용이며, 로컬에서 AWS를 호출하지 않았습니다. AWS 계정·Budget·OIDC를 확인하기
+전에는 Production 배포를 실행하지 않습니다.
 
 ## 로드맵
 
 1. LUN-001~014 애플리케이션·Terraform·CI, Source Governance Gate·Projection Build·Catalog
    Publisher·Rollback 구현 및 검증 완료
-2. 승인된 Source로 도쿄·서울 최소 150개 Place를 수동 검수
-3. 사용자 승인 후 AWS 배포·Smoke·Rollback 검증
+2. 승인된 OSM Source로 도쿄·서울 160개 Place를 반입하고 Production Gate 검증 완료
+3. AWS 계정·Budget·OIDC 확인 후 AWS 배포·Smoke·Rollback 검증
 4. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가
 
 ## 라이선스와 목적
@@ -209,8 +213,8 @@ Source code 라이선스는 아직 선택하지 않았으므로 별도 LICENSE�
 
 ## 구현 인계
 
-요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. Luna는 합성 Fixture 기반
-Local 구현을 시작할 수 있으며, AWS Apply와 실제 Catalog 공개는 계정 비용·Repository 연락처·Source별
-이용 근거 확인 전까지 차단합니다.
+요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. OSM 기반 Catalog와
+Production Projection은 생성했으며, AWS Apply와 실제 공개 배포는 계정 비용·Budget·OIDC 확인 전까지
+차단합니다.
 
 `LUNA HANDOFF: READY`

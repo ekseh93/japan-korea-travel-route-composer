@@ -5,15 +5,16 @@
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
 >
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
-> Build・DynamoDB Catalog Publisher・Catalog
-> Rollbackを実装、実Catalog取込・AWSリソース検証・配信は未実行
+> Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
+> 取込・Production Projection生成済み、AWSリソース検証・Terraform Plan/Apply・配信は未実行
 >
 > 公開URL・ユーザー指標: なし  
 >
 > LUN-014検証: format・lint・typecheck・67
 > Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E
 > 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform
-> fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
+> fmt/validate・TFLint・Trivyは直前のCIで合格、Production Catalog validate/buildとOSM Source Gateにも合格
+> (2026-08-16、Source checksum `6d0d...6f6ea`、Projection checksum `6d236...c440a`)
 >
 > GitHub CI検証:
 > quality・browser-e2e・terraform-static、Smoke contract tests、Release contract tests、Workflow
@@ -125,9 +126,9 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                        |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                    |
-| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実AWS適用は未実行                     |
-| 実データ150～250件のCatalog                  | 未収集、Source承認が必要                                                                                                                                                                                                                                                                                              |
-| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
+| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成済み、実AWS適用は未実行 |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d...6f6ea`、Projection checksum `6d236...c440a`                                                                                                                                                                                                           |
+| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build合格、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
 | AWSリソース・公開URL                         | なし                                                                                                                                                                                                                                                                                                                  |
 | 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                  |
 
@@ -159,11 +160,12 @@ pnpm typecheck
 pnpm test
 pnpm test:e2e
 pnpm build
+pnpm catalog:import:osm
 pnpm catalog:validate
-pnpm catalog:validate --as-of 2026-08-15
-pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
+pnpm catalog:validate --as-of 2026-08-16
+pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16
 pnpm catalog:build
-pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
+pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-16 --catalog-version catalog-osm-20260816 --output release/catalog-projection.json
 pnpm workflow:verify:test
 pnpm terraform:contract:test
 pnpm smoke:test
@@ -174,11 +176,10 @@ pnpm audit --audit-level high
 Webは都市・期間・時刻・言語・ペース・同行者・雨天を入力し、Compose
 APIを呼び出して日別Visit、移動時間、理由、Evidenceリンクを表示します。ローカルWebは
 `VITE_API_BASE_URL`で接続先HTTP
-APIを指定します。合成Fixtureはテスト専用であり、実公開Catalogはありません。純粋HTTP
+APIを指定します。合成Fixtureはテスト専用で、公開前CatalogにはOSMベース160件のPlaceとEvidenceがあります。純粋HTTP
 Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、Terraformコスト・セキュリティ境界契約3件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E
 4件は実行済みですが、実Lambda/API Gateway接続と配信URL
-Smoke検証は未実行です。AWSアカウント・Budget・OIDC・Source
-Gateの確認前にProduction手順を追加・実行しません。
+Smoke検証は未実行です。AWSアカウント・Budget・OIDCの確認前にProduction配信を実行しません。
 
 ## ロードマップ
 
@@ -186,8 +187,8 @@ Gateの確認前にProduction手順を追加・実行しません。
    TypeScriptモノレポ・品質基盤・実行契約・Domain・合成Fixture・権利検証・Repository・Routing・Compose・HTTP
    API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog
    Publisher・Rollbackの実装・検証を完了
-2. 承認済みSourceで東京・ソウル合計150件以上のPlaceを手動審査
-3. ユーザー承認後のAWS配信・Smoke・Rollback検証
+2. 承認済みOSM Sourceで東京・ソウル160件のPlaceを取込・Production Gate検証済み
+3. AWSアカウント・Budget・OIDC確認後の配信・Smoke・Rollback検証
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価
 
 ## ライセンスと目的
@@ -197,8 +198,7 @@ codeライセンスは未選択のため、別途LICENSEが作成されるまで
 
 ## 実装引継ぎ
 
-要件・UX・DDD・Architecture・Data・Delivery設計のPhase
-Gateを通過しました。Lunaは合成FixtureによるLocal実装を開始できますが、AWS
-Applyと実Catalog公開はアカウント費用・Repository窓口・Source別利用根拠の確認まで停止します。
+要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。OSMベースCatalogと
+Production Projectionは生成済みですが、AWS Applyと公開配信はアカウント費用・Budget・OIDC確認まで停止します。
 
 `LUNA HANDOFF: READY`

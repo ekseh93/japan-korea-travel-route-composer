@@ -1,0 +1,37 @@
+{
+  "placeId": "pl_tokyo_osm_node_10137263017",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_AKIHABARA_KANDA",
+  "names": {
+    "ja": "タリーズコーヒー",
+    "en": "Tully's Coffee"
+  },
+  "coordinates": {
+    "latitude": 35.6988479,
+    "longitude": 139.7698259
+  },
+  "category": "CAFE_DESSERT",
+  "themeTags": ["CAFE", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "UNKNOWN",
+  "typicalDurationMinutes": 60,
+  "openingSchedule": {
+    "status": "UNKNOWN",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_osm_node_10137263017"],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 cafe or dessert place Tully's Coffee입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたcafe or dessert place「Tully's Coffee」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "Tully's Coffee is listed in OpenStreetMap as a cafe or dessert place in Tokyo. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

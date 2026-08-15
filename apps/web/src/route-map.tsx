@@ -116,6 +116,13 @@ export function RouteMap({ visits }: { visits: readonly Visit[] }) {
           <span>장소 순서와 외부 지도 링크는 계속 사용할 수 있습니다.</span>
         </div>
       )}
+      <p className="map-attribution">
+        지도 데이터: ©{" "}
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
+          OpenStreetMap contributors
+        </a>{" "}
+        (ODbL)
+      </p>
       <ol className="map-place-list" aria-label="방문 장소 순서">
         {visits.map((visit) => (
           <li key={visit.visitId}>
