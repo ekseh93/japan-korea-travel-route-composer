@@ -57,6 +57,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `1ff3744` | MapLibre 선택 청크 지연 로딩과 초기 Web 번들 분리 | GitHub CI 성공 (`31912171277`) |
 | `1268653` | Production 승인 입력·Protected Environment·철거 확인 Workflow 계약 보강 | GitHub CI 성공 (`31912459180`) |
 | `a36dabc` | Terraform 비용·보존·철거·IAM 안전성 계약 테스트와 CI 단계 추가 | GitHub CI 성공 (`31913227825`) |
+| `09ab3e5` | CI 수동 실행 경로와 재검증 문서화 | GitHub CI 성공 (`31913749177`, workflow_dispatch) |
 
 ### LUN-014 Catalog Rollback 구현 결과
 
