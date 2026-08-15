@@ -19,7 +19,9 @@
     "typecheck": "pnpm --filter @route-composer/contracts build && pnpm -r typecheck",
     "catalog:build": "pnpm --filter @route-composer/contracts build && pnpm --filter @route-composer/catalog-tooling build && node packages/catalog-tooling/dist/build-cli.js",
     "smoke": "node scripts/smoke.mjs",
-    "smoke:test": "node --test scripts/smoke.test.mjs"
+    "smoke:test": "node --test scripts/smoke.test.mjs",
+    "release:verify": "node scripts/release-verify.mjs",
+    "release:verify:test": "node --test scripts/release-verify.test.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

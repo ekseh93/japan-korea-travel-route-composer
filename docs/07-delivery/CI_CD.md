@@ -93,6 +93,7 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 - Web dist, Lambda zip, Catalog Projection은 한 Release job에서 한 번 Build한다.
 - Artifact 이름에 Commit SHA, CatalogVersion과 AlgorithmVersion을 포함한다.
 - SHA-256 checksum과 SBOM을 생성하고 GitHub Artifact에 30일 보존한다.
+- `release:verify`가 Release SHA, Lambda·Catalog checksum, SBOM, public Projection shape와 Web entrypoint를 확인한다.
 - Deploy job은 Build job의 Artifact만 내려받고 다시 `npm build`하지 않는다.
 - GitHub Actions는 검토한 full commit SHA로 고정한다.
 - Package lockfile과 Terraform provider lockfile을 커밋한다.
@@ -101,6 +102,10 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 로컬과 CI는 `pnpm smoke:test`로 배포와 무관한 Smoke 계약을 검증한다. 실제 Web/API
 URL Smoke는 Production 배포 후에만 보호된 Workflow에서 실행하며, URL이 없을 때
 성공으로 표시하지 않는다.
+
+Production Workflow는 Production Catalog Gate와 immutable Projection Artifact까지 구현했지만,
+현재 DynamoDB Catalog publish adapter와 실제 AWS publish는 아직 연결하지 않았다. 실제 Source와
+AWS 승인 전에는 Workflow를 실행하지 않는다.
 
 ## 7. OIDC와 Environment 보호
 

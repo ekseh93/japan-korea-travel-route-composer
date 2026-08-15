@@ -7,6 +7,10 @@ on:
         description: "Reviewed commit SHA to build and deploy"
         required: true
         type: string
+      catalog_as_of:
+        description: "Catalog rights review date (YYYY-MM-DD)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -38,7 +42,8 @@ jobs:
           pnpm test
           pnpm test:e2e
           pnpm build
-          pnpm catalog:validate
+          pnpm catalog:validate --production --as-of "${{ inputs.catalog_as_of }}"
+          pnpm release:verify:test
           pnpm audit --audit-level high
       - name: Package immutable release
         shell: bash
@@ -46,15 +51,24 @@ jobs:
           set -euo pipefail
           rm -rf release
           mkdir -p release
+          pnpm catalog:build -- \
+            --production \
+            --as-of "${{ inputs.catalog_as_of }}" \
+            --catalog-version "catalog-${{ inputs.release_sha }}" \
+            --generated-at "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" \
+            --output release/catalog-projection.json
           pnpm --filter @route-composer/api deploy --prod release/lambda
           (cd release/lambda && zip -qr ../lambda.zip .)
           mkdir -p release/web
           cp -R apps/web/dist/. release/web/
-          sha256sum release/lambda.zip > release/SHA256SUMS
+          (cd release && sha256sum lambda.zip catalog-projection.json > SHA256SUMS)
           openssl dgst -sha256 -binary release/lambda.zip | base64 -w0 > release/lambda-source-code-hash.txt
           printf '%s\n' "${{ inputs.release_sha }}" > release/release-sha.txt
           docker run --rm -v "$PWD:/workspace" -w /workspace aquasec/trivy:0.58.2 \
             fs --format cyclonedx --output /workspace/release/sbom.json /workspace/release/lambda
+          node scripts/release-verify.mjs \
+            --release-dir release \
+            --release-sha "${{ inputs.release_sha }}"
       - name: Upload immutable release artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -86,10 +100,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(cat release/release-sha.txt)" = "${{ inputs.release_sha }}"
-          sha256sum -c release/SHA256SUMS
-          test -s release/lambda-source-code-hash.txt
-          test -s release/sbom.json
+          node scripts/release-verify.mjs \
+            --release-dir release \
+            --release-sha "${{ inputs.release_sha }}"
       - name: Configure AWS OIDC
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
