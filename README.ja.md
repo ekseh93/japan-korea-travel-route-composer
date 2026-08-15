@@ -5,7 +5,7 @@
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate強化を実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
-> LUN-014検証: format・lint・typecheck・46テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-15)
+> LUN-014検証: format・lint・typecheck・50テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-15)
 > GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31864623454)、2026-08-15)
 
 ## プロジェクト概要
@@ -111,7 +111,7 @@ Terraform fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGit
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
 | アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate強化を実装、実AWS適用は未実行 |
 | 実データ150～250件のCatalog | 未収集、Source承認が必要 |
-| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・46テスト・ブラウザE2E 3件・build・catalog:validate・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Planは未実行 |
+| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・50テスト・ブラウザE2E 3件・build・catalog:validate・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Planは未実行 |
 | AWSリソース・公開URL | なし |
 | 実測性能・可用性・ユーザー指標 | なし |
 
@@ -143,6 +143,8 @@ pnpm test
 pnpm test:e2e
 pnpm build
 pnpm catalog:validate
+pnpm catalog:validate --as-of 2026-08-15
+pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
 pnpm audit --audit-level high
 ```
 

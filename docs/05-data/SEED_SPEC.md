@@ -265,6 +265,15 @@ Public MVP Matrix는 [Domain Catalog](DOMAIN_CATALOG.md)의 같은 도시 인접
 
 Generated Projection은 사람이 직접 편집하지 않는다.
 
+검수 PR은 다음 CLI로 대상 Seed, Production Gate와 검수 기준일을 명시한다.
+
+```text
+pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
+```
+
+`--as-of`를 지정하면 Source와 Evidence 만료 판정이 재현되며, 지정하지 않으면
+현재 날짜를 사용한다. 합성 Fixture는 Production 모드에서 의도적으로 실패한다.
+
 ## 9. 정적 Validation Code
 
 - SOURCE_FILE_NAME_MISMATCH
