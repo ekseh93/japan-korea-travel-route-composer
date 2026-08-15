@@ -69,8 +69,9 @@ flowchart TD
 7. Web/Lambda Production build와 Bundle 크기 예산 검사
 8. 로컬 API와 Web의 Playwright 핵심 흐름
 9. Terraform `fmt`, backend 없는 `init`, `validate`, TFLint, IaC security scan
-10. 신뢰 PR의 Production Plan과 고정비 금지 리소스 Policy 검사
-11. Production Workflow의 원격 State backend·OIDC·fork 보호·rollback 범위 계약 검사
+10. Terraform 비용·보존·철거·IAM 경계 계약 테스트
+11. 신뢰 PR의 Production Plan과 고정비 금지 리소스 Policy 검사
+12. Production Workflow의 원격 State backend·OIDC·fork 보호·rollback 범위 계약 검사
 
 어떤 Gate도 `continue-on-error`로 성공 처리하지 않는다. 선택적 외부 Provider
 테스트만 명시적으로 skipped가 가능하며 이유를 Summary에 남긴다.

@@ -22,6 +22,7 @@
     "smoke:test": "node --test scripts/smoke.test.mjs",
     "release:verify": "node scripts/release-verify.mjs",
     "release:verify:test": "node --test scripts/release-verify.test.mjs",
+    "terraform:contract:test": "node --test scripts/terraform-contract.test.mjs",
     "workflow:verify:test": "node --test scripts/workflow-contract.test.mjs"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@
 > Status: Sol phased design complete; Luna implementation handoff READY  
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
+> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
 > GitHub CI verification: quality, browser-e2e, terraform-static, Smoke contract tests, Release contract tests, and Workflow contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31912459180), 2026-08-16)
 
 ## Project Overview
@@ -127,7 +127,7 @@ The MapLibre renderer is lazy-loaded on the result view, separating the initial 
 | Product, UX, DDD, AWS, data, and delivery design | Phase Gate validation complete |
 | Application and infrastructure code | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; AWS application not run |
 | Real catalog of 150-250 places | Not collected; source approval required |
-| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
+| Tests and builds | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
 | AWS resources and deployment URL | None |
 | Measured performance, availability, and user metrics | None |
 
@@ -165,6 +165,7 @@ pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
 pnpm catalog:build
 pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
 pnpm workflow:verify:test
+pnpm terraform:contract:test
 pnpm smoke:test
 pnpm smoke -- --base-url https://<web-host> --api-base-url https://<api-host>
 pnpm audit --audit-level high
@@ -174,7 +175,7 @@ The Web accepts city, duration, time windows, locale, pace, companion, and rain
 preferences, then displays daily visits, travel time, reasons, and Evidence links
 from the Compose API. Set `VITE_API_BASE_URL` for the local HTTP API; synthetic
 fixtures are test-only and do not constitute a public catalog. Pure HTTP Handler
-contract tests, 4 local HTTP smoke contract tests, and 3 browser accessibility/responsive/map-degradation E2E tests ran, but real Lambda/API
+contract tests, 4 local HTTP smoke contract tests, 3 Terraform cost/security boundary contract tests, and 4 browser accessibility/responsive/map-degradation E2E tests ran, but real Lambda/API
 Gateway integration and deployment URL smoke verification have not run. Production instructions will not
 be added or run before the AWS account, budget, OIDC, and source gates are verified.
 The Catalog Publisher is a deployment-workflow component that requires the immutable artifact and AWS

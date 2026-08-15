@@ -5,7 +5,7 @@
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
-> LUN-014検証: format・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・ブラウザE2E 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
+> LUN-014検証: format・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyは直前のCIで合格 (2026-08-16)
 > GitHub CI検証: quality・browser-e2e・terraform-static、Smoke contract tests、Release contract tests、Workflow contract testsに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31912459180)、2026-08-16)
 
 ## プロジェクト概要
@@ -121,7 +121,7 @@ MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエ
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
 | アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実AWS適用は未実行 |
 | 実データ150～250件のCatalog | 未収集、Source承認が必要 |
-| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
+| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
 | AWSリソース・公開URL | なし |
 | 実測性能・可用性・ユーザー指標 | なし |
 
@@ -158,6 +158,7 @@ pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
 pnpm catalog:build
 pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
 pnpm workflow:verify:test
+pnpm terraform:contract:test
 pnpm smoke:test
 pnpm smoke -- --base-url https://<web-host> --api-base-url https://<api-host>
 pnpm audit --audit-level high
@@ -166,7 +167,7 @@ pnpm audit --audit-level high
 Webは都市・期間・時刻・言語・ペース・同行者・雨天を入力し、Compose APIを呼び出して
 日別Visit、移動時間、理由、Evidenceリンクを表示します。ローカルWebは
 `VITE_API_BASE_URL`で接続先HTTP APIを指定します。合成Fixtureはテスト専用であり、実公開Catalogはありません。
-純粋HTTP Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E 3件は実行済みですが、
+純粋HTTP Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、Terraformコスト・セキュリティ境界契約3件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E 4件は実行済みですが、
 実Lambda/API Gateway接続と配信URL Smoke検証は未実行です。
 AWSアカウント・Budget・OIDC・Source Gateの確認前にProduction手順を追加・実行しません。
 
