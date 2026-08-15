@@ -109,6 +109,21 @@ test("has no axe violations and fits the 360px mobile viewport", async ({ page }
   expect(results.violations).toEqual([]);
 });
 
+test("fits the tablet and desktop responsive targets", async ({ page }) => {
+  for (const viewport of [
+    { width: 768, height: 900 },
+    { width: 1280, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    await expect(page.getByRole("button", { name: "동선 조합하기" })).toBeVisible();
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(overflow, `unexpected horizontal overflow at ${viewport.width}px`).toBe(false);
+  }
+});
+
 test("keeps the text itinerary when map tiles are blocked", async ({ page }) => {
   await page.route("https://tiles.openfreemap.org/**", (route) => route.abort());
   await page.goto("/");

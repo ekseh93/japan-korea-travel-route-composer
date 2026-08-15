@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료 |
-| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 4건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
