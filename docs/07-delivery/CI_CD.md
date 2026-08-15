@@ -1,6 +1,6 @@
 # GitHub Actions CI/CD 설계
 
-> 상태: 설계 승인, Workflow 코드 구현·로컬 정적 검증·GitHub CI 실행 완료; OIDC Plan/Deploy는 AWS 승인 전 미실행
+> 상태: 설계 승인, LUN-013 Build once·OIDC Workflow 코드 구현 진행 중; GitHub CI 실행 완료, AWS OIDC/배포 미실행
 > 기준일: 2026-08-15  
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
 

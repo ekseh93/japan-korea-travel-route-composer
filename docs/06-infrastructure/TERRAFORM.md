@@ -177,7 +177,7 @@ Terraform 관리 대상으로 켠다. Monitor와 Email Subscription은 Budget을
 - API 5xx, Lambda Error·Duration·Throttle, Catalog DynamoDB Throttle 기본 Alarm을 SNS email 경로에 연결한다.
 - Budget은 5 USD 기준 실제 비용 20%와 예측 비용 100% 알림을 유지한다. Budget과 Alarm은 결제를 강제로 차단하지 않는다.
 - CloudFront는 `PriceClass_200`, Web S3의 non-current version은 30일 후 정리한다.
-- Lambda artifact 입력은 현재 Release 산출물 경계로 남아 있으며, bucket·zip 생성과 Build once 연결은 LUN-013에서 구현한다.
+- Lambda artifact bucket은 Bootstrap State가 관리하고, zip 생성과 Build once 연결은 LUN-013에서 구현한다.
 
 ## 13. G6 Terraform Gate
 

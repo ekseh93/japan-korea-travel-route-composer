@@ -41,6 +41,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 다음 구현 단위는 LUN-013 Build once·OIDC 배포 산출물과 보호된 Production Workflow다.
 실제 AWS 리소스 생성과 `terraform apply`는 여전히 사용자 승인 전에는 실행하지 않는다.
 
+### LUN-013 구현 전 계약
+
+- Bootstrap State가 State bucket과 별도의 versioned Lambda artifact bucket을 관리한다.
+- Build job은 검토한 SHA에서 Web dist, Lambda zip, SHA-256 checksum, SBOM을 한 번 생성하고 30일 artifact로 보관한다.
+- Deploy job은 Build artifact만 다운로드해 checksum을 검증하고, 재빌드하지 않는다.
+- Terraform Docker 실행에는 GitHub OIDC 임시 자격 증명을 명시적으로 전달한다.
+- Production Deploy/Teardown은 protected Environment와 수동 입력을 요구하며, Fork Repository에서는 AWS 권한을 사용하지 않는다.
+- AWS Apply와 실제 artifact 업로드·Smoke는 사용자 승인 전 실행하지 않는다.
+
 ### LUN-012 구현 전 계약
 
 - HTTP API `$default` Stage는 명시적 Deployment를 사용하고 access log를 7일 보존한다.
