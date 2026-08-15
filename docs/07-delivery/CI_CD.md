@@ -8,6 +8,8 @@
 `quality`, `browser-e2e`, `terraform-static` 작업과 Workflow contract tests가 모두 통과했다. 이 결과는 AWS
 자격 증명, Terraform Plan/Apply 또는 Production 배포를 검증한 결과가 아니다.
 
+모든 Workflow는 Node 24-compatible `actions/checkout` v5.0.1을 검증된 SHA로 고정한다.
+
 ## 1. 목표
 
 - Pull Request에서 제품 규칙, 데이터 권리, 코드와 IaC를 함께 검증한다.

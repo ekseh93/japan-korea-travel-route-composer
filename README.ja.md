@@ -120,7 +120,7 @@ Production Terraform Workflowは`TERRAFORM_STATE_BUCKET`とlockfile backendを�
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了 |
 | アプリケーション・インフラコード | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、実AWS適用は未実行 |
 | 実データ150～250件のCatalog | 未収集、Source承認が必要 |
-| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約3件・ブラウザE2E 3件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
+| テスト・ビルド | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約4件・ブラウザE2E 3件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
 | AWSリソース・公開URL | なし |
 | 実測性能・可用性・ユーザー指標 | なし |
 

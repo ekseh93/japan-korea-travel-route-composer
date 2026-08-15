@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate | 완료 |
 | Luna handoff | `LUNA HANDOFF: READY` |
 | 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료 |
-| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 3건, browser E2E 3건, build, catalog validation/build, audit 완료 |
+| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 4건, browser E2E 3건, build, catalog validation/build, audit 완료 |
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | 미실행, 별도 승인 필요 |
 | AWS 리소스·배포 | 미실행, 사용자 승인 필요 |
@@ -63,7 +63,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 ### LUN-013 Workflow State 계약 구현 결과
 
 - Terraform Plan·Deploy·Rollback·Teardown Workflow가 `TERRAFORM_STATE_BUCKET`, production state key와 lockfile backend를 명시한다.
-- Workflow contract 3건이 원격 State 설정, OIDC·fork 보호, rollback 범위를 검증한다.
+- Workflow contract 4건이 원격 State 설정, Node 24-compatible Checkout pin, OIDC·fork 보호, rollback 범위를 검증한다.
 - 실제 State bucket 접근과 Terraform Plan/Apply는 사용자 승인 전 미실행이다.
 
 ### LUN-014 Catalog Publisher 구현 결과

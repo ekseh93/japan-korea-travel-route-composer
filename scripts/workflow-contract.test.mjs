@@ -32,6 +32,24 @@ test("production workflows initialize the remote Terraform state backend", async
   }
 });
 
+test("all workflows use the Node 24-compatible pinned checkout action", async () => {
+  for (const name of [
+    "ci.yml",
+    "terraform-plan.yml",
+    "deploy-production.yml",
+    "rollback.yml",
+    "teardown.yml",
+  ]) {
+    const content = await workflow(name);
+    assert.match(
+      content,
+      /actions\/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd\s+# v5\.0\.1/,
+      `${name} must use the pinned Node 24-compatible checkout action`,
+    );
+    assert.doesNotMatch(content, /actions\/checkout@11bd71901bbe5b1630ceea73d27597364c9af683/);
+  }
+});
+
 test("AWS-capable workflows require OIDC and protected fork guards", async () => {
   for (const name of [
     "terraform-plan.yml",
