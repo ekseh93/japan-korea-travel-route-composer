@@ -50,7 +50,7 @@ variable "monthly_budget_usd" {
 
 variable "lambda_s3_bucket" {
   type        = string
-  description = "Pre-existing immutable artifact bucket managed by the release process."
+  description = "Immutable artifact bucket created by the Terraform bootstrap state."
 }
 
 variable "lambda_s3_key" {

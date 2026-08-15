@@ -65,6 +65,72 @@ resource "aws_s3_bucket_policy" "state_tls" {
   policy = data.aws_iam_policy_document.state_tls.json
 }
 
+resource "aws_s3_bucket" "artifacts" {
+  bucket        = var.artifact_bucket_name
+  force_destroy = false
+  tags          = local.tags
+}
+
+resource "aws_s3_bucket_versioning" "artifacts" {
+  bucket = aws_s3_bucket.artifacts.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "artifacts" {
+  bucket                  = aws_s3_bucket.artifacts.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "artifacts" {
+  bucket = aws_s3_bucket.artifacts.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "artifacts" {
+  bucket = aws_s3_bucket.artifacts.id
+
+  rule {
+    id     = "ExpireOldArtifacts"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+  }
+}
+
+data "aws_iam_policy_document" "artifacts_tls" {
+  statement {
+    sid       = "DenyInsecureTransport"
+    effect    = "Deny"
+    actions   = ["s3:*"]
+    resources = [aws_s3_bucket.artifacts.arn, "${aws_s3_bucket.artifacts.arn}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "artifacts_tls" {
+  bucket = aws_s3_bucket.artifacts.id
+  policy = data.aws_iam_policy_document.artifacts_tls.json
+}
+
 resource "aws_iam_openid_connect_provider" "github" {
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
@@ -125,6 +191,10 @@ resource "aws_iam_role" "deploy" {
 }
 
 data "aws_iam_policy_document" "plan" {
+  statement {
+    actions   = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketVersioning", "s3:GetBucketLocation"]
+    resources = [aws_s3_bucket.artifacts.arn, "${aws_s3_bucket.artifacts.arn}/*"]
+  }
   statement {
     actions   = ["s3:GetObject", "s3:ListBucket", "s3:GetBucketVersioning", "s3:GetBucketLocation"]
     resources = [aws_s3_bucket.state.arn, "${aws_s3_bucket.state.arn}/*"]

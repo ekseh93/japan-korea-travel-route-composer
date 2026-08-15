@@ -56,7 +56,8 @@ function App() {
     setLoading(true);
     setMessage("동선을 계산하고 있습니다.");
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL ?? "";
+      const baseUrl =
+        import.meta.env.VITE_API_BASE_URL || window.__ROUTE_COMPOSER_CONFIG__.apiBaseUrl;
       const response = await fetch(`${baseUrl}/v1/trips:compose`, {
         method: "POST",
         headers: { "content-type": "application/json" },

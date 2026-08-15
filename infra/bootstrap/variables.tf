@@ -25,6 +25,11 @@ variable "state_bucket_name" {
   description = "Globally unique Terraform state bucket name."
 }
 
+variable "artifact_bucket_name" {
+  type        = string
+  description = "Globally unique versioned bucket for immutable Lambda release artifacts."
+}
+
 variable "owner" {
   type        = string
   description = "Human owner tag."

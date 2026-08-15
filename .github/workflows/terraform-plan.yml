@@ -27,9 +27,15 @@ jobs:
           role-session-name: plan-${{ github.run_id }}
       - name: Terraform plan
         run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+          docker run --rm \
+            -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+            -e AWS_REGION -e AWS_DEFAULT_REGION \
+            -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production init -input=false
-          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+          docker run --rm \
+            -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+            -e AWS_REGION -e AWS_DEFAULT_REGION \
+            -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production plan -input=false -lock-timeout=60s \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
             -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \

@@ -1,0 +1,7 @@
+project_slug           = "japan-korea-route-composer"
+aws_region             = "ap-northeast-1"
+github_repository      = "ekseh93/japan-korea-travel-route-composer"
+github_oidc_thumbprint = "REPLACE_WITH_APPROVED_THUMBPRINT"
+state_bucket_name      = "REPLACE_WITH_UNIQUE_STATE_BUCKET"
+artifact_bucket_name   = "REPLACE_WITH_UNIQUE_ARTIFACT_BUCKET"
+owner                  = "portfolio-owner"

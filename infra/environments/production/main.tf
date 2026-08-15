@@ -202,7 +202,7 @@ resource "aws_lambda_function" "api" {
   function_name                  = "${local.name}-api"
   role                           = aws_iam_role.lambda.arn
   runtime                        = "nodejs24.x"
-  handler                        = "index.handler"
+  handler                        = "dist/index.handler"
   s3_bucket                      = var.lambda_s3_bucket
   s3_key                         = var.lambda_s3_key
   source_code_hash               = var.lambda_source_code_hash

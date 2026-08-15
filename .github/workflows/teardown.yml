@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   teardown:
-    if: inputs.confirmation == 'DESTROY-PRODUCTION'
+    if: inputs.confirmation == 'DESTROY-PRODUCTION' && github.event.repository.fork == false
     runs-on: ubuntu-24.04
     environment:
       name: production-teardown
@@ -30,9 +30,15 @@ jobs:
       - name: Destroy application stack only
         run: |
           echo "Bootstrap state bucket is intentionally outside this destroy target."
-          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+          docker run --rm \
+            -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+            -e AWS_REGION -e AWS_DEFAULT_REGION \
+            -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production init -input=false
-          docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+          docker run --rm \
+            -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN \
+            -e AWS_REGION -e AWS_DEFAULT_REGION \
+            -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production destroy -input=false -auto-approve \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
             -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
