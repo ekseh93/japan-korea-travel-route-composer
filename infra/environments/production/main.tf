@@ -29,6 +29,19 @@ resource "aws_s3_bucket_versioning" "web" {
   }
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "web" {
+  bucket = aws_s3_bucket.web.id
+
+  rule {
+    id     = "ExpireOldWebVersions"
+    status = "Enabled"
+
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+  }
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "web" {
   bucket = aws_s3_bucket.web.id
   rule {
@@ -49,6 +62,7 @@ resource "aws_cloudfront_origin_access_control" "web" {
 resource "aws_cloudfront_distribution" "web" {
   enabled             = true
   default_root_object = "index.html"
+  price_class         = "PriceClass_200"
 
   origin {
     domain_name              = aws_s3_bucket.web.bucket_regional_domain_name
@@ -146,6 +160,11 @@ resource "aws_cloudwatch_log_group" "lambda" {
   retention_in_days = var.log_retention_days
 }
 
+resource "aws_cloudwatch_log_group" "api" {
+  name              = "/aws/apigateway/${local.name}"
+  retention_in_days = var.log_retention_days
+}
+
 resource "aws_iam_role" "lambda" {
   name = "${local.name}-lambda"
   assume_role_policy = jsonencode({
@@ -188,7 +207,7 @@ resource "aws_lambda_function" "api" {
   s3_key                         = var.lambda_s3_key
   source_code_hash               = var.lambda_source_code_hash
   timeout                        = 10
-  memory_size                    = 512
+  memory_size                    = 256
   reserved_concurrent_executions = var.lambda_reserved_concurrency
   environment {
     variables = {
@@ -231,10 +250,37 @@ resource "aws_apigatewayv2_route" "compose" {
   target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
+resource "aws_apigatewayv2_deployment" "http" {
+  api_id = aws_apigatewayv2_api.http.id
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_apigatewayv2_integration.lambda.id,
+      aws_apigatewayv2_route.health.id,
+      aws_apigatewayv2_route.compose.id,
+    ]))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "aws_apigatewayv2_stage" "default" {
-  api_id      = aws_apigatewayv2_api.http.id
-  name        = "$default"
-  auto_deploy = false
+  api_id        = aws_apigatewayv2_api.http.id
+  name          = "$default"
+  auto_deploy   = false
+  deployment_id = aws_apigatewayv2_deployment.http.id
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api.arn
+    format = jsonencode({
+      requestId      = "$context.requestId"
+      requestTime    = "$context.requestTime"
+      routeKey       = "$context.routeKey"
+      status         = "$context.status"
+      integrationErr = "$context.integrationErrorMessage"
+    })
+  }
   default_route_settings {
     throttling_burst_limit = var.api_burst_limit
     throttling_rate_limit  = var.api_rate_limit
@@ -268,9 +314,92 @@ resource "aws_budgets_budget" "monthly" {
 
   notification {
     comparison_operator       = "GREATER_THAN"
-    threshold                 = 80
+    threshold                 = 20
+    threshold_type            = "PERCENTAGE"
+    notification_type         = "ACTUAL"
+    subscriber_sns_topic_arns = [aws_sns_topic.budget.arn]
+  }
+
+  notification {
+    comparison_operator       = "GREATER_THAN"
+    threshold                 = 100
     threshold_type            = "PERCENTAGE"
     notification_type         = "FORECASTED"
     subscriber_sns_topic_arns = [aws_sns_topic.budget.arn]
   }
+}
+
+resource "aws_cloudwatch_metric_alarm" "api_5xx" {
+  alarm_name          = "${local.name}-api-5xx"
+  alarm_description   = "HTTP API returned at least five 5xx responses in five minutes."
+  namespace           = "AWS/ApiGateway"
+  metric_name         = "5xx"
+  dimensions          = { ApiId = aws_apigatewayv2_api.http.id, Stage = "$default" }
+  statistic           = "Sum"
+  period              = 300
+  evaluation_periods  = 1
+  threshold           = 5
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.budget.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
+  alarm_name          = "${local.name}-lambda-errors"
+  alarm_description   = "Lambda returned at least three errors in five minutes."
+  namespace           = "AWS/Lambda"
+  metric_name         = "Errors"
+  dimensions          = { FunctionName = aws_lambda_function.api.function_name }
+  statistic           = "Sum"
+  period              = 300
+  evaluation_periods  = 1
+  threshold           = 3
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.budget.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
+  alarm_name          = "${local.name}-lambda-duration"
+  alarm_description   = "Lambda p95 duration exceeded eight seconds for three periods."
+  namespace           = "AWS/Lambda"
+  metric_name         = "Duration"
+  dimensions          = { FunctionName = aws_lambda_function.api.function_name }
+  extended_statistic  = "p95"
+  period              = 300
+  evaluation_periods  = 3
+  threshold           = 8000
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.budget.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "lambda_throttles" {
+  alarm_name          = "${local.name}-lambda-throttles"
+  alarm_description   = "Lambda was throttled in the last five minutes."
+  namespace           = "AWS/Lambda"
+  metric_name         = "Throttles"
+  dimensions          = { FunctionName = aws_lambda_function.api.function_name }
+  statistic           = "Sum"
+  period              = 300
+  evaluation_periods  = 1
+  threshold           = 1
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.budget.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "catalog_throttles" {
+  alarm_name          = "${local.name}-catalog-throttles"
+  alarm_description   = "Catalog DynamoDB requests were throttled in the last five minutes."
+  namespace           = "AWS/DynamoDB"
+  metric_name         = "ThrottledRequests"
+  dimensions          = { TableName = aws_dynamodb_table.catalog.name }
+  statistic           = "Sum"
+  period              = 300
+  evaluation_periods  = 1
+  threshold           = 1
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  treat_missing_data  = "notBreaching"
+  alarm_actions       = [aws_sns_topic.budget.arn]
 }
