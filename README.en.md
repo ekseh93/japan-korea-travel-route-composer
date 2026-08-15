@@ -6,7 +6,7 @@
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
 > LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding CI (2026-08-16)
-> GitHub CI verification: quality, browser-e2e, terraform-static, Smoke contract tests, Release contract tests, and Workflow contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31912459180), 2026-08-16)
+> GitHub CI verification: quality, browser-e2e, terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and Terraform contract tests all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31913227825), 2026-08-16)
 
 ## Project Overview
 
