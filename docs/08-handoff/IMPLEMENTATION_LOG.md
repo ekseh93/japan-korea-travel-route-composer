@@ -45,6 +45,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | `550ebb2` | 공개 Place/Evidence 계약과 DynamoDB Adapter를 공유하는 Projection 변환 | GitHub CI 성공 |
 | `2e83848` | Production Catalog 규모 Gate와 도시별 검증 통계 | GitHub CI 성공 |
 | `59bb9f2` | 검증된 Projection 기반 Current pointer 계약과 stale Version 차단 | GitHub CI 성공 |
+| `8f0437b` | Production Catalog Artifact와 Release checksum/SBOM 검증 Workflow | GitHub CI 성공 |
 
 ### LUN-013/014 Release Artifact 계약 구현 결과
 
