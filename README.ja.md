@@ -5,8 +5,8 @@
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate強化を実装、実Catalog取込・AWSリソース検証・配信は未実行
 > 公開URL・ユーザー指標: なし  
-> LUN-014検証: format・lint・typecheck・44テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・TrivyはGitHub CIで再検証予定 (2026-08-15)
-> GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863107004)、2026-08-15)
+> LUN-014検証: format・lint・typecheck・44テスト・ブラウザE2E 3件・build・catalog:validate・依存関係監査に合格、Terraform fmt/validate・TFLint・Trivyにも合格 (2026-08-15)
+> GitHub CI検証: quality・browser-e2e・terraform-staticの3ジョブに合格 ([実行結果](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863763499)、2026-08-15)
 
 ## プロジェクト概要
 

@@ -5,8 +5,8 @@
 > Status: Sol phased design complete; Luna implementation handoff READY  
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate hardening implemented; real catalog ingestion, AWS resource validation, and deployment not run
 > Public URL and user metrics: none  
-> LUN-014 verification: format, lint, typecheck, 44 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy will be rechecked in GitHub CI (2026-08-15)
-> GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863107004), 2026-08-15)
+> LUN-014 verification: format, lint, typecheck, 44 tests, 3 browser E2E tests, build, catalog:validate, and dependency audit passed; Terraform fmt/validate, TFLint, and Trivy also passed (2026-08-15)
+> GitHub CI verification: quality, browser-e2e, and terraform-static all passed ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31863763499), 2026-08-15)
 
 ## Project Overview
 
