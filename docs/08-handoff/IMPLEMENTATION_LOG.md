@@ -51,7 +51,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ### LUN-014 Catalog Publisher 구현 결과
 
-- `DynamoDbCatalogPublisher`가 검증된 public Projection을 도시별 immutable Version partition에 25개 단위로 작성한다.
+- `DynamoDbCatalogPublisher`가 두 도시 META를 조건부로 먼저 예약해 같은 Version 재작성을 차단하고, 검증된 public Projection Place를 도시별 immutable Version partition에 25개 단위로 작성한다.
 - BatchWrite의 Unprocessed Item은 제한된 지수형 재시도로 처리하고, 예산 초과 시 Current pointer를 변경하지 않고 실패한다.
 - 두 도시 `CURRENT` pointer는 expected previous Version을 조건으로 단일 `TransactWrite`에서 함께 승격한다. 초기 게시에는 빈 기대 Version을 사용한다.
 - 배포 Artifact의 `catalog-publisher-cli`를 Terraform apply 직후 호출하도록 Production Workflow를 연결했다. Lambda runtime IAM은 계속 DynamoDB read-only다.

@@ -105,26 +105,11 @@ function validateArtifact(artifact: CatalogProjectionArtifact, checkedAt: string
 
 function versionItems(
   artifact: CatalogProjectionArtifact,
-  checkedAt: string,
 ): NonNullable<BatchWriteCommandInput["RequestItems"]>[string] {
   const { metadata } = artifact.projection;
-  const items = cityIds.flatMap((cityId) => {
+  return cityIds.flatMap((cityId) => {
     const pk = partitionKey(cityId, metadata.version);
     const cityPlaces = artifact.projection.places.filter((place) => place.cityId === cityId);
-    const meta = {
-      pk,
-      sk: "META",
-      itemType: "META" as const,
-      cityId,
-      catalogVersion: metadata.version,
-      schemaVersion: metadata.schemaVersion,
-      sourceChecksum: artifact.sourceChecksum,
-      placeCount: cityPlaces.length,
-      checkedAt,
-      generatedAt: metadata.generatedAt,
-      reviewedBy: metadata.reviewedBy,
-      releaseNotes: metadata.releaseNotes,
-    };
     const places = cityPlaces.map((place) => ({
       PutRequest: {
         Item: {
@@ -136,9 +121,45 @@ function versionItems(
         },
       },
     }));
-    return [{ PutRequest: { Item: meta } }, ...places];
+    return places;
   });
-  return items;
+}
+
+function metadataItem(
+  artifact: CatalogProjectionArtifact,
+  cityId: CityId,
+  checkedAt: string,
+): Record<string, unknown> {
+  const { metadata } = artifact.projection;
+  return {
+    pk: partitionKey(cityId, metadata.version),
+    sk: "META",
+    itemType: "META",
+    cityId,
+    catalogVersion: metadata.version,
+    schemaVersion: metadata.schemaVersion,
+    sourceChecksum: artifact.sourceChecksum,
+    placeCount: artifact.projection.places.filter((place) => place.cityId === cityId).length,
+    checkedAt,
+    generatedAt: metadata.generatedAt,
+    reviewedBy: metadata.reviewedBy,
+    releaseNotes: metadata.releaseNotes,
+  };
+}
+
+function metadataTransactionItems(
+  tableName: string,
+  artifact: CatalogProjectionArtifact,
+  checkedAt: string,
+): TransactWriteItem[] {
+  return cityIds.map((cityId) => ({
+    Put: {
+      TableName: tableName,
+      Item: metadataItem(artifact, cityId, checkedAt),
+      ConditionExpression: "attribute_not_exists(#pk)",
+      ExpressionAttributeNames: { "#pk": "pk" },
+    },
+  }));
 }
 
 function currentPointerUpdate(
@@ -203,14 +224,23 @@ export class DynamoDbCatalogPublisher {
     validateArtifact(options.artifact, options.checkedAt);
     if (options.tableName.length === 0) throw new Error("tableName cannot be empty.");
 
-    const items = versionItems(options.artifact, options.checkedAt);
     const maxRetries = options.maxBatchWriteRetries ?? 4;
     const retryDelayMs = options.retryDelayMs ?? 100;
     const sleep =
       options.sleep ??
       ((milliseconds: number) => new Promise((resolve) => setTimeout(resolve, milliseconds)));
 
-    for (const batch of chunks(items, maxBatchWriteItems)) {
+    await this.client.send(
+      new TransactWriteCommand({
+        TransactItems: metadataTransactionItems(
+          options.tableName,
+          options.artifact,
+          options.checkedAt,
+        ),
+      }),
+    );
+
+    for (const batch of chunks(versionItems(options.artifact), maxBatchWriteItems)) {
       let pending = batch;
       for (let attempt = 0; ; attempt += 1) {
         const response = await this.client.send(

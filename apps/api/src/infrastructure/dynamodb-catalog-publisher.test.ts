@@ -105,15 +105,27 @@ describe("DynamoDB catalog publisher", () => {
       placeCountByCity: { TOKYO: 13, SEOUL: 13 },
     });
     expect(commands.map((command) => (command as object).constructor.name)).toEqual([
+      "TransactWriteCommand",
       "BatchWriteCommand",
       "BatchWriteCommand",
       "TransactWriteCommand",
     ]);
-    const firstBatch = commands[0] as {
+    const metadataTransaction = commands[0] as {
+      readonly input: {
+        readonly TransactItems: readonly {
+          readonly Put?: { readonly ConditionExpression?: string };
+        }[];
+      };
+    };
+    expect(metadataTransaction.input.TransactItems).toHaveLength(2);
+    expect(metadataTransaction.input.TransactItems[0]?.Put).toMatchObject({
+      ConditionExpression: "attribute_not_exists(#pk)",
+    });
+    const firstBatch = commands[1] as {
       readonly input: { readonly RequestItems: Record<string, readonly unknown[]> };
     };
     expect(firstBatch.input.RequestItems["catalog-table"]).toHaveLength(25);
-    const transaction = commands[2] as {
+    const transaction = commands[3] as {
       readonly input: {
         readonly TransactItems: readonly {
           readonly Update?: { readonly ConditionExpression?: string; readonly TableName?: string };
@@ -135,7 +147,7 @@ describe("DynamoDB catalog publisher", () => {
     const sleepCalls: number[] = [];
     const client = fakeDynamoClient(async (command) => {
       calls += 1;
-      if (calls <= 2) {
+      if (calls >= 2 && calls <= 3) {
         const input = (
           command as {
             readonly input: { readonly RequestItems: Record<string, readonly unknown[]> };
@@ -159,7 +171,7 @@ describe("DynamoDB catalog publisher", () => {
         },
       }),
     ).rejects.toThrow("remained unprocessed");
-    expect(calls).toBe(2);
+    expect(calls).toBe(3);
     expect(sleepCalls).toEqual([100]);
   });
 

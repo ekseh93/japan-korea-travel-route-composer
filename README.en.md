@@ -114,7 +114,7 @@ Seed records into the shared `publishedPlaceSchema` and public Evidence shape, r
 attribution, and checked-date fields needed at runtime. Synthetic fixtures are allowed only for tests and
 are rejected in Production mode.
 The local pointer contract now creates candidates only from a validated Projection and rejects stale Version promotion.
-The DynamoDB Catalog Publisher writes the validated Projection to Version partitions with bounded retries,
+The DynamoDB Catalog Publisher conditionally reserves both city META items before writing the validated Projection to Version partitions with bounded retries,
 then promotes both city Current pointers in one transaction with expected-previous-Version conditions.
 The Production Workflow invokes the publisher CLI immediately after apply, but real AWS publication has not run.
 

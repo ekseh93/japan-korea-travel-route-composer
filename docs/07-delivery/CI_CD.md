@@ -94,7 +94,7 @@ CI는 최소 다음을 배포 차단 조건으로 검사한다.
 - Artifact 이름에 Commit SHA, CatalogVersion과 AlgorithmVersion을 포함한다.
 - SHA-256 checksum과 SBOM을 생성하고 GitHub Artifact에 30일 보존한다.
 - `release:verify`가 Release SHA, Lambda·Catalog checksum, SBOM, public Projection shape와 Web entrypoint를 확인한다.
-- `catalog-publisher-cli`가 검증된 Projection을 DynamoDB Version partition에 쓰고, 두 도시의 `CURRENT` pointer를 기대 이전 Version 조건과 함께 단일 transaction으로 승격한다. BatchWrite 미처리 Item은 제한된 재시도를 사용한다.
+- `catalog-publisher-cli`가 두 도시 META를 조건부로 예약한 뒤 검증된 Projection을 DynamoDB Version partition에 쓰고, 두 도시의 `CURRENT` pointer를 기대 이전 Version 조건과 함께 단일 transaction으로 승격한다. BatchWrite 미처리 Item은 제한된 재시도를 사용한다.
 - Deploy job은 Build job의 Artifact만 내려받고 다시 `npm build`하지 않는다.
 - GitHub Actions는 검토한 full commit SHA로 고정한다.
 - Package lockfile과 Terraform provider lockfile을 커밋한다.

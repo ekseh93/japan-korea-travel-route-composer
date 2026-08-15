@@ -107,7 +107,7 @@ Seed 원형을 `publishedPlaceSchema`와 공개 Evidence 형태로 변환합니�
 Source 내부 검수 메모·권리 판단 필드는 제외하고 provider·attribution·확인일만 남깁니다.
 검증된 Projection에서만 Current pointer 후보를 만들고 stale Version 승격을 거부하는 로컬 계약도 추가했습니다.
 합성 Fixture는 테스트에서만 허용되고 Production Projection에서는 차단됩니다. DynamoDB Catalog
-Publisher는 검증된 Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Current pointer를
+Publisher는 두 도시 META를 조건부로 예약한 뒤 검증된 Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Current pointer를
 기대 이전 Version 조건의 단일 transaction으로 승격합니다. Production Workflow는 apply 직후
 Publisher CLI를 호출하도록 연결했지만 실제 AWS publish는 실행하지 않았습니다.
 Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
