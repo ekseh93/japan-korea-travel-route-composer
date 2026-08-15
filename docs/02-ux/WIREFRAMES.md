@@ -8,7 +8,7 @@
 | 버전 | `v1.0` |
 | 상태 | BASELINED |
 | 대상 | 360px Mobile, 768px Tablet, 1280px 이상 Desktop |
-| 구현 상태 | 미구현·시각 QA 미실행 |
+| 구현 상태 | LUN-010 Web 구현 및 접근성·반응형 브라우저 E2E 완료; 별도 픽셀 시각 QA 미실행 |
 
 이 문서는 정보 계층과 상태별 상호작용 계약이다. 픽셀 단위 시안은 아니며, Luna는
 이 구조를 유지하면서 실제 컴포넌트와 접근성 동작을 구현한다. 공개 DTO는
@@ -289,4 +289,3 @@ Focus를 이동한다. Mobile과 DOM 읽기 순서는 동일하게 Timeline 다�
 
 판정: `RESPONSIVE WIREFRAME BASELINED` - Luna는 LUN-010에서 이 구조를 구현하고
 Responsive·Accessibility E2E 및 수동 검증으로 확정한다.
-

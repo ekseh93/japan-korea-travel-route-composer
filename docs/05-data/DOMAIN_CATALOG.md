@@ -8,7 +8,7 @@
 | 버전 | `v1.0` |
 | 상태 | BASELINED |
 | 소유 | Trip Composition / Place Catalog |
-| 구현 상태 | 미구현 |
+| 구현 상태 | Enum·정책 계약 구현 및 테스트 완료; 실제 공개 Catalog 미반입 |
 
 Enum 값은 영구 식별자다. 표시 문구는 locale Resource에서 번역하며 Enum 문자열을
 사용자에게 그대로 노출하지 않는다. 값의 의미나 정책값을 바꾸면 Contract Test와

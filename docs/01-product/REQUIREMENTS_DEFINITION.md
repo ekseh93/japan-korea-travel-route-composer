@@ -11,7 +11,7 @@
 | 작성 역할 | 5.6 Sol - Product Planner / Software Architect |
 | 검토·승인 역할 | Product Owner - 프로젝트 소유자 |
 | 작성 기준일 | 2026-08-15 |
-| 구현 상태 | 미구현 |
+| 구현 상태 | LUN-001~014 로컬 구현·검증 완료; 실제 Source·AWS 배포 미실행 |
 | 적용 범위 | 도쿄·서울 공개 MVP |
 
 ### 변경 이력

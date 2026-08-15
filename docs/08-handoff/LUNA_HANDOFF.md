@@ -3,7 +3,7 @@
 > 작성자 역할: 5.6 Sol, 제품 기획·소프트웨어 아키텍처  
 > 기준일: 2026-08-15  
 > 설계 상태: Sol Phase Gate 완료  
-> 구현·테스트 상태: LUN-001~013 구현 및 LUN-014 Source Gate 강화 완료, 로컬 검증·GitHub CI 실행 완료; 실제 Catalog 승인 대기
+> 구현·테스트 상태: LUN-001~014 로컬 구현·Catalog Publisher·Rollback과 로컬 검증·GitHub CI 실행 완료; 실제 Catalog 승인 대기
 > AWS 배포 상태: 리소스 생성·Terraform Apply·실제 배포 미실행
 
 ## 1. 인계 목적

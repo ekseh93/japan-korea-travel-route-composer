@@ -9,7 +9,7 @@
 | 상태 | BASELINED |
 | Base path | `/v1` |
 | 소유 | Application / Interface |
-| 구현 상태 | 미구현 |
+| 구현 상태 | API Handler·Web contract 구현 및 로컬/E2E 검증 완료; 실제 AWS 통합 미실행 |
 
 이 문서는 Web과 API 사이의 공개 계약이다. Domain Aggregate와 DynamoDB Item은
 이 계약에 노출하지 않는다. Enum의 단일 기준은

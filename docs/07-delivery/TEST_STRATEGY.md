@@ -1,6 +1,6 @@
 # 테스트 전략
 
-> 상태: 설계 승인, 테스트 미구현·미실행  
+> 상태: 설계 승인, LUN-001~014 로컬·계약·E2E 테스트 구현 및 실행 완료; AWS Smoke·실제 Source 검증 미실행
 > 기준일: 2026-08-15  
 > 원칙: 알고리즘 제약, 출처 권리와 배포 안전을 같은 품질 Gate로 관리
 
@@ -28,6 +28,11 @@
 
 외부 Google/Kakao/AI Live Test는 기본 CI에 없다. 승인을 받은 별도 수동 Test가
 쿼터와 비용을 사용하고 응답 원문을 Artifact에 저장하지 않는다.
+
+현재 로컬 실행 증거는 Vitest 67개, Release contract 4개, Smoke contract 4개,
+브라우저 E2E 3개, build, dependency audit이다. GitHub CI는 quality,
+browser-e2e, terraform-static을 통과했으며, 실제 AWS Plan/Apply와 Production
+Smoke는 승인 전 실행하지 않는다.
 
 ## 3. 도메인 Unit과 Property
 
