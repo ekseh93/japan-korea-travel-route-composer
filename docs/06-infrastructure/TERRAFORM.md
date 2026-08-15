@@ -18,7 +18,8 @@ DynamoDB, 로그와 경보를 관리한다. 애플리케이션 소스와 Catalog
 
 ## 2. 계획 디렉터리
 
-다음은 Luna가 구현할 목표 구조이며 현재 생성된 코드가 아니다.
+다음은 현재 저장소에서 구현·검증하는 Terraform root 구조다. 재사용성이 낮은
+단일 환경이므로 불필요한 Module 분해는 하지 않았다.
 
 ~~~text
 infra/
@@ -34,9 +35,9 @@ infra/
     github-oidc/
 ~~~
 
-환경 Root가 Module을 조합하며 Module끼리 직접 원격 State를 읽지 않는다. 필요한
-값은 Root 입력과 Output으로 전달한다. 재사용되지 않는 단일 리소스까지 억지로
-Module화하지 않는다.
+Production Root가 리소스를 직접 관리하며 Module끼리 원격 State를 읽지 않는다.
+필요한 값은 Root 입력과 Output으로 전달한다. 향후 반복되는 경계가 생길 때만
+Module로 분리한다.
 
 ## 3. Bootstrap과 원격 State
 

@@ -5,7 +5,7 @@
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY  
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 Catalog 반입·AWS 리소스 검증·배포 미실행
 > 공개 URL·사용자 지표: 없음  
-> LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
+> LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 3건·브라우저 E2E 3건·build·catalog:validate·catalog:build·의존성 감사 통과; Terraform fmt/validate·TFLint·Trivy는 직전 CI 통과 (2026-08-16)
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업과 Smoke contract tests·Release contract tests 통과 ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31909629580), 2026-08-16)
 
 ## 프로젝트 개요
@@ -113,6 +113,8 @@ Publisher CLI를 호출하도록 연결했고, 보호된 rollback Workflow는 �
 Terraform fmt/validate·TFLint·Trivy와 Workflow의 quality·browser-e2e는
 GitHub CI에서 실행했습니다. 실제 AWS Plan, OIDC AssumeRole, Artifact 업로드,
 Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다.
+Production Terraform Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록
+보강했고, Workflow 계약 테스트로 원격 State·OIDC·fork 보호를 고정했습니다.
 
 ## 현재 상태
 
@@ -122,7 +124,7 @@ Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료 |
 | 애플리케이션·인프라 코드 | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; 실제 AWS 적용은 미실행 |
 | 실제 150~250개 Catalog | 미수집, Source 승인 필요 |
-| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·브라우저 E2E 3건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
+| 테스트·빌드 | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 3건·브라우저 E2E 3건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, 실제 Plan·배포 Smoke는 미실행 |
 | AWS 리소스·배포 URL | 없음 |
 | 실제 성능·가용성·사용자 지표 | 없음 |
 
@@ -158,6 +160,7 @@ pnpm catalog:validate --as-of 2026-08-15
 pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-15
 pnpm catalog:build
 pnpm catalog:build -- --root data/catalog-v1 --production --as-of 2026-08-15 --output release/catalog-projection.json
+pnpm workflow:verify:test
 pnpm smoke:test
 pnpm smoke -- --base-url https://<web-host> --api-base-url https://<api-host>
 pnpm audit --audit-level high

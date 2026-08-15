@@ -63,7 +63,11 @@ jobs:
         run: |
           set -euo pipefail
           docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
-            -chdir=infra/environments/production init -input=false
+            -chdir=infra/environments/production init -input=false \
+            -backend-config="bucket=${{ vars.TERRAFORM_STATE_BUCKET }}" \
+            -backend-config="key=production/terraform.tfstate" \
+            -backend-config="region=${{ vars.AWS_REGION }}" \
+            -backend-config="use_lockfile=true"
           catalog_table="$(docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
             -chdir=infra/environments/production output -raw catalog_table_name)"
           node apps/api/dist/infrastructure/catalog-rollback-cli.js \

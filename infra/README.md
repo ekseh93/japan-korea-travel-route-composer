@@ -6,9 +6,12 @@ managed versioned Lambda artifact bucket. The LUN-013 workflow builds Web/Lambda
 artifacts once and deploys only the verified artifact. No Terraform apply or AWS
 resource creation has been run in this repository.
 
-Use an approved short-lived AWS session only after reviewing the plan. Copy the
-example backend and variables files locally; never commit the resulting files.
-Run `terraform fmt -check`, `terraform init -backend=false`, `terraform validate`,
+Use an approved short-lived AWS session only after reviewing the plan. For local
+state-aware work, pass the approved State bucket through Terraform backend
+configuration; never commit backend or variables files containing account values.
+The GitHub workflows use the repository variable `TERRAFORM_STATE_BUCKET` with
+the fixed `production/terraform.tfstate` key and `use_lockfile=true`. Run
+`terraform fmt -check`, `terraform init -backend=false`, `terraform validate`,
 TFLint, and an IaC security scanner before requesting a production plan.
 
 Local verification on 2026-08-15: Terraform 1.9.8 `fmt -check` and `validate`

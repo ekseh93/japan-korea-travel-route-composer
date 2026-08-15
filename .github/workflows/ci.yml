@@ -41,6 +41,8 @@ jobs:
         run: pnpm smoke:test
       - name: Release artifact contract tests
         run: pnpm release:verify:test
+      - name: Workflow contract tests
+        run: pnpm workflow:verify:test
 
   browser-e2e:
     runs-on: ubuntu-24.04
