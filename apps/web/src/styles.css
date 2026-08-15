@@ -222,6 +222,57 @@ button:disabled {
   margin: 0.7rem 0 1rem;
   font-size: 1.35rem;
 }
+.map-frame {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+.map-canvas {
+  min-height: 15rem;
+  overflow: hidden;
+  border: 1px solid #cad3cb;
+  border-radius: 0.45rem;
+  background: #dce8df;
+}
+.map-canvas-hidden {
+  display: none;
+}
+.map-status,
+.map-fallback {
+  margin: 0;
+  padding: 0.8rem;
+  color: #55706b;
+  background: rgba(235, 242, 235, 0.8);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+.map-fallback {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px dashed #aebdb4;
+}
+.map-fallback strong {
+  color: #172b2b;
+}
+.map-place-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0 0 0 1.5rem;
+  color: #41605f;
+  font-size: 0.75rem;
+}
+.map-place-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-left: 0.25rem;
+}
+.map-place-list a {
+  color: #287b73;
+  font-weight: 800;
+}
 .timeline-item {
   display: grid;
   grid-template-columns: 3.4rem 1fr;

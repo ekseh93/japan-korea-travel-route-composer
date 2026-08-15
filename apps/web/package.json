@@ -10,6 +10,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@route-composer/contracts": "workspace:*"
+    "@route-composer/contracts": "workspace:*",
+    "maplibre-gl": "5.12.0"
   }
 }

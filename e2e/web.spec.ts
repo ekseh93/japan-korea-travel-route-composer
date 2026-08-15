@@ -91,7 +91,7 @@ test("composes a route with keyboard-accessible controls and source link", async
   await expect(page.getByRole("button", { name: "동선 조합하기" })).toBeFocused();
   await page.getByRole("button", { name: "동선 조합하기" }).press("Enter");
   await expect(page.getByText("제약 조건을 확인한 동선을 만들었습니다.")).toBeVisible();
-  await expect(page.getByText("E2E 表参道")).toBeVisible();
+  await expect(page.locator(".timeline-item.visit").getByText("E2E 表参道")).toBeVisible();
   await expect(page.getByRole("link", { name: "Synthetic E2E Source 출처" })).toHaveAttribute(
     "rel",
     "noopener noreferrer",
@@ -107,4 +107,13 @@ test("has no axe violations and fits the 360px mobile viewport", async ({ page }
   expect(overflow).toBe(false);
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
+});
+
+test("keeps the text itinerary when map tiles are blocked", async ({ page }) => {
+  await page.route("https://tiles.openfreemap.org/**", (route) => route.abort());
+  await page.goto("/");
+  await page.getByRole("button", { name: "동선 조합하기" }).click();
+  await expect(page.getByText("지도를 불러오지 못해 텍스트 일정으로 표시합니다.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "지도에서 장소 확인" })).toBeVisible();
+  await expect(page.locator(".timeline-item.visit").getByText("E2E 表参道")).toBeVisible();
 });

@@ -11,6 +11,7 @@ import {
 } from "@route-composer/contracts";
 
 import { appName, implementationMilestone } from "./app";
+import { RouteMap } from "./route-map";
 import "./styles.css";
 
 const defaultRequest: ComposeTripRequest = {
@@ -278,6 +279,12 @@ function App() {
                     <time dateTime={day.date}>{day.date}</time>
                   </div>
                   <h3>{day.title}</h3>
+                  <RouteMap
+                    visits={day.items.filter(
+                      (item): item is Extract<typeof item, { type: "VISIT" }> =>
+                        item.type === "VISIT",
+                    )}
+                  />
                   {day.items.map((item) =>
                     item.type === "VISIT" ? (
                       <div className="timeline-item visit" key={item.visitId}>
