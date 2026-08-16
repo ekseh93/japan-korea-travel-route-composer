@@ -52,6 +52,24 @@ test("all workflows use the Node 24-compatible pinned checkout action", async ()
   }
 });
 
+test("Terraform workflows use a lockfile-compatible pinned CLI", async () => {
+  for (const name of [
+    "ci.yml",
+    "terraform-plan.yml",
+    "deploy-production.yml",
+    "production-state-reconcile.yml",
+    "rollback.yml",
+    "teardown.yml",
+  ]) {
+    const content =
+      name === "production-state-reconcile.yml"
+        ? await readFile(new URL("scripts/reconcile-production-state.sh", root), "utf8")
+        : await workflow(name);
+    assert.match(content, /terraform:1\.10\.5/);
+    assert.doesNotMatch(content, /terraform:1\.9\.8/);
+  }
+});
+
 test("deployment workflows require reviewed inputs and protected environments", async () => {
   const deploy = await workflow("deploy-production.yml");
   assert.match(deploy, /release_sha:[\s\S]*?required:\s+true/);

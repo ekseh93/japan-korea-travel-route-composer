@@ -7,7 +7,7 @@
 ## 0. Local AWS Preflight
 
 AWS Console의 브라우저 로그인은 PowerShell·GitHub Actions의 셸 자격 증명을 만들지 않는다.
-로컬 검증과 계정 식별에는 AWS CLI v2, Terraform 1.9.8, TFLint 0.55.1이 필요하다.
+로컬 검증과 계정 식별에는 AWS CLI v2, Terraform 1.10.5, TFLint 0.55.1이 필요하다.
 
 현재 로컬 정적 검증에는 사용자 영역의 AWS CLI 1.46.0과 TFLint 0.64.0도 사용했지만,
 운영 인증·SSO에는 AWS CLI v2를 권장한다. 도구 설치만으로 AWS 계정 권한이 생기지는 않는다.

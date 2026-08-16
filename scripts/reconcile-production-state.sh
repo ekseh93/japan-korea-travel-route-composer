@@ -18,7 +18,7 @@ tf() {
     -e TF_VAR_release_sha \
     -v "$PWD:/workspace" \
     -w /workspace \
-    hashicorp/terraform:1.9.8 "$@"
+    hashicorp/terraform:1.10.5 "$@"
 }
 
 import_if_unmanaged() {

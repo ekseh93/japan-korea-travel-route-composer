@@ -158,13 +158,13 @@ jobs:
             -v "$PWD:/workspace"
             -w /workspace
           )
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production init -input=false \
             -backend-config="bucket=${{ vars.TERRAFORM_STATE_BUCKET }}" \
             -backend-config="key=production/terraform.tfstate" \
             -backend-config="region=${{ vars.AWS_REGION }}" \
             -backend-config="use_lockfile=true"
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production plan -input=false -lock-timeout=60s \
             -out=/workspace/release/tfplan \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
@@ -174,13 +174,13 @@ jobs:
             -var="lambda_s3_key=${lambda_key}" \
             -var="lambda_source_code_hash=${lambda_hash}" \
             -var="release_sha=${{ inputs.release_sha }}"
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production apply -input=false -auto-approve /workspace/release/tfplan
       - name: Publish immutable Catalog projection
         shell: bash
         run: |
           set -euo pipefail
-          catalog_table="$(docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.9.8 \
+          catalog_table="$(docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production output -raw catalog_table_name)"
           node release/lambda/dist/infrastructure/catalog-publisher-cli.js \
             --table-name "$catalog_table" \
@@ -202,11 +202,11 @@ jobs:
             -v "$PWD:/workspace"
             -w /workspace
           )
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production output -raw web_bucket_name > release/web-bucket.txt
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production output -raw cloudfront_distribution_id > release/cloudfront-id.txt
-          docker run "${docker_args[@]}" hashicorp/terraform:1.9.8 \
+          docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production output -raw api_endpoint > release/api-endpoint.txt
           web_bucket="$(cat release/web-bucket.txt)"
           cloudfront_id="$(cat release/cloudfront-id.txt)"

@@ -305,6 +305,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Terraform 계약 테스트가 backend 선언을 검사하도록 보완됐다. 수정 commit 반영 후 State reconcile, 원격 State
   확인, 삭제 0건 Plan 검토 순서로 재검증한다.
 
+### LUN-038 S3 lockfile 호환 Terraform 버전 고정
+
+- 실제 S3 backend 선언을 사용한 State reconcile `31934545477`에서 Terraform `1.9.8`의 `use_lockfile` 미지원
+  오류를 확인했다.
+- S3 native lockfile 계약을 유지하기 위해 CI와 모든 Terraform workflow·복구 스크립트를 `1.10.5`로 통일하고,
+  production/bootstrap `required_version`을 `>= 1.10.0`으로 상향했다.
+- 버전 계약 테스트를 추가했으며, 수정 commit에서 State backend 연결과 import 결과의 원격 저장을 재검증한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

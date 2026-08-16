@@ -17,6 +17,7 @@ test("Terraform preserves cost, retention, and deletion boundaries", async () =>
   const bootstrap = await terraform("infra/bootstrap/main.tf");
 
   assert.match(productionVersions, /default_tags\s*\{[\s\S]*tags\s*=\s*local\.tags/);
+  assert.match(productionVersions, /required_version\s*=\s*">= 1\.10\.0, < 2\.0\.0"/);
   assert.match(productionBackend, /backend\s+"s3"\s*\{\s*\}/);
   assert.match(production, /Project\s*=\s*var\.project_slug/);
   assert.match(production, /resource "aws_s3_bucket" "web"[\s\S]*?force_destroy\s*=\s*false/);

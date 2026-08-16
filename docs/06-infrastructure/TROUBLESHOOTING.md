@@ -526,6 +526,17 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** Terraform 계약 테스트가 실제 S3 backend 선언을 검사하도록 보완됐다. 다음 순서는 수정 commit의 State
   reconcile 성공 확인, 원격 State 목록 확인, 삭제 0건 Plan 검토, 그 후에만 Production Apply 재실행이다.
 
+### 33. S3 lockfile을 지원하지 않는 Terraform CLI 버전
+
+- **문제:** 실제 S3 backend 선언을 추가한 State reconcile `31934545477`이 Terraform `1.9.8`에서
+  `Invalid backend configuration argument`와 `use_lockfile` 미지원 오류로 중단됐다.
+- **원인:** S3 backend의 native `use_lockfile`은 Terraform `1.10`부터 지원되는데, 기존 Docker 실행은
+  `1.9.8`로 고정되어 있었다.
+- **결정:** S3 lockfile을 제거하거나 오래된 DynamoDB lock으로 우회하지 않고 Terraform Docker 실행을 `1.10.5`로
+  고정하고, 두 Terraform root의 최소 버전을 `>= 1.10.0`으로 올렸다. State backend 선언과 lockfile을 유지한다.
+- **검증:** CI·Plan·Deploy·State reconcile·Rollback·Teardown의 버전을 통일하고 계약 테스트에 `1.10.5`와
+  `1.9.8` 부재 조건을 추가했다. 수정 commit 반영 후 State reconcile을 재실행한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.
