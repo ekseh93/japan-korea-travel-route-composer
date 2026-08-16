@@ -185,6 +185,9 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Build once 원칙에 맞춰 두 값의 비어 있음 검사를 Budget Secret 검사와 함께 OIDC 앞에 추가하고,
   workflow contract test로 오류 메시지를 고정했다. Artifact와 checksum이 연결되기 전에는 AWS
   Plan을 요청하지 않는다.
+- GitHub CI `31928319717`에서 quality·browser-e2e·terraform-static과 Smoke·Release·Workflow·Terraform
+  계약 검사가 모두 성공했다. 이 CI는 AWS OIDC·Terraform Plan/Apply를 실행하지 않았고, 관련
+  Budget Secret·artifact 변수도 생성하지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

@@ -13,6 +13,7 @@
 > Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
 > Plan and Deploy workflows now preflight the Budget Secret and immutable Lambda artifact variables before OIDC; Plan `31928188767` skipped OIDC and Terraform after the preflight failed; these inputs remain intentionally unset
+> Latest GitHub CI `31928319717` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
 >
 > Public URL and user metrics: none
 >
@@ -26,7 +27,7 @@
 > GitHub CI verification: quality, browser-e2e,
 > terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and
 > Terraform contract tests all passed
-> ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31925776953),
+> ([latest run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31928319717),
 > 2026-08-16)
 
 ## Project Overview
