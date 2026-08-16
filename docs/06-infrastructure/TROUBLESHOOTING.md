@@ -349,6 +349,16 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - **검증:** Terraform contract test에 validation 문구를 고정하고, 승인 전에는 Secret 생성·AWS
   Apply를 실행하지 않는다.
 
+### 15. 미승인 Budget Secret으로 Terraform Plan이 중단된 결과
+
+- **실행:** 수동 Terraform Plan `31927331676`에서 `terraform-plan` OIDC Role AssumeRole과
+  remote state init까지 성공했다.
+- **결과:** 빈 `BUDGET_EMAIL`이 `Invalid value for variable` validation error를 발생시켜
+  Plan이 종료됐다. workflow에는 Apply·artifact upload·배포 단계가 없으므로 AWS 리소스 변경은
+  발생하지 않았다.
+- **판정:** Budget 이메일 승인 전에는 이 실패가 정상적인 안전 차단이다. 승인된 이메일과 필요한
+  immutable artifact 입력이 준비된 뒤에만 Plan 결과를 검토하고 Production Apply로 진행한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

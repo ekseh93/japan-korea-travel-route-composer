@@ -165,6 +165,9 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   Terraform variable validation을 추가했다.
 - Terraform contract test, Terraform 문서와 README 3종에 Secret 미설정 시 Apply가 차단되는
   경계를 기록했다. 이 변경은 이메일 승인·Secret 생성·AWS 호출을 수행하지 않는다.
+- 수동 Terraform Plan `31927331676`에서 OIDC와 remote state init은 성공했지만 빈
+  `BUDGET_EMAIL` validation error로 종료되는 것을 확인했다. Plan workflow에는 Apply가 없어
+  AWS 리소스 변경은 발생하지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
