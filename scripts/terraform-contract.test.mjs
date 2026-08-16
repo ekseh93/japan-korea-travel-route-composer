@@ -11,11 +11,13 @@ async function terraform(path) {
 
 test("Terraform preserves cost, retention, and deletion boundaries", async () => {
   const production = await terraform("infra/environments/production/main.tf");
+  const productionBackend = await terraform("infra/environments/production/backend.tf");
   const productionVariables = await terraform("infra/environments/production/variables.tf");
   const productionVersions = await terraform("infra/environments/production/versions.tf");
   const bootstrap = await terraform("infra/bootstrap/main.tf");
 
   assert.match(productionVersions, /default_tags\s*\{[\s\S]*tags\s*=\s*local\.tags/);
+  assert.match(productionBackend, /backend\s+"s3"\s*\{\s*\}/);
   assert.match(production, /Project\s*=\s*var\.project_slug/);
   assert.match(production, /resource "aws_s3_bucket" "web"[\s\S]*?force_destroy\s*=\s*false/);
   assert.match(production, /noncurrent_days\s*=\s*30/);

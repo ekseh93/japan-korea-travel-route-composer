@@ -513,6 +513,19 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 복구 스크립트와 계약 테스트에 미확인 상태 차단 조건을 추가했다. Budget SNS Topic은 이미 import됐고,
   구독 ARN과 Budget 알림 경로는 이메일 확인 후 다음 State reconcile에서 검증한다.
 
+### 32. State import 결과가 원격 State에 남지 않은 문제
+
+- **문제:** State reconcile `31934140832`는 여러 리소스를 `Import successful`로 보고했지만, 다음 Production
+  run `31934294917`의 Fresh Plan은 `30 to add, 0 to change, 0 to destroy`를 계산했다. Apply는 기존 S3·CloudFront
+  OAC·DynamoDB·Log Group·IAM Role·Budget 충돌에서 중단됐고 삭제는 0건이었다.
+- **원인:** `infra/environments/production`에 `backend.tf.example`만 있고 실제 `backend "s3"` 선언이 없었다.
+  Workflow의 `-backend-config` 인자만으로는 이 구성의 원격 State 사용 계약이 보장되지 않아 reconcile과 deploy가
+  동일한 S3 State를 읽지 못했다.
+- **결정:** `infra/environments/production/backend.tf`에 빈 `backend "s3" {}` 선언을 추가하고, 버킷·key·region·lockfile은
+  승인된 GitHub Variables를 통해 Workflow에서 주입한다. 장기 키, State 수동 편집, 기존 리소스 삭제는 사용하지 않는다.
+- **검증:** Terraform 계약 테스트가 실제 S3 backend 선언을 검사하도록 보완됐다. 다음 순서는 수정 commit의 State
+  reconcile 성공 확인, 원격 State 목록 확인, 삭제 0건 Plan 검토, 그 후에만 Production Apply 재실행이다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

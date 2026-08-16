@@ -296,6 +296,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 구독 확인 후 수정 commit으로 State reconcile을 재실행하고, 이후 Production Plan에서 Budget 알림 경로를
   검토한다.
 
+### LUN-037 Production 원격 State backend 선언 보완
+
+- State reconcile `31934140832`의 import 성공 로그와 달리 Production run `31934294917`은 `30 to add`를 계산해
+  기존 리소스 충돌로 중단됐다. 삭제는 0건이었으며 Build·OIDC·Lambda artifact 업로드는 성공했다.
+- 원인은 production 디렉터리에 `backend.tf.example`만 있고 실제 S3 backend 블록이 없었던 것이다. Workflow의
+  backend-config 인자를 실제 `backend "s3" {}` 선언에 연결하도록 `infra/environments/production/backend.tf`를 추가했다.
+- Terraform 계약 테스트가 backend 선언을 검사하도록 보완됐다. 수정 commit 반영 후 State reconcile, 원격 State
+  확인, 삭제 0건 Plan 검토 순서로 재검증한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

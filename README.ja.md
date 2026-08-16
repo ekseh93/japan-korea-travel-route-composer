@@ -17,6 +17,7 @@
 > 最新のGitHub CI `31929411509`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
 > State reconcile `31933697630`は既存リソースのimport中にLambdaインラインポリシーが未作成で停止、ポリシーが存在する場合だけimportするよう復旧スクリプトを修正し、契約テスト9件に合格
 > 続くState reconcile `31933964803`はBudget SNSメール購読が`PendingConfirmation`の状態で停止、未確認購読はARNではないためimportせず、メール確認後に再検証するよう修正中
+> Production run `31934294917`はBuild・OIDC・artifact uploadまで成功した後、Terraformが`30 to add, 0 to change, 0 to destroy`を計画し、既存リソース作成競合で停止、production backend宣言の欠落が原因と確認したためS3 backend宣言を追加してState復旧を再実行する
 >
 > 公開URL・ユーザー指標: なし
 >
