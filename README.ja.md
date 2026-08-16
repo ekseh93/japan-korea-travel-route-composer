@@ -2,13 +2,13 @@
 
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
-> 状態: Solの段階別設計完了、Luna実装引継ぎREADY  
+> 状態: Solの段階別設計完了、Luna実装引継ぎREADY
 >
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWSリソース検証・Terraform Plan/Apply・配信は未実行
 >
-> 公開URL・ユーザー指標: なし  
+> 公開URL・ユーザー指標: なし
 >
 > LUN-014検証: format・lint・typecheck・67
 > Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E
@@ -123,15 +123,15 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 
 ## 現在の状態
 
-| 項目                                         | 状態                                                                                                                                                                                                                                                                                                                  |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                        |
-| プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                    |
-| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成済み、実AWS適用は未実行 |
-| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
+| 項目                                         | 状態                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                               |
+| プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                                                           |
+| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成済み、実AWS適用は未実行                           |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                        |
 | テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build合格、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、実Plan・配信Smokeは未実行 |
-| AWSリソース・公開URL                         | なし                                                                                                                                                                                                                                                                                                                  |
-| 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                  |
+| AWSリソース・公開URL                         | なし                                                                                                                                                                                                                                                                                                                                                         |
+| 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                                                         |
 
 ## 設計ドキュメント
 
@@ -142,7 +142,7 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 - [DDD設計](docs/03-domain/DDD.md)
 - [AWSアーキテクチャ](docs/04-architecture/ARCHITECTURE.md)、[API契約](docs/04-architecture/API_CONTRACT.md)、[セキュリティ](docs/04-architecture/SECURITY.md)、[ADRs](docs/04-architecture/ADRs/)
 - [データモデル](docs/05-data/DATA_MODEL.md)、[Domain Catalog](docs/05-data/DOMAIN_CATALOG.md)、[Seed仕様](docs/05-data/SEED_SPEC.md)、[出典ポリシー](docs/05-data/SOURCE_POLICY.md)、[Source Registry](docs/05-data/SOURCE_REGISTRY.md)、[推薦エンジン](docs/05-data/RECOMMENDATION.md)
-- [Terraform](docs/06-infrastructure/TERRAFORM.md)、[コストモデル](docs/06-infrastructure/COST_MODEL.md)、[Runbook](docs/06-infrastructure/RUNBOOK.md)
+- [Terraform](docs/06-infrastructure/TERRAFORM.md)、[コストモデル](docs/06-infrastructure/COST_MODEL.md)、[Runbook](docs/06-infrastructure/RUNBOOK.md)、[AWS・GitHub認証トラブルシューティング](docs/06-infrastructure/TROUBLESHOOTING.md)
 - [CI/CD](docs/07-delivery/CI_CD.md)、[テスト](docs/07-delivery/TEST_STRATEGY.md)、[可観測性](docs/07-delivery/OBSERVABILITY.md)
 - [Luna実装引継ぎ](docs/08-handoff/LUNA_HANDOFF.md)、[Luna新規チャットContext](docs/08-handoff/LUNA_INITIAL_CONTEXT.md)
 - [実装更新ログ](docs/08-handoff/IMPLEMENTATION_LOG.md)

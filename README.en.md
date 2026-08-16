@@ -2,14 +2,14 @@
 
 [한국어](README.md) | [日本語](README.ja.md) | [English](README.en.md)
 
-> Status: Sol phased design complete; Luna implementation handoff READY  
+> Status: Sol phased design complete; Luna implementation handoff READY
 >
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
 > catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; AWS resource
 > validation, Terraform Plan/Apply, and deployment not run
 >
-> Public URL and user metrics: none  
+> Public URL and user metrics: none
 >
 > LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release
 > contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build,
@@ -140,15 +140,15 @@ without a chunk warning.
 
 ## Current Status
 
-| Item                                                 | Status                                                                                                                                                                                                                                                                                                                                                                                         |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                 |
-| Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                 |
-| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; AWS application not run |
-| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
+| Item                                                 | Status                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; AWS application not run                            |
+| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                     |
 | Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Production Catalog validate/build passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
-| AWS resources and deployment URL                     | None                                                                                                                                                                                                                                                                                                                                                                                           |
-| Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                           |
+| AWS resources and deployment URL                     | None                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## Design Documents
 
@@ -171,7 +171,8 @@ without a chunk warning.
   [Source Registry](docs/05-data/SOURCE_REGISTRY.md),
   [recommendation engine](docs/05-data/RECOMMENDATION.md)
 - [Terraform](docs/06-infrastructure/TERRAFORM.md),
-  [cost model](docs/06-infrastructure/COST_MODEL.md), [runbook](docs/06-infrastructure/RUNBOOK.md)
+  [cost model](docs/06-infrastructure/COST_MODEL.md), [runbook](docs/06-infrastructure/RUNBOOK.md),
+  [AWS and GitHub authentication troubleshooting](docs/06-infrastructure/TROUBLESHOOTING.md)
 - [CI/CD](docs/07-delivery/CI_CD.md), [testing](docs/07-delivery/TEST_STRATEGY.md),
   [observability](docs/07-delivery/OBSERVABILITY.md)
 - [Luna implementation handoff](docs/08-handoff/LUNA_HANDOFF.md),

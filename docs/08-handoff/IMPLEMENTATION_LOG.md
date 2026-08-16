@@ -6,16 +6,16 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 현재 기준선
 
-| 항목 | 상태 |
-|---|---|
-| Sol 설계 Phase Gate | 완료 |
-| Luna handoff | `LUNA HANDOFF: READY` |
-| 구현 | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료 |
-| 로컬 검증 | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
-| GitHub CI | quality, browser-e2e, terraform-static 통과 |
-| 실제 Source 반입 | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과 |
-| AWS 리소스·배포 | 미실행, AWS Account ID·Budget·OIDC 사전 검증 대기 |
-| 로컬 Terraform 사전 검증 | Terraform 1.9.8·TFLint 0.64.0 설치 및 backend 없는 정적 검증 통과; AWS 자격 증명 없음 |
+| 항목                     | 상태                                                                                                                                                                                            |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sol 설계 Phase Gate      | 완료                                                                                                                                                                                            |
+| Luna handoff             | `LUNA HANDOFF: READY`                                                                                                                                                                           |
+| 구현                     | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료                                                                              |
+| 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
+| GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
+| 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
+| AWS 리소스·배포          | 미실행, AWS Account ID·Budget·OIDC 사전 검증 대기                                                                                                                                               |
+| 로컬 Terraform 사전 검증 | Terraform 1.9.8·TFLint 0.64.0 설치 및 backend 없는 정적 검증 통과; AWS 자격 증명 없음                                                                                                           |
 
 ## 커밋 기준
 
@@ -29,38 +29,38 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 완료된 커밋
 
-| Commit | 내용 | 증거 |
-|---|---|---|
-| `d76aec0` | LUN-001~010 애플리케이션·테스트·Terraform·CI 기반 구현 | 로컬 검증 기록 |
-| `bb609b6` | 깨끗한 CI 체크아웃에서 contracts 빌드를 명시 | GitHub CI 성공 |
-| `8649ce7` | LUN-011 MapLibre/OpenFreeMap 지도와 타일 장애 축소 | 로컬 검증 기록 |
-| `6cf0c19` | LUN-012 Terraform 비용·관측성 구현 계약 | 구현 전 문서 기준선 |
-| `d4b598c` | LUN-012 API Deployment·Log·Alarm·Budget·비용 제한 구현 | GitHub CI 성공 |
-| `ea6cbc1` | LUN-013 Build once·OIDC 배포 계약 문서화 | 구현 기준선 |
-| `ccc03f7` | LUN-013 Bootstrap Artifact bucket·Build once·보호된 OIDC Deploy Workflow 구현 | GitHub CI 성공 |
-| `4ee0839` | LUN-014 BLOCKED/UNVERIFIED Source·만료 Evidence·MANUAL_LINK_ONLY Tier Gate와 계약 테스트 | GitHub CI 성공 |
-| `7ddb550` | LUN-014 Source review·Host·Production Route SourceRef Gate와 계약 테스트 | GitHub CI 성공 |
-| `c219f5c` | LUN-014 재현 가능한 catalog validation CLI와 옵션 계약 테스트 | GitHub CI 성공 |
-| `437cf05` | LUN-014 결정론적 Catalog Projection Build와 계약 테스트 | GitHub CI 성공 |
-| `44517af` | 배포 전 Smoke 계약 명령·재시도 테스트와 CI 단계 | GitHub CI 성공 |
-| `550ebb2` | 공개 Place/Evidence 계약과 DynamoDB Adapter를 공유하는 Projection 변환 | GitHub CI 성공 |
-| `2e83848` | Production Catalog 규모 Gate와 도시별 검증 통계 | GitHub CI 성공 |
-| `59bb9f2` | 검증된 Projection 기반 Current pointer 계약과 stale Version 차단 | GitHub CI 성공 |
-| `8f0437b` | Production Catalog Artifact와 Release checksum/SBOM 검증 Workflow | GitHub CI 성공 |
-| `2d44969` | Release Artifact CI 검증 결과와 README 상태 동기화 | GitHub CI 성공 |
-| `ca7feb5` | DynamoDB Catalog Publisher, 조건부 Current 승격과 배포 Workflow 연결 | GitHub CI 성공 |
-| `8d5cf93` | META 예약으로 동일 CatalogVersion 재작성 차단 | GitHub CI 성공 |
-| `ea1e3b4` | 불변 Catalog CI 검증 결과와 문서 동기화 | GitHub CI 성공 |
-| `2f8ae02` | 보호된 Catalog rollback Workflow와 Rollback adapter 구현 | GitHub CI 성공 |
-| `8f82130` | Terraform Plan·Deploy·Rollback·Teardown의 원격 State backend 계약 고정 | GitHub CI 성공 (`31910331173`) |
-| `b52fa63` | Node 24-compatible actions/checkout v5.0.1 고정과 Workflow 계약 보강 | GitHub CI 성공 (`31911537593`) |
-| `2d5bfed` | 360px·768px·1280px 반응형 브라우저 E2E 범위 확장 | GitHub CI 성공 (`31911939084`) |
-| `1ff3744` | MapLibre 선택 청크 지연 로딩과 초기 Web 번들 분리 | GitHub CI 성공 (`31912171277`) |
-| `1268653` | Production 승인 입력·Protected Environment·철거 확인 Workflow 계약 보강 | GitHub CI 성공 (`31912459180`) |
-| `a36dabc` | Terraform 비용·보존·철거·IAM 안전성 계약 테스트와 CI 단계 추가 | GitHub CI 성공 (`31913227825`) |
-| `09ab3e5` | CI 수동 실행 경로와 재검증 문서화 | GitHub CI 성공 (`31913749177`, workflow_dispatch) |
-| `c86e755` | LUN-015 Source·AWS 승인 전제와 실행 순서를 정리한 승인 체크리스트 추가 | GitHub CI 성공 (`31914519023`) |
-| `cc90968` | 승인된 OSM Source 160개 반입·Attribution·Production Catalog Projection 생성 | Production validate/build 성공; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
+| Commit    | 내용                                                                                     | 증거                                                                                                                                                                                                       |
+| --------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `d76aec0` | LUN-001~010 애플리케이션·테스트·Terraform·CI 기반 구현                                   | 로컬 검증 기록                                                                                                                                                                                             |
+| `bb609b6` | 깨끗한 CI 체크아웃에서 contracts 빌드를 명시                                             | GitHub CI 성공                                                                                                                                                                                             |
+| `8649ce7` | LUN-011 MapLibre/OpenFreeMap 지도와 타일 장애 축소                                       | 로컬 검증 기록                                                                                                                                                                                             |
+| `6cf0c19` | LUN-012 Terraform 비용·관측성 구현 계약                                                  | 구현 전 문서 기준선                                                                                                                                                                                        |
+| `d4b598c` | LUN-012 API Deployment·Log·Alarm·Budget·비용 제한 구현                                   | GitHub CI 성공                                                                                                                                                                                             |
+| `ea6cbc1` | LUN-013 Build once·OIDC 배포 계약 문서화                                                 | 구현 기준선                                                                                                                                                                                                |
+| `ccc03f7` | LUN-013 Bootstrap Artifact bucket·Build once·보호된 OIDC Deploy Workflow 구현            | GitHub CI 성공                                                                                                                                                                                             |
+| `4ee0839` | LUN-014 BLOCKED/UNVERIFIED Source·만료 Evidence·MANUAL_LINK_ONLY Tier Gate와 계약 테스트 | GitHub CI 성공                                                                                                                                                                                             |
+| `7ddb550` | LUN-014 Source review·Host·Production Route SourceRef Gate와 계약 테스트                 | GitHub CI 성공                                                                                                                                                                                             |
+| `c219f5c` | LUN-014 재현 가능한 catalog validation CLI와 옵션 계약 테스트                            | GitHub CI 성공                                                                                                                                                                                             |
+| `437cf05` | LUN-014 결정론적 Catalog Projection Build와 계약 테스트                                  | GitHub CI 성공                                                                                                                                                                                             |
+| `44517af` | 배포 전 Smoke 계약 명령·재시도 테스트와 CI 단계                                          | GitHub CI 성공                                                                                                                                                                                             |
+| `550ebb2` | 공개 Place/Evidence 계약과 DynamoDB Adapter를 공유하는 Projection 변환                   | GitHub CI 성공                                                                                                                                                                                             |
+| `2e83848` | Production Catalog 규모 Gate와 도시별 검증 통계                                          | GitHub CI 성공                                                                                                                                                                                             |
+| `59bb9f2` | 검증된 Projection 기반 Current pointer 계약과 stale Version 차단                         | GitHub CI 성공                                                                                                                                                                                             |
+| `8f0437b` | Production Catalog Artifact와 Release checksum/SBOM 검증 Workflow                        | GitHub CI 성공                                                                                                                                                                                             |
+| `2d44969` | Release Artifact CI 검증 결과와 README 상태 동기화                                       | GitHub CI 성공                                                                                                                                                                                             |
+| `ca7feb5` | DynamoDB Catalog Publisher, 조건부 Current 승격과 배포 Workflow 연결                     | GitHub CI 성공                                                                                                                                                                                             |
+| `8d5cf93` | META 예약으로 동일 CatalogVersion 재작성 차단                                            | GitHub CI 성공                                                                                                                                                                                             |
+| `ea1e3b4` | 불변 Catalog CI 검증 결과와 문서 동기화                                                  | GitHub CI 성공                                                                                                                                                                                             |
+| `2f8ae02` | 보호된 Catalog rollback Workflow와 Rollback adapter 구현                                 | GitHub CI 성공                                                                                                                                                                                             |
+| `8f82130` | Terraform Plan·Deploy·Rollback·Teardown의 원격 State backend 계약 고정                   | GitHub CI 성공 (`31910331173`)                                                                                                                                                                             |
+| `b52fa63` | Node 24-compatible actions/checkout v5.0.1 고정과 Workflow 계약 보강                     | GitHub CI 성공 (`31911537593`)                                                                                                                                                                             |
+| `2d5bfed` | 360px·768px·1280px 반응형 브라우저 E2E 범위 확장                                         | GitHub CI 성공 (`31911939084`)                                                                                                                                                                             |
+| `1ff3744` | MapLibre 선택 청크 지연 로딩과 초기 Web 번들 분리                                        | GitHub CI 성공 (`31912171277`)                                                                                                                                                                             |
+| `1268653` | Production 승인 입력·Protected Environment·철거 확인 Workflow 계약 보강                  | GitHub CI 성공 (`31912459180`)                                                                                                                                                                             |
+| `a36dabc` | Terraform 비용·보존·철거·IAM 안전성 계약 테스트와 CI 단계 추가                           | GitHub CI 성공 (`31913227825`)                                                                                                                                                                             |
+| `09ab3e5` | CI 수동 실행 경로와 재검증 문서화                                                        | GitHub CI 성공 (`31913749177`, workflow_dispatch)                                                                                                                                                          |
+| `c86e755` | LUN-015 Source·AWS 승인 전제와 실행 순서를 정리한 승인 체크리스트 추가                   | GitHub CI 성공 (`31914519023`)                                                                                                                                                                             |
+| `cc90968` | 승인된 OSM Source 160개 반입·Attribution·Production Catalog Projection 생성              | Production validate/build 성공; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a` |
 
 ### LUN-014 Catalog Rollback 구현 결과
 
@@ -120,6 +120,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `terraform fmt -check -recursive infra`, 두 Terraform 루트의 `init -backend=false`·`validate`, `tflint --recursive`를 실행해 통과했다.
 - `aws configure list`는 profile·key·region을 찾지 못했고, `aws sts get-caller-identity`는 `Unable to locate credentials`로 실패했다.
 - 따라서 AWS Account ID 확인, Bootstrap/OIDC/Budget 생성, Terraform Plan/Apply, artifact 업로드와 배포 Smoke는 계속 미실행이다.
+
+### LUN-017 AWS·GitHub 인증 트러블슈팅 문서화 결과
+
+- 브라우저 Console 로그인과 PowerShell AWS Profile이 별도 인증 경로라는 문제를 별도 문서로 정리했다.
+- 장기 IAM Access Key를 GitHub에 저장하지 않고, 최초 Bootstrap은 사람용 SSO, 이후 CI/CD는 GitHub OIDC Plan/Deploy Role을 사용하는 이유를 기록했다.
+- 실제로 확인한 `Unable to locate credentials`, 도구 미설치, CloudShell Sign-In, GitHub CI 정적 검증과 AWS 미호출의 차이를 재현 가능한 상태로 기록했다.
+- README.md·README.ja.md·README.en.md의 설계 문서 목록에 `docs/06-infrastructure/TROUBLESHOOTING.md` 링크를 동기화했다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
