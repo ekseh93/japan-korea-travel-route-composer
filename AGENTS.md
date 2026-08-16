@@ -48,6 +48,10 @@ for every recommendation.
   Never present planned functionality or performance as completed evidence.
 - Use official, current sources for AWS limits and pricing, external API terms,
   robots policies, and data licenses. Include the date checked.
+- Record material implementation, security, infrastructure, or automation
+  disagreements in `docs/06-infrastructure/TROUBLESHOOTING.md` using the same
+  decision format: initial request, verified facts, explained risk or tradeoff,
+  accepted rationale, final decision, rollback path, and verification result.
 
 ## Engineering Standards
 
@@ -66,4 +70,3 @@ for every recommendation.
 - Build responsive, accessible interfaces with a WCAG 2.2 AA target.
 - Never invent review counts, user metrics, source permissions, test results, or
   deployment status for portfolio presentation.
-
