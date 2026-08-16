@@ -1,0 +1,50 @@
+{
+  "placeId": "pl_seoul_osm_way_192743564",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_GANGNAM",
+  "names": {
+    "ko": "도산공원",
+    "ja": "島山 公園",
+    "en": "Dosan Park"
+  },
+  "coordinates": {
+    "latitude": 37.5242866,
+    "longitude": 127.0352484
+  },
+  "category": "PARK_NATURE",
+  "themeTags": [
+    "NATURE_PARK",
+    "RELAXATION"
+  ],
+  "companionFit": [
+    "SOLO",
+    "FRIEND",
+    "COUPLE",
+    "FAMILY"
+  ],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 75,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": [
+    "UNKNOWN"
+  ],
+  "evidenceRefs": [
+    "ev_seoul_osm_way_192743564"
+  ],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 park or nature site Dosan Park입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたpark or nature site「Dosan Park」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "Dosan Park is listed in OpenStreetMap as a park or nature site in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

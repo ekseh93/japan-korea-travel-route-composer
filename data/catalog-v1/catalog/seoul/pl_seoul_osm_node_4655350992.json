@@ -1,0 +1,47 @@
+{
+  "placeId": "pl_seoul_osm_node_4655350992",
+  "cityId": "SEOUL",
+  "zoneId": "SEOUL_GANGNAM",
+  "names": {
+    "en": "거제지심도"
+  },
+  "coordinates": {
+    "latitude": 37.5063917,
+    "longitude": 127.0660003
+  },
+  "category": "DISTRICT_WALK",
+  "themeTags": [
+    "LOCAL_MOOD"
+  ],
+  "companionFit": [
+    "SOLO",
+    "FRIEND",
+    "COUPLE",
+    "FAMILY"
+  ],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "UNKNOWN",
+  "typicalDurationMinutes": 60,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Seoul",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": [
+    "UNKNOWN"
+  ],
+  "evidenceRefs": [
+    "ev_seoul_osm_node_4655350992"
+  ],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 district walk 거제지심도입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたdistrict walk「거제지심도」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "거제지심도 is listed in OpenStreetMap as a district walk in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

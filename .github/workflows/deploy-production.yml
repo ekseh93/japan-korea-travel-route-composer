@@ -239,3 +239,8 @@ jobs:
           web_domain="$(aws cloudfront get-distribution --id "$cloudfront_id" --query 'Distribution.DomainName' --output text)"
           curl --fail --silent --show-error "${api_endpoint}/health" | grep -q '"status":"ok"'
           curl --fail --silent --show-error "https://${web_domain}/" | grep -q '한일 여행 동선 조합기'
+          compose_body='{"cityId":"TOKYO","startDate":"2026-10-10","nights":1,"arrivalTime":"10:00","departureTime":"18:00","locale":"ja","companionType":"FRIEND","themes":["FOOD"],"pace":"BALANCED","mobilityLevel":"MEDIUM","budgetBand":"STANDARD","mustVisitPlaceIds":[],"excludedPlaceIds":[],"rainConsideration":true,"freeText":null,"diversitySeed":0}'
+          curl --fail --silent --show-error \
+            -X POST "${api_endpoint}/v1/trips:compose" \
+            -H 'content-type: application/json' \
+            --data "$compose_body" | grep -q '"plan"'

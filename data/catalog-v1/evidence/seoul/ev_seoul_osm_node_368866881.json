@@ -1,0 +1,22 @@
+{
+  "evidenceId": "ev_seoul_osm_node_368866881",
+  "sourceId": "geo_osm",
+  "placeId": "pl_seoul_osm_node_368866881",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": [
+    "NAME",
+    "COORDINATES",
+    "CATEGORY"
+  ],
+  "sourceUrl": "https://www.openstreetmap.org/node/368866881",
+  "sourceTitle": "OpenStreetMap node/368866881: Jangchung Swimming Pool",
+  "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",
+  "checkedAt": "2026-08-16",
+  "reviewDueAt": "2026-11-16",
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 park or nature site Jangchung Swimming Pool입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたpark or nature site「Jangchung Swimming Pool」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "Jangchung Swimming Pool is listed in OpenStreetMap as a park or nature site in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "APPROVED"
+}

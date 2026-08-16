@@ -25,6 +25,7 @@
 > Production deploy `31936300645`는 Terraform Apply까지 성공(`9 added, 1 changed, 0 destroyed`, API endpoint·CloudFront domain 생성)했으나 Catalog publisher가 원격 Terraform output 조회용 Docker 컨테이너에 OIDC 임시 자격 증명을 전달하지 않아 중단됨; 컨테이너 환경 전달을 보완하고 Catalog/Web/Smoke를 재실행 예정
 > 재실행 `31936509852`는 Apply까지 성공(`0 added, 1 changed, 0 destroyed`)했으나 배포 Lambda 패키지에서 AWS SDK 중첩 의존성 `@aws-sdk/core/account-id-endpoint`를 찾지 못해 Catalog publish 전 중단됨; Build에서 `node-linker=hoisted`를 사용하도록 보완하고 재검증 예정
 > Production deploy `31936843773`은 Build·보호 Environment 승인·OIDC·Terraform Apply(`0 added, 1 changed, 0 destroyed`)·Catalog publish·Web publish·CloudFront invalidation·API/Web Smoke를 모두 통과함; API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`, Web `https://d2r0admgel5eik.cloudfront.net/`, Catalog는 Tokyo/Seoul 각 80개
+> 이후 실제 기본 Compose 요청에서 `No publishable candidate is available.`를 확인함; 원인은 카페만 선택된 OSM Catalog와 `UNKNOWN` 영업시간이었으며, 반입 선별·Production Gate·실제 Compose Smoke를 보완했고 수정 Release 재배포 전임
 >
 > 공개 URL: [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/); 사용자 지표·실제 성능 수치는 아직 없음
 >

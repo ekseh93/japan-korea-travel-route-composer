@@ -348,6 +348,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `pnpm deploy --legacy`의 isolated layout을 그대로 사용하지 않고 Build에서 `node-linker=hoisted`를 지정해 AWS SDK production dependency를 평탄화하도록 보완했다.
 - hoisted 패키지에서 `@aws-sdk/core/account-id-endpoint.js` 존재를 로컬 확인하고 workflow 계약 테스트를 갱신했다. Production deploy `31936843773`에서 hoisted artifact, Catalog/Web publish, API/Web Smoke가 성공했다.
 
+### LUN-044 운영 Compose 후보 고갈 복구
+
+- 운영 URL에서 실제 기본 Compose 요청을 실행해 API/Web health와 별개로 `No publishable candidate is available.` 실패를 확인했다.
+- 원인은 OSM 반입 선택 정렬이 카페만 골라 영업시간 `UNKNOWN` 장소만 Production Catalog에 게시한 것이었다. 승인된 Domain 하드 필터는 유지하고, 반입을 Zone·카테고리 분산 방식으로 변경해 `OPEN_SPACE` 장소만 게시하도록 수정했다.
+- Catalog import는 조회·선별 성공 후에만 기존 파일을 교체하며, Production Validator가 도시별 게시 가능 Place 최소 수를 추가 검사한다. Deploy workflow의 Smoke는 `/health`와 Web marker뿐 아니라 실제 `POST /v1/trips:compose` 응답의 `plan`도 검사한다.
+- 로컬 Overpass 반입 결과는 도쿄·서울 각 80개, 총 160개였고 Production Catalog validate를 통과했다. 아직 이 수정 Release의 AWS 재배포와 브라우저 Compose 재검증은 다음 단계다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

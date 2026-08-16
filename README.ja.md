@@ -24,6 +24,7 @@
 > State reconcile `31935919549`は既存Lambda Functionを確認したが`AllowHttpApiInvoke`権限ステートメントがない状態でLambda permissionをimportしようとして停止、実際のresource policyに該当ステートメントがある場合だけimportするよう修正して再検証する
 > Production deploy `31936300645`はTerraform Applyまで成功(`9 added, 1 changed, 0 destroyed`、API endpoint・CloudFront domainを作成)したが、Catalog publisherがRemote Terraform outputを取得するDockerコンテナへOIDC一時認証情報を渡しておらず停止、コンテナ環境変数の引き渡しを修正してCatalog/Web/Smokeを再実行する
 > 再実行 `31936509852`はApplyまで成功(`0 added, 1 changed, 0 destroyed`)したが、Lambda配布パッケージでAWS SDKの依存関係`@aws-sdk/core/account-id-endpoint`を解決できずCatalog publish前に停止、Buildで`node-linker=hoisted`を使うよう修正して再検証する
+> その後、実際の初期Composeリクエストで`No publishable candidate is available.`を確認、原因はカフェだけを選択したOSM Catalogと`UNKNOWN`営業時間だったため、取込選別・Production Gate・実Compose Smokeを修正し、修正版Releaseの再配信前である
 >
 > 公開URL・ユーザー指標: なし
 >

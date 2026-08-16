@@ -1,0 +1,22 @@
+{
+  "evidenceId": "ev_seoul_osm_way_1015398198",
+  "sourceId": "geo_osm",
+  "placeId": "pl_seoul_osm_way_1015398198",
+  "evidenceTier": "A_OFFICIAL_OPEN",
+  "supportedClaims": [
+    "NAME",
+    "COORDINATES",
+    "CATEGORY"
+  ],
+  "sourceUrl": "https://www.openstreetmap.org/way/1015398198",
+  "sourceTitle": "OpenStreetMap way/1015398198: 삼성동힐스테이트1차 공원3",
+  "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",
+  "checkedAt": "2026-08-16",
+  "reviewDueAt": "2026-11-16",
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 park or nature site 삼성동힐스테이트1차 공원3입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたpark or nature site「삼성동힐스테이트1차 공원3」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "삼성동힐스테이트1차 공원3 is listed in OpenStreetMap as a park or nature site in Seoul. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "APPROVED"
+}

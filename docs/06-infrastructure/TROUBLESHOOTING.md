@@ -584,6 +584,20 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   생성 artifact에서 해당 모듈을 로드할 수 있게 한다.
 - **검증:** 동일한 `pnpm deploy --prod --legacy`를 hoisted 설정으로 실행해 모듈 존재를 확인했고 workflow 계약 테스트를 갱신했다. Production deploy `31936843773`에서 hoisted artifact, Catalog/Web publish, API/Web Smoke가 성공했다.
 
+### 39. 운영 Compose에서 게시 후보가 0개가 된 문제
+
+- **문제:** CloudFront 화면 로드와 API `/health`는 성공했지만, 실제 기본 입력으로 `POST /v1/trips:compose`를 실행하면
+  `No publishable candidate is available.`가 반환됐다.
+- **원인:** OSM 반입 결과가 카테고리 정렬의 앞부분인 카페 장소만 도쿄·서울 각 80개로 선택됐고, 프로젝트가 OSM에서
+  영업시간을 반입하지 않으므로 모두 `UNKNOWN`이었다. 승인 설계는 상업·예약 시설의 미확인 영업시간을 하드 필터로 제외한다.
+- **결정:** 추천 Domain의 `UNKNOWN` 제외 규칙은 유지한다. OSM 반입은 카테고리와 Zone을 분산 선택하고,
+  영업시간이 필요 없는 `DISTRICT_WALK`, `PARK_NATURE`, `VIEWPOINT`만 `OPEN_SPACE`로 게시한다. 카페·식당·쇼핑·예약 가능성이
+  있는 장소는 공식 영업시간을 사람이 확인하기 전까지 게시 후보에서 제외한다. 영업시간을 추정하거나 OSM 태그를 공식 운영시간으로
+  번역하지 않는다.
+- **검증:** 2026-08-16 Overpass 재조회로 도쿄·서울 각 80개, 총 160개의 OSM Place를 다시 구성했고,
+  `catalog:validate --production --as-of 2026-08-16`을 통과시켰다. Production Catalog Validator에 도시별
+  `CITY_MIN_PUBLISHABLE_PLACES` Gate와 운영 Smoke의 실제 Compose POST 검사를 추가했다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

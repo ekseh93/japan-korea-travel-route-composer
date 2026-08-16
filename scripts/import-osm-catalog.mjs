@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -226,6 +226,12 @@ function typicalDurationFor(category) {
   }[category];
 }
 
+function openingStatusFor(category) {
+  return ["DISTRICT_WALK", "PARK_NATURE", "VIEWPOINT"].includes(category)
+    ? "OPEN_SPACE"
+    : "UNKNOWN";
+}
+
 function namesFor(tags) {
   const local = tags.name ?? tags.int_name;
   if (!local) return undefined;
@@ -274,7 +280,7 @@ function toRecord(city, element, index) {
       indoorOutdoor: ["PARK_NATURE", "VIEWPOINT"].includes(category) ? "OUTDOOR" : "UNKNOWN",
       typicalDurationMinutes: typicalDurationFor(category),
       openingSchedule: {
-        status: "UNKNOWN",
+        status: openingStatusFor(category),
         timezone: city.timezone,
         weekly: {},
         exceptions: [],
@@ -331,8 +337,11 @@ function selectRecords(city, elements) {
     keys.add(key);
     unique.push(record);
   }
+  const publishableRecords = unique.filter(
+    (record) => record.place.openingSchedule.status !== "UNKNOWN",
+  );
   const byZone = new Map();
-  for (const record of unique) {
+  for (const record of publishableRecords) {
     const zoneRecords = byZone.get(record.place.zoneId) ?? [];
     zoneRecords.push(record);
     byZone.set(record.place.zoneId, zoneRecords);
@@ -340,12 +349,21 @@ function selectRecords(city, elements) {
   const selected = [];
   const selectedIds = new Set();
   for (const zone of Object.keys(city.zones)) {
-    for (const record of (byZone.get(zone) ?? []).slice(0, 6)) {
+    const zoneRecords = byZone.get(zone) ?? [];
+    const categories = [...new Set(zoneRecords.map((record) => record.place.category))].sort();
+    for (let index = 0; index < 6; index += 1) {
+      const preferredCategory = categories[index % categories.length];
+      const record = zoneRecords.find(
+        (candidate) =>
+          candidate.place.category === preferredCategory &&
+          !selectedIds.has(candidate.place.placeId),
+      );
+      if (record === undefined) continue;
       selected.push(record);
       selectedIds.add(record.place.placeId);
     }
   }
-  for (const record of unique) {
+  for (const record of publishableRecords) {
     if (selected.length >= 80) break;
     if (!selectedIds.has(record.place.placeId)) {
       selected.push(record);
@@ -353,7 +371,10 @@ function selectRecords(city, elements) {
     }
   }
   if (selected.length < 75)
-    throw new Error(`${city.cityId} yielded only ${selected.length} usable records.`);
+    throw new Error(
+      `${city.cityId} yielded only ${selected.length} publishable open-space records; ` +
+        "commercial or reservation places with unknown opening hours are excluded.",
+    );
   return selected.slice(0, 80);
 }
 
@@ -401,6 +422,15 @@ async function writeJson(file, value) {
 }
 
 async function main() {
+  const fetched = [];
+  for (const city of citySpecs) {
+    const elements = await fetchElements(city);
+    fetched.push({ city, records: selectRecords(city, elements) });
+  }
+
+  await rm(join(outputRoot, "catalog"), { recursive: true, force: true });
+  await rm(join(outputRoot, "evidence"), { recursive: true, force: true });
+  await rm(join(outputRoot, "routes"), { recursive: true, force: true });
   await mkdir(join(outputRoot, "sources"), { recursive: true });
   await mkdir(join(outputRoot, "evidence", "tokyo"), { recursive: true });
   await mkdir(join(outputRoot, "evidence", "seoul"), { recursive: true });
@@ -409,9 +439,7 @@ async function main() {
   await mkdir(join(outputRoot, "routes"), { recursive: true });
   await writeJson(join(outputRoot, "sources", `${sourceRecord.sourceId}.json`), sourceRecord);
   const counts = {};
-  for (const city of citySpecs) {
-    const elements = await fetchElements(city);
-    const records = selectRecords(city, elements);
+  for (const { city, records } of fetched) {
     counts[city.cityId] = records.length;
     for (const record of records) {
       await writeJson(

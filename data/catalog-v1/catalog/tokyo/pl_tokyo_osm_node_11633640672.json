@@ -1,0 +1,48 @@
+{
+  "placeId": "pl_tokyo_osm_node_11633640672",
+  "cityId": "TOKYO",
+  "zoneId": "TOKYO_ROPPONGI_AKASAKA",
+  "names": {
+    "en": "虎ノ門3丁目児童遊園"
+  },
+  "coordinates": {
+    "latitude": 35.6656759,
+    "longitude": 139.747754
+  },
+  "category": "PARK_NATURE",
+  "themeTags": [
+    "NATURE_PARK",
+    "RELAXATION"
+  ],
+  "companionFit": [
+    "SOLO",
+    "FRIEND",
+    "COUPLE",
+    "FAMILY"
+  ],
+  "costBand": "UNKNOWN",
+  "indoorOutdoor": "OUTDOOR",
+  "typicalDurationMinutes": 75,
+  "openingSchedule": {
+    "status": "OPEN_SPACE",
+    "timezone": "Asia/Tokyo",
+    "weekly": {},
+    "exceptions": [],
+    "checkedAt": "2026-08-16"
+  },
+  "accessibility": [
+    "UNKNOWN"
+  ],
+  "evidenceRefs": [
+    "ev_tokyo_osm_node_11633640672"
+  ],
+  "reviewPointers": [],
+  "officialUrl": null,
+  "editorialSummary": {
+    "ko": "OpenStreetMap에 등록된 park or nature site 虎ノ門3丁目児童遊園입니다. 운영시간·요금·접근성은 여행 전에 공식 정보를 확인해야 합니다.",
+    "ja": "OpenStreetMapに登録されたpark or nature site「虎ノ門3丁目児童遊園」です。営業時間・料金・アクセシビリティは旅行前に公式情報を確認してください。",
+    "en": "虎ノ門3丁目児童遊園 is listed in OpenStreetMap as a park or nature site in Tokyo. Verify opening hours, price, and accessibility with an official source before travel."
+  },
+  "publicationStatus": "PUBLISHED",
+  "checkedAt": "2026-08-16"
+}

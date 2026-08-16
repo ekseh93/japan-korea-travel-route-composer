@@ -450,6 +450,20 @@ export function validateSeedDirectory(
       (place) => place.cityId === "SEOUL" && place.publicationStatus === "PUBLISHED",
     ).length,
   } as const;
+  const publishablePlaceCountByCity = {
+    TOKYO: places.filter(
+      (place) =>
+        place.cityId === "TOKYO" &&
+        place.publicationStatus === "PUBLISHED" &&
+        place.openingSchedule.status !== "UNKNOWN",
+    ).length,
+    SEOUL: places.filter(
+      (place) =>
+        place.cityId === "SEOUL" &&
+        place.publicationStatus === "PUBLISHED" &&
+        place.openingSchedule.status !== "UNKNOWN",
+    ).length,
+  } as const;
   const publishedPlaceCount = publishedPlaceCountByCity.TOKYO + publishedPlaceCountByCity.SEOUL;
   if (options.production) {
     if (publishedPlaceCount < publicCatalogSizePolicy.minPublishedPlacesTotal) {
@@ -465,6 +479,15 @@ export function validateSeedDirectory(
           code: "CITY_MIN_PLACES",
           file: `catalog/${city.toLowerCase()}`,
           message: `${city} requires at least ${publicCatalogSizePolicy.minPublishedPlacesPerCity} published Places.`,
+        });
+      }
+    }
+    for (const [city, count] of Object.entries(publishablePlaceCountByCity)) {
+      if (count < publicCatalogSizePolicy.minPublishedPlacesPerCity) {
+        issues.push({
+          code: "CITY_MIN_PUBLISHABLE_PLACES",
+          file: `catalog/${city.toLowerCase()}`,
+          message: `${city} requires at least ${publicCatalogSizePolicy.minPublishedPlacesPerCity} published Places with verified or open-space operating status.`,
         });
       }
     }

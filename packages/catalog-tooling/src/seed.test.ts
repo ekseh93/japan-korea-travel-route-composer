@@ -1,4 +1,4 @@
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { SeedValidationError, validateSeedDirectory } from "./seed";
 
 const fixtureRoot = resolve(process.cwd(), "../test-fixtures");
+const productionRoot = resolve(process.cwd(), "../../data/catalog-v1");
 
 describe("seed schema and rights gate", () => {
   it("validates the complete synthetic fixture set", () => {
@@ -39,6 +40,46 @@ describe("seed schema and rights gate", () => {
       expect(
         (error as SeedValidationError).issues.some((issue) => issue.code === "CITY_MIN_PLACES"),
       ).toBe(true);
+    }
+  });
+
+  it("accepts the production OSM catalog only when each city has publishable places", () => {
+    const report = validateSeedDirectory(productionRoot, {
+      production: true,
+      asOf: "2026-08-16",
+    });
+    expect(report.publishedPlaceCountByCity).toEqual({ TOKYO: 80, SEOUL: 80 });
+  });
+
+  it("rejects a production catalog with only unknown operating status", () => {
+    const root = mkdtempSync(join(tmpdir(), "route-composer-operating-status-gate-"));
+    try {
+      cpSync(productionRoot, root, { recursive: true });
+      for (const city of ["tokyo", "seoul"]) {
+        for (const file of readdirSync(join(root, "catalog", city))) {
+          const placeFile = join(root, "catalog", city, file);
+          const place = JSON.parse(readFileSync(placeFile, "utf8")) as {
+            openingSchedule: { status: string };
+          };
+          place.openingSchedule.status = "UNKNOWN";
+          writeFileSync(placeFile, `${JSON.stringify(place, null, 2)}\n`);
+        }
+      }
+
+      expect(() => validateSeedDirectory(root, { production: true, asOf: "2026-08-16" })).toThrow(
+        SeedValidationError,
+      );
+      try {
+        validateSeedDirectory(root, { production: true, asOf: "2026-08-16" });
+      } catch (error) {
+        expect(
+          (error as SeedValidationError).issues.some(
+            (issue) => issue.code === "CITY_MIN_PUBLISHABLE_PLACES",
+          ),
+        ).toBe(true);
+      }
+    } finally {
+      rmSync(root, { recursive: true, force: true });
     }
   });
 
