@@ -229,7 +229,9 @@ artifact를 만들고 Production Plan을 검토하는 것이다. 실제 Source �
 - `MANUAL_LINK_ONLY` Source는 `C_COMMUNITY_POINTER`와 `MANUAL_LINK_ONLY` 권리 근거만 허용한다.
 - Source `nextReviewAt`, Evidence URL Host allowlist와 Production Route `sourceRefs`를 검증한다.
 - `catalog:validate` CLI가 `--root`, `--production`, `--as-of`를 받아 승인 PR의 Seed와 checksum을 재현한다.
-- 실제 Source·Catalog 파일은 추가하지 않았으며, 150개 공개 Catalog 검수는 승인 대기다.
+- `data/catalog-v1`에 승인된 OSM 기반 Tokyo·Seoul 160개 Place와 Evidence·Route를 반입했고,
+  `catalog:validate --production --as-of 2026-08-16`를 통과시켰다. Source checksum은
+  `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`다.
 
 ### LUN-014 Projection Build 구현 결과
 
@@ -240,7 +242,8 @@ artifact를 만들고 Production Plan을 검토하는 것이다. 실제 Source �
 - 동일한 Seed와 고정 옵션의 결과가 동일한지, 도시별 Place·Evidence 통계가 맞는지, Production 모드에서 합성 Fixture가 거부되는지를 테스트했다.
 - `pnpm catalog:build`가 checksum·sourceChecksum·통계와 JSON Artifact 경로를 출력하고, 기본 산출물을 tooling `dist` 아래에 기록한다.
 - `--` 인자 구분자, metadata 옵션, 출력 디렉터리 생성과 Production Fixture 거부를 CLI 계약 테스트로 검증했다.
-- 실제 Source 파일, Projection 게시, AWS 업로드와 DynamoDB 반입은 실행하지 않았다.
+- Production Projection 생성과 checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`를
+  검증했다. AWS Artifact 업로드, DynamoDB 게시와 Current pointer 승격은 아직 실행하지 않았다.
 
 ### 배포 전 Smoke 계약 구현 결과
 

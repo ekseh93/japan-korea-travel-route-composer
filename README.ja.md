@@ -205,6 +205,6 @@ codeライセンスは未選択のため、別途LICENSEが作成されるまで
 ## 実装引継ぎ
 
 要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。OSMベースCatalogと
-Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。アプリケーションAWS配信と公開URL検証はアカウント費用・Budget・権限確認まで停止します。
+Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。アプリケーションAWS配信と公開URL検証はBudget承認とimmutable Release Artifact入力の確定まで停止します。
 
 `LUNA HANDOFF: READY`

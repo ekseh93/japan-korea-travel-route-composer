@@ -247,6 +247,6 @@ terms, licenses, and attribution requirements.
 Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. The OSM-based
 catalog and Production Projection are built, Bootstrap resources are confirmed, and GitHub OIDC/Plan
 verification is complete. Application AWS deployment and public URL verification remain blocked pending
-account budget and permission verification.
+Budget approval and immutable Release Artifact inputs.
 
 `LUNA HANDOFF: READY`

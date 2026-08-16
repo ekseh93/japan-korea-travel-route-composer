@@ -223,6 +223,6 @@ Source code 라이선스는 아직 선택하지 않았으므로 별도 LICENSE�
 
 요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. OSM 기반 Catalog와
 Production Projection은 생성했으며 Bootstrap 리소스와 GitHub OIDC/Plan 검증을 완료했습니다. 애플리케이션 AWS
-배포와 공개 URL 검증은 계정 비용·Budget·권한 확인 전까지 차단합니다.
+배포와 공개 URL 검증은 Budget 승인과 불변 Release Artifact 입력 확정 전까지 차단합니다.
 
 `LUNA HANDOFF: READY`
