@@ -1,4 +1,6 @@
 locals {
+  github_repository_parts    = split("/", var.github_repository)
+  github_oidc_subject_prefix = "repo:${local.github_repository_parts[0]}@${var.github_repository_owner_id}/${local.github_repository_parts[1]}@${var.github_repository_id}"
   tags = {
     Project     = var.project_slug
     Environment = "bootstrap"
@@ -153,7 +155,7 @@ data "aws_iam_policy_document" "plan_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["${var.github_oidc_subject_prefix}:environment:terraform-plan"]
+      values   = ["${local.github_oidc_subject_prefix}:environment:terraform-plan"]
     }
   }
 }
@@ -173,7 +175,7 @@ data "aws_iam_policy_document" "deploy_trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["${var.github_oidc_subject_prefix}:environment:production"]
+      values   = ["${local.github_oidc_subject_prefix}:environment:production"]
     }
   }
 }

@@ -12,11 +12,22 @@ variable "aws_region" {
 variable "github_repository" {
   type        = string
   description = "Exact owner/repository for GitHub OIDC trust."
+  validation {
+    condition = length(split("/", var.github_repository)) == 2 && alltrue([
+      for part in split("/", var.github_repository) : length(trimspace(part)) > 0
+    ])
+    error_message = "github_repository must use the exact owner/repository format."
+  }
 }
 
-variable "github_oidc_subject_prefix" {
-  type        = string
-  description = "Exact GitHub OIDC subject prefix, including immutable owner and repository IDs."
+variable "github_repository_owner_id" {
+  type        = number
+  description = "Immutable GitHub owner ID used in the OIDC subject."
+}
+
+variable "github_repository_id" {
+  type        = number
+  description = "Immutable GitHub repository ID used in the OIDC subject."
 }
 
 variable "github_oidc_thumbprint" {
