@@ -470,7 +470,8 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   수동 삭제·롤백하지 않는다.
 - **결정:** Bootstrap Deploy Role 정책에 `iam:ListRolePolicies`와 CloudWatch Alarm에 필요한
   `Put`, `Delete`, `Describe`, `ListTags`, `Tag`, `Untag`만 추가한다. 서비스 전체 권한으로 확대하지
-  않는다. 정책 반영 후 같은 release에서 Terraform Apply를 재시도한다.
+  않는다. 로컬 장기 키 대신 보호된 `bootstrap-policy-reconcile.yml`을 OIDC로 실행해 정책을
+  반영한 후 같은 release에서 Terraform Apply를 재시도한다.
 
 ## 하지 않는 해결 방법
 

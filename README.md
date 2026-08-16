@@ -9,7 +9,7 @@
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;
-> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
+> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, Deploy Role 정책 복구 workflow를 추가했으며 애플리케이션 배포는 미완료
 > Production workflow `31932494722`는 현재 검토 commit에서 Build·검증·artifact 생성·OIDC·Lambda artifact S3 업로드까지 성공했으나, Terraform Apply 중 Deploy Role의 `iam:ListRolePolicies`와 CloudWatch Alarm 권한 부족으로 중단됨; S3 Web·CloudFront·DynamoDB·SNS·Budget·Log Group 일부는 생성됐고 API/Web 게시·Smoke는 실행되지 않음
 > Terraform Plan `31927331676`은 OIDC·State init 후 미승인 빈 `BUDGET_EMAIL` validation에서 중단됨; Apply·artifact 업로드·배포는 실행하지 않음
 > 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, 이번 실행에서 승인된 Budget Secret과 월 예산 `1 USD`를 등록함

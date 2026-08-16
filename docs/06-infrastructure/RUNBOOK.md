@@ -119,6 +119,24 @@ Workflow를 실행한다.
 AWS Apply·Rollback·철거 명령은 사용자 승인과 실제 계정·State 확인 전까지 실행 가능한
 절차로 표시하지 않는다.
 
+### 2-A. Deploy Role 정책 복구
+
+Production Apply가 Deploy Role 정책 부족으로 중단된 경우, 로컬 장기 키를 만들지 않고 보호된
+`production` Environment의 `bootstrap-policy-reconcile.yml`을 검토된 commit으로 실행한다.
+
+```powershell
+$sha = (git rev-parse HEAD).Trim()
+gh workflow run bootstrap-policy-reconcile.yml `
+  --repo ekseh93/japan-korea-travel-route-composer `
+  --ref main `
+  --field reviewed_sha=$sha
+```
+
+이 Workflow는 OIDC Deploy Role로만 현재 Terraform Bootstrap 정책에 해당하는
+`iam:GetRolePolicy`, `iam:ListRolePolicies`와 CloudWatch Alarm 수명주기 권한을 반영한다.
+`production` 승인을 거친 뒤 같은 Release의 Production workflow를 다시 실행한다.
+정책 복구가 실패하면 추가 Apply를 실행하지 않고 로그와 AWS Role 정책을 확인한다.
+
 ## 3. Production 배포
 
 1. Main Commit의 CI, Rights Gate, Golden Set과 IaC scan을 확인한다.

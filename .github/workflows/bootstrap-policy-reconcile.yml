@@ -1,0 +1,84 @@
+name: Bootstrap Policy Reconcile
+
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: "Reviewed commit containing the approved Bootstrap policy"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bootstrap-policy-reconcile
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: github.event.repository.fork == false
+    runs-on: ubuntu-24.04
+    environment:
+      name: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout reviewed commit
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          ref: ${{ inputs.reviewed_sha }}
+      - name: Configure AWS OIDC
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: bootstrap-policy-${{ github.run_id }}
+      - name: Reconcile Deploy Role inline policy
+        shell: bash
+        env:
+          PROJECT_SLUG: ${{ vars.PROJECT_SLUG }}
+        run: |
+          set -euo pipefail
+          policy_file="$RUNNER_TEMP/${PROJECT_SLUG}-github-deploy-policy.json"
+          cat > "$policy_file" <<'JSON'
+          {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "apigateway:*",
+                  "budgets:*",
+                  "cloudfront:*",
+                  "cloudwatch:DeleteAlarms",
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:ListTagsForResource",
+                  "cloudwatch:PutMetricAlarm",
+                  "cloudwatch:TagResource",
+                  "cloudwatch:UntagResource",
+                  "dynamodb:*",
+                  "iam:CreateRole",
+                  "iam:DeleteRole",
+                  "iam:GetRole",
+                  "iam:GetRolePolicy",
+                  "iam:ListRolePolicies",
+                  "iam:PassRole",
+                  "iam:PutRolePolicy",
+                  "iam:DeleteRolePolicy",
+                  "iam:TagRole",
+                  "lambda:*",
+                  "logs:*",
+                  "s3:*",
+                  "sns:*"
+                ],
+                "Resource": "*"
+              }
+            ]
+          }
+          JSON
+          aws iam put-role-policy \
+            --role-name "${PROJECT_SLUG}-github-deploy" \
+            --policy-name "${PROJECT_SLUG}-github-deploy" \
+            --policy-document "file://${policy_file}"

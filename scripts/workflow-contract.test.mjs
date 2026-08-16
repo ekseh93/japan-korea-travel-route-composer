@@ -37,6 +37,7 @@ test("all workflows use the Node 24-compatible pinned checkout action", async ()
     "ci.yml",
     "terraform-plan.yml",
     "deploy-production.yml",
+    "bootstrap-policy-reconcile.yml",
     "rollback.yml",
     "teardown.yml",
   ]) {
@@ -100,6 +101,7 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
   for (const name of [
     "terraform-plan.yml",
     "deploy-production.yml",
+    "bootstrap-policy-reconcile.yml",
     "rollback.yml",
     "teardown.yml",
   ]) {
@@ -114,6 +116,12 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
       `${name} is missing a fork protection condition`,
     );
   }
+  const bootstrap = await workflow("bootstrap-policy-reconcile.yml");
+  assert.match(bootstrap, /reviewed_sha:[\s\S]*?required:\s+true/);
+  assert.match(bootstrap, /environment:\s+name:\s+production/);
+  assert.match(bootstrap, /role-to-assume:\s+\$\{\{ vars\.TERRAFORM_DEPLOY_ROLE_ARN \}\}/);
+  assert.match(bootstrap, /iam:GetRolePolicy/);
+  assert.match(bootstrap, /cloudwatch:PutMetricAlarm/);
   const deploy = await workflow("deploy-production.yml");
   assert.match(deploy, /Verify approved deployment inputs/);
   assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);

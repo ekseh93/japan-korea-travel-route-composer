@@ -259,7 +259,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Apply 중 Deploy Role의 `iam:ListRolePolicies`와 CloudWatch Alarm 수명주기 권한 부족으로 중단됐다.
   S3 Web·CloudFront·DynamoDB·SNS·Budget·Log Group 일부는 생성됐으며, API/Web 게시와 Smoke는 실행되지 않았다.
 - Bootstrap Deploy Role 정책에 필요한 최소 IAM/CloudWatch 권한을 추가했고, Remote State를 유지한 채 정책 반영 후
-  같은 release Apply를 재시도한다. 수동 AWS 삭제·강제 롤백은 하지 않는다.
+  같은 release Apply를 재시도한다. 로컬 장기 키 대신 보호된 `bootstrap-policy-reconcile.yml`을 OIDC로
+  실행하도록 했으며, 수동 AWS 삭제·강제 롤백은 하지 않는다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
