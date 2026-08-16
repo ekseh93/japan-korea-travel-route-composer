@@ -7,7 +7,7 @@
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
-> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleは一部適用済み、inline policyのstate確定・OIDC AssumeRole・アプリケーション配信は未完了
+> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、アプリケーション配信は未完了
 >
 > 公開URL・ユーザー指標: なし
 >
@@ -117,7 +117,7 @@ pointerを条件付きで復元しますが、実AWS
 publish・rollbackは実行していません。合成Fixtureはテストでのみ許可し、Production
 Projectionでは拒否します。Terraform
 fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。実AWS
-Bootstrap Terraform Planと一部Applyは実行済みですが、inline policyのstate確定後のOIDC AssumeRole、Artifactアップロード、実Lambda/API
+Bootstrap Terraform Planと一部Applyを実行し、GitHub OIDC subjectをimmutable owner/repository ID形式へ調整した後、run `31924604384`でOIDCとTerraform Planの成功を確認しました。Artifactアップロード、実Lambda/API
 Gateway統合・配信、運用Alarmの受信検証は未実行です。Production Terraform
 Workflowは`TERRAFORM_STATE_BUCKET`とlockfile backendを使い、Workflow契約テストでremote
 State・OIDC・fork保護を固定しました。MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエントリと選択チャンクを分離しました。ローカルbuildで警告がないことを確認しました。
@@ -201,6 +201,6 @@ codeライセンスは未選択のため、別途LICENSEが作成されるまで
 ## 実装引継ぎ
 
 要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。OSMベースCatalogと
-Production Projectionは生成済みでBootstrapは一部適用済みです。inline policyのstate確定、OIDC AssumeRole、アプリケーションAWS配信と公開URL検証はアカウント費用・Budget・権限確認まで停止します。
+Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。アプリケーションAWS配信と公開URL検証はアカウント費用・Budget・権限確認まで停止します。
 
 `LUNA HANDOFF: READY`

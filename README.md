@@ -7,7 +7,7 @@
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;
-> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 부분 적용; inline policy state 확정·OIDC AssumeRole·애플리케이션 배포는 미완료
+> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
 >
 > 공개 URL·사용자 지표: 없음
 >
@@ -118,8 +118,8 @@ Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Curren
 조건의 단일 transaction으로 승격합니다. Production Workflow는 apply 직후 Publisher CLI를 호출하도록
 연결했고, 보호된 rollback Workflow는 기존 Catalog pointer를 조건부로 복구하지만 실제 AWS
 publish·rollback은 실행하지 않았습니다. Terraform fmt/validate·TFLint·Trivy와 Workflow의
-quality·browser-e2e는 GitHub CI에서 실행했습니다. Bootstrap Terraform Plan과 부분 Apply는 실행했지만,
-inline policy state 확정 후의 OIDC AssumeRole, Artifact 업로드, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다. Production Terraform
+quality·browser-e2e는 GitHub CI에서 실행했습니다. Bootstrap Terraform Plan과 부분 Apply를 실행했고,
+GitHub OIDC subject를 immutable owner/repository ID 형식으로 조정한 뒤 run `31924604384`에서 OIDC와 Terraform Plan 성공을 확인했습니다. Artifact 업로드, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다. Production Terraform
 Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보강했고, Workflow 계약 테스트로
 원격 State·OIDC·fork 보호를 고정했습니다. MapLibre 지도 렌더러는 결과 화면에서 지연 로드해 초기 Web
 엔트리와 선택 청크를 분리했으며, 로컬 build에서 경고 없이 확인했습니다.
@@ -217,7 +217,7 @@ Source code 라이선스는 아직 선택하지 않았으므로 별도 LICENSE�
 ## 구현 인계
 
 요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. OSM 기반 Catalog와
-Production Projection은 생성했으며 Bootstrap은 부분 적용 상태입니다. inline policy state 확정,
-OIDC AssumeRole, 애플리케이션 AWS 배포와 공개 URL 검증은 계정 비용·Budget·권한 확인 전까지 차단합니다.
+Production Projection은 생성했으며 Bootstrap 리소스와 GitHub OIDC/Plan 검증을 완료했습니다. 애플리케이션 AWS
+배포와 공개 URL 검증은 계정 비용·Budget·권한 확인 전까지 차단합니다.
 
 `LUNA HANDOFF: READY`

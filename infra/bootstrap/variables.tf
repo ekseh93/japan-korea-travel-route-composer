@@ -14,6 +14,11 @@ variable "github_repository" {
   description = "Exact owner/repository for GitHub OIDC trust."
 }
 
+variable "github_oidc_subject_prefix" {
+  type        = string
+  description = "Exact GitHub OIDC subject prefix, including immutable owner and repository IDs."
+}
+
 variable "github_oidc_thumbprint" {
   type        = string
   description = "Approved SHA-1 thumbprint for token.actions.githubusercontent.com."

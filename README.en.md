@@ -8,8 +8,8 @@
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
 > catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; the AWS IAM
 > Identity Center project user and temporary Bootstrap permission are connected; Bootstrap State/Artifact
-> buckets, OIDC, and Plan/Deploy Roles are partially applied; inline policy state finalization, OIDC
-> AssumeRole, and application deployment remain incomplete
+> buckets, OIDC, and Plan/Deploy Roles are confirmed in the account; immutable OIDC Trust and the GitHub
+> Terraform Plan verification are complete, while application deployment remains incomplete
 >
 > Public URL and user metrics: none
 >
@@ -121,9 +121,10 @@ implemented. The protected deploy job consumes Web/Lambda artifacts, checksums, 
 from the same commit. Terraform fmt/validate, TFLint, Trivy, and the quality/browser-e2e workflows
 ran in GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Source references,
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and
-MANUAL_LINK_ONLY/Tier mismatches with contract tests. The Bootstrap Terraform plan and partial apply
-ran, but OIDC AssumeRole after inline-policy state finalization, artifact upload, Lambda/API Gateway
-integration, deployment, and operational alarm delivery were not run. The
+MANUAL_LINK_ONLY/Tier mismatches with contract tests. The Bootstrap Terraform plan and partial apply ran.
+After the GitHub OIDC subject was fixed to the immutable owner/repository ID format, run `31924604384`
+passed both OIDC AssumeRole and Terraform Plan; artifact upload, Lambda/API Gateway integration,
+deployment, and operational alarm delivery were not run. The
 LUN-014 Source Gate also enforces a Production catalog size of 150-250 published Places in total and
 at least 75 per city. The Projection Build tooling builds a canonical Projection from validated Seed
 data, injects catalog metadata and city statistics, computes a source and final SHA-256 checksum,
@@ -239,8 +240,8 @@ terms, licenses, and attribution requirements.
 ## Implementation Handoff
 
 Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. The OSM-based
-catalog and Production Projection are built, and Bootstrap is partially applied. Inline policy state
-finalization, OIDC AssumeRole, application AWS deployment, and public URL verification remain blocked
-pending account budget and permission verification.
+catalog and Production Projection are built, Bootstrap resources are confirmed, and GitHub OIDC/Plan
+verification is complete. Application AWS deployment and public URL verification remain blocked pending
+account budget and permission verification.
 
 `LUNA HANDOFF: READY`

@@ -115,10 +115,16 @@ publish adapter 호출까지 구현했다. 실제 AWS publish와 배포 Smoke는
 
 ## 7. OIDC와 Environment 보호
 
-- Plan Role Trust: 정확한 Repository와 승인된 Branch Pattern
-- Deploy Role Trust: 정확한 Repository의 `production` Environment
+- Plan Role Trust: immutable owner/repository ID를 포함한 정확한 Repository의
+  `terraform-plan` Environment subject
+- Deploy Role Trust: 같은 immutable subject prefix의 `production` Environment
 - Deploy Job: `id-token: write`, `contents: read`만 기본 부여
 - GitHub Environment: 최소 1인 수동 승인, 동시 배포 1개, Branch 제한
+
+GitHub Repository OIDC subject는 `repo:ekseh93@60168922/japan-korea-travel-route-composer@1334758912`
+prefix를 사용한다. 저장소별 OIDC 설정 API가 `use_immutable_subject=false`를 반환하더라도,
+2026-08-15 생성 저장소의 실제 발급 토큰은 immutable owner/repository ID 형식이었다. 따라서
+Trust는 이름만 사용하거나 전체 Repository wildcard로 넓히지 않고 실제 발급 subject를 고정한다.
 - AWS Role session: Commit SHA와 Run ID를 session name/tag에 남김
 - 장기 AWS Access Key를 Repository, Environment, 로컬 `.env`에 만들지 않음
 

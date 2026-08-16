@@ -126,6 +126,25 @@ CI가 사람의 AWS 키 없이 동작한다.
 - **현재 차단:** 관리자 세션 로그인과 permission set 변경 전에는 Terraform Apply를
   재실행하지 않는다.
 
+### 10. GitHub OIDC Plan Role AssumeRole이 거부된 이유
+
+- **문제:** GitHub `Terraform Plan` workflow의 `Configure AWS OIDC`가
+  `Not authorized to perform sts:AssumeRoleWithWebIdentity`로 실패했다.
+- **확인 과정:** 기존 branch subject를 사용한 run `31923699672`와 Environment 이름만
+  사용한 run `31923925034`가 모두 실패했다. 저장소 OIDC 설정 API의
+  `use_immutable_subject=false`만 믿지 않고, 진단 workflow에서 토큰 자체의 비밀값은 출력하지
+  않은 채 `sub`, `aud`, `environment`, repository ID만 확인했다.
+- **원인:** 실제 `sub`는
+  `repo:ekseh93@60168922/japan-korea-travel-route-composer@1334758912:environment:terraform-plan`였다.
+  2026-08-15 생성 저장소의 immutable owner/repository ID 형식과 AWS Trust의 이름 기반 형식이
+  불일치했다.
+- **처리:** Plan Role Trust를 정확한 immutable subject로 변경하고, Deploy Role도 같은
+  immutable prefix의 `production` Environment를 사용하도록 Terraform 입력 계약을 고정했다.
+  branch·전체 repository wildcard로 권한을 넓히지 않았다. 진단 단계는 검증 후 workflow에서
+  제거했다.
+- **검증 결과:** run `31924604384`에서 `Configure AWS OIDC`와 Terraform Plan이 모두 성공했다.
+  Fork guard와 protected Environment 설정은 유지된다.
+
 ### 재발 시 기록 형식
 
 새로운 의견 충돌은 다음 순서로 이 문서에 추가한다.
@@ -245,9 +264,11 @@ Artifact가 생성된 뒤에는 `LAMBDA_ARTIFACT_KEY`와
 - `production-teardown`: `DESTROY-PRODUCTION` 확인과 별도 보호 사용
 
 Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
-`production` Deploy Role은 `repo:ekseh93/japan-korea-travel-route-composer:environment:production`
-조건을 사용한다. 현재 GitHub Repository OIDC 설정은 `use_immutable_subject=false`로
-확인되었고, 현재 Terraform의 `repo:owner/name` 형식 Trust와 일치한다.
+`production` Deploy Role은
+`repo:ekseh93@60168922/japan-korea-travel-route-composer@1334758912:environment:production`
+조건을 사용하도록 Terraform 입력 계약으로 고정한다. GitHub Repository OIDC 설정 API의
+`use_immutable_subject=false` 값만으로 Trust 형식을 추정하지 않고, 실제 발급 token의 `sub`를
+검증한 결과를 우선한다.
 
 ## 실제로 발생한 문제와 확인 결과
 
@@ -277,7 +298,7 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - Terraform Bootstrap Plan: 최초 `16 add` 확인, 복구 Plan `13 add / 1 change` 확인
 - Terraform Bootstrap Apply: 부분 완료; Bucket 보안 설정·OIDC·Plan/Deploy Role 완료,
   inline policy 생성 후 state read-back 권한에서 중단
-- AWS OIDC AssumeRole: 미실행
+- AWS OIDC AssumeRole: immutable subject Trust로 수정, run `31924604384`에서 OIDC와 Terraform Plan 성공
 - AWS 리소스·배포 Smoke: 미실행
 
 ## 하지 않는 해결 방법
