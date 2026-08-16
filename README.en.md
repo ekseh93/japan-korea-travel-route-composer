@@ -6,8 +6,9 @@
 >
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
-> catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; AWS resource
-> validation, Terraform Plan/Apply, and deployment not run
+> catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; the AWS IAM
+> Identity Center project user and temporary Bootstrap permission are connected; application AWS
+> resource validation, OIDC AssumeRole, Terraform Plan/Apply, and deployment not run
 >
 > Public URL and user metrics: none
 >

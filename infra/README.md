@@ -14,7 +14,7 @@ the fixed `production/terraform.tfstate` key and `use_lockfile=true`. Run
 `terraform fmt -check`, `terraform init -backend=false`, `terraform validate`,
 TFLint, and an IaC security scanner before requesting a production plan.
 
-Local verification on 2026-08-16: Terraform 1.9.8 `fmt -check` and `validate`
+Local verification on 2026-08-16: Terraform 1.15.8 `fmt -check` and `validate`
 passed for both roots with AWS provider 6.47.0 lockfiles, and TFLint 0.64.0
 passed for `infra`. GitHub CI also passed the pinned TFLint 0.55.1 and Trivy
 container scans. No AWS plan or apply ran.

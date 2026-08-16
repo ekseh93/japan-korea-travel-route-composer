@@ -6,7 +6,8 @@
 >
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
-> 取込・Production Projection生成済み、AWSリソース検証・Terraform Plan/Apply・配信は未実行
+> 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
+> アプリケーションAWSリソース検証・OIDC AssumeRole・Terraform Plan/Apply・配信は未実行
 >
 > 公開URL・ユーザー指標: なし
 >
