@@ -236,6 +236,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - `BUDGET_EMAIL` 사전검사에서 종료됐고 `Configure AWS OIDC`·Terraform Plan은 skipped 됐다.
   Budget·Artifact 입력이 승인·생성되기 전 AWS 권한과 State 접근을 요청하지 않는 상태다.
 
+### LUN-030 승인 후 GitHub 입력 Runbook 보강
+
+- Budget Secret, 월 예산 변수, 실제 Release Artifact key/hash를 승인·검토 후에만 연결하는
+  저장소 입력 절차를 Runbook에 추가했다.
+- Placeholder 입력 금지, 값 출력 금지, Plan 검토 후 Production 승인 순서를 명시했다.
+  현재 입력 생성이나 AWS 호출은 수행하지 않았다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

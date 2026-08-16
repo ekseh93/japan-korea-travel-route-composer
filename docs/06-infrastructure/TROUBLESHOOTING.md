@@ -423,6 +423,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   종료됐고, `Configure AWS OIDC`와 Terraform Plan은 skipped 됐다.
 - **판정:** 입력 미설정 상태에서 AWS 권한·Remote State 접근을 요청하지 않는 안전 경계가 재검증됐다.
 
+### 23. 승인 후 GitHub 입력 설정 절차가 분산되어 있던 문제
+
+- **문제:** Secret·월 예산·Release Artifact key/hash의 생성 시점과 검증 순서가 여러 문서에
+  흩어져 있어, 승인 전 placeholder를 입력할 위험이 있었다.
+- **결정:** Runbook에 승인 조건, 실제 Artifact 확인 후 변수 설정, 값 비출력 확인, Plan 검토와
+  Production 승인 순서를 하나의 절차로 정리했다.
+- **검증:** 현재 Secret·변수는 생성하지 않았고, Runbook은 실행 절차로만 문서화했다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

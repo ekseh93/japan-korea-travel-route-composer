@@ -46,6 +46,38 @@ OIDC Role과 Protected Environment가 필요하며 로컬 AWS Profile을 사용�
 계정 확인 전에는 Local build/test와 backend 없는 Terraform validate/plan 설계까지만
 진행한다.
 
+## 1-A. 승인 후 GitHub 입력 연결
+
+현재 저장소에는 아래 Secret·Repository Variable을 생성하지 않았다. 사용자가 월 예산,
+알림 이메일과 철거 기준을 승인하고, 검토된 Release Artifact의 실제 key·hash를 확보한 뒤에만
+설정한다. `<...>` placeholder를 그대로 입력하지 않는다.
+
+```powershell
+$repo = "ekseh93/japan-korea-travel-route-composer"
+
+# 승인된 알림 주소만 Secret으로 저장한다. 화면·로그에 값을 출력하지 않는다.
+gh secret set BUDGET_EMAIL --repo $repo --body "<approved-email>"
+
+# 1~100 사이의 승인된 정수 Budget만 Repository Variable로 저장한다.
+gh variable set MONTHLY_BUDGET_USD --repo $repo --body "<approved-integer>"
+
+# Build once Artifact에서 확인한 실제 Release SHA와 Base64 SHA-256만 저장한다.
+gh variable set LAMBDA_ARTIFACT_KEY --repo $repo --body "<40-char-release-sha>/lambda.zip"
+gh variable set LAMBDA_SOURCE_CODE_HASH --repo $repo --body "<base64-sha256>"
+```
+
+설정 후 값 자체는 출력하지 말고 이름만 확인한다.
+
+```powershell
+gh secret list --repo $repo
+gh variable list --repo $repo
+```
+
+검토 순서는 `terraform-plan.yml` 수동 실행, Plan의 삭제·고정비·IAM diff 확인, protected
+`production` 승인 후 `deploy-production.yml` 실행이다. Plan 사전검사 실패는 정상적인 비용·권한
+차단이며, 실패를 장기 Access Key로 우회하지 않는다. 잘못된 입력은 먼저 삭제·교체하고 다음
+Workflow를 실행한다.
+
 ## 2. 최초 Bootstrap
 
 1. AWS SSO 또는 승인된 단기 자격 증명과 호출 Account ID를 확인한다.
