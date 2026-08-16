@@ -416,6 +416,13 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   Production 비용 Gate 미완료를 기록했다.
 - **검증:** 문서 상태와 Workflow 사전검사·현재 미설정 입력이 같은 경계를 가리키며 AWS 호출은 없었다.
 
+### 22. 최신 Terraform Plan에서 AWS OIDC가 차단된 결과
+
+- **실행:** 수동 Terraform Plan `31929552323`을 현재 `main`에서 실행했다.
+- **결과:** `BUDGET_EMAIL is not approved or configured; refusing AWS Plan.`으로 사전검사에서
+  종료됐고, `Configure AWS OIDC`와 Terraform Plan은 skipped 됐다.
+- **판정:** 입력 미설정 상태에서 AWS 권한·Remote State 접근을 요청하지 않는 안전 경계가 재검증됐다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

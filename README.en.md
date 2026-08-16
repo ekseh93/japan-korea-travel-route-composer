@@ -15,6 +15,7 @@
 > Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
 > Plan, Deploy, and Teardown workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; Plan `31928188767` skipped OIDC and Terraform after the preflight failed; these inputs remain intentionally unset
+> Latest manual Terraform Plan `31929552323` also stopped at the `BUDGET_EMAIL` preflight; Configure AWS OIDC and Terraform Plan were skipped
 > Latest GitHub CI `31929411509` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
 >
 > Public URL and user metrics: none

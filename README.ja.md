@@ -13,6 +13,7 @@
 > 保護されたProduction Build Gate `31925830262`はcatalog検証・immutable package・checksum・SBOM・GitHub artifact uploadに合格し、production承認待ちでキャンセル、AWS配信段階には到達していない
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
 > その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、Plan `31928188767`でOIDC・Terraformがskippedになったことを確認、関連入力は現在意図的に未設定
+> 最新の手動Terraform Plan `31929552323`も`BUDGET_EMAIL`事前検査で停止し、Configure AWS OIDC・Terraform Planはskippedになった
 > 最新のGitHub CI `31929411509`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
 >
 > 公開URL・ユーザー指標: なし

@@ -230,6 +230,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 문서 동기화 커밋의 GitHub CI `31929411509`에서 quality·browser-e2e·terraform-static과 계약
   검사가 성공했고, AWS OIDC·Terraform Apply는 실행되지 않았다.
 
+### LUN-029 Terraform Plan 최신 사전검사 재검증
+
+- 수동 Terraform Plan `31929552323`을 실행해 미설정 입력의 현재 차단 동작을 재검증했다.
+- `BUDGET_EMAIL` 사전검사에서 종료됐고 `Configure AWS OIDC`·Terraform Plan은 skipped 됐다.
+  Budget·Artifact 입력이 승인·생성되기 전 AWS 권한과 State 접근을 요청하지 않는 상태다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.
