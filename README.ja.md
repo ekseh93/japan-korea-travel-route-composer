@@ -10,6 +10,7 @@
 > BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、アプリケーション配信は未完了
 > 保護されたProduction Build Gate `31925830262`はcatalog検証・immutable package・checksum・SBOM・GitHub artifact uploadに合格し、production承認待ちでキャンセル、AWS配信段階には到達していない
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
+> その後、Plan・Deploy workflowにBudget Secretの事前検査をOIDC前に追加し、現在`BUDGET_EMAIL`は意図的に未設定
 >
 > 公開URL・ユーザー指標: なし
 >

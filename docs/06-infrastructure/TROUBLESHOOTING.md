@@ -359,6 +359,15 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - **판정:** Budget 이메일 승인 전에는 이 실패가 정상적인 안전 차단이다. 승인된 이메일과 필요한
   immutable artifact 입력이 준비된 뒤에만 Plan 결과를 검토하고 Production Apply로 진행한다.
 
+### 16. Budget 사전검사를 OIDC 앞에 둔 이유
+
+- **문제:** Plan `31927331676`은 빈 `BUDGET_EMAIL`로 최종 validation에 실패했지만, 그 전에
+  OIDC AssumeRole과 remote state init을 수행했다.
+- **결정:** `terraform-plan.yml`과 `deploy-production.yml`에 Secret 비어 있음 검사를
+  OIDC 단계 앞에 추가했다. 승인되지 않은 Budget 입력이면 AWS Role을 요청하지 않고 즉시 종료한다.
+- **검증:** workflow contract test가 두 workflow의 사전검사와 오류 메시지를 고정한다. Secret이
+  승인·설정되기 전에는 새 Plan·Deploy를 실행하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

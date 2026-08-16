@@ -81,6 +81,8 @@ test("deployment workflows require reviewed inputs and protected environments", 
 
   const plan = await workflow("terraform-plan.yml");
   assert.match(plan, /environment:\s+terraform-plan/);
+  assert.match(plan, /Verify approved plan inputs/);
+  assert.match(plan, /BUDGET_EMAIL is not approved or configured/);
 });
 
 test("AWS-capable workflows require OIDC and protected fork guards", async () => {
@@ -101,6 +103,9 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
       `${name} is missing a fork protection condition`,
     );
   }
+  const deploy = await workflow("deploy-production.yml");
+  assert.match(deploy, /Verify approved deployment inputs/);
+  assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);
 });
 
 test("rollback workflow does not apply Terraform or modify application resources", async () => {

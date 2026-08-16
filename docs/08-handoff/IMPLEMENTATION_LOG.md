@@ -169,6 +169,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   `BUDGET_EMAIL` validation error로 종료되는 것을 확인했다. Plan workflow에는 Apply가 없어
   AWS 리소스 변경은 발생하지 않았다.
 
+### LUN-022 Budget 사전검사 위치 보정
+
+- 이전 Plan이 빈 Budget Secret을 Terraform validation에서 발견하기 전에 OIDC와 state init을
+  수행한 점을 확인했다.
+- Plan·Production Deploy workflow에 `BUDGET_EMAIL` 비어 있음 검사를 OIDC 앞에 추가하고,
+  workflow contract test로 두 경계를 고정했다. 승인 전에는 AWS Role 요청도 수행하지 않는다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

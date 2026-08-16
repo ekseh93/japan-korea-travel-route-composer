@@ -12,6 +12,7 @@
 > Terraform Plan verification are complete, while application deployment remains incomplete
 > Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
+> Plan and Deploy workflows now preflight the Budget Secret before OIDC; `BUDGET_EMAIL` remains intentionally unset
 >
 > Public URL and user metrics: none
 >

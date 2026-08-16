@@ -114,6 +114,15 @@ jobs:
           node scripts/release-verify.mjs \
             --release-dir release \
             --release-sha "${{ inputs.release_sha }}"
+      - name: Verify approved deployment inputs
+        env:
+          BUDGET_EMAIL: ${{ secrets.BUDGET_EMAIL }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$BUDGET_EMAIL" ]]; then
+            echo "::error::BUDGET_EMAIL is not approved or configured; refusing AWS deployment."
+            exit 1
+          fi
       - name: Configure AWS OIDC
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
