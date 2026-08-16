@@ -173,6 +173,7 @@ jobs:
             -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
             -var="lambda_s3_key=${lambda_key}" \
             -var="lambda_source_code_hash=${lambda_hash}" \
+            -var="lambda_reserved_concurrency=null" \
             -var="release_sha=${{ inputs.release_sha }}"
           docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production apply -input=false -auto-approve /workspace/release/tfplan

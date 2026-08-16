@@ -114,6 +114,8 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(plan, /LAMBDA_ARTIFACT_KEY must be a 40-character release SHA/);
   assert.match(plan, /LAMBDA_SOURCE_CODE_HASH is not configured/);
   assert.match(plan, /LAMBDA_SOURCE_CODE_HASH must be a Base64 SHA-256 digest/);
+  assert.match(plan, /lambda_reserved_concurrency=null/);
+  assert.match(deploy, /lambda_reserved_concurrency=null/);
 });
 
 test("AWS-capable workflows require OIDC and protected fork guards", async () => {
