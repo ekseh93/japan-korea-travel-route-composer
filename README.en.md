@@ -30,6 +30,7 @@
 > Release `31937854878` stopped before AWS because Checkout received a short `release_sha`; full-SHA rerun `31937906488` reached the Build Gate but stopped because 323 generated Catalog JSON files differed from Prettier; the importer output is now fixed before redeployment
 > Full-SHA deploy `31938026813` for `5649d4ac79781640be8159c0c21ee7353529e22b` passed Build and Terraform plan/apply but stopped at the immutable Catalog Version reservation condition; rerun `31938276531` with the existing Current Version also stopped because the previous attempt had already reserved the same Version
 > The reserved `catalog-5649d4ac79781640be8159c0c21ee7353529e22b` is recorded for discard without manual deletion, and a new documentation commit SHA will rerun Catalog/Web publication and the real Compose Smoke
+> Documentation-commit deploy `31938592591` passed Build, protected-environment approval, OIDC, Terraform Apply, new Catalog Version promotion, and Web publication, but failed Smoke because it checked for nonexistent `plan` instead of the HTTP contract's `dayPlans`; the Workflow now checks `dayPlans` before revalidation
 >
 > Public URL and user metrics: none
 >

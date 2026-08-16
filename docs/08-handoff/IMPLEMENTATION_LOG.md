@@ -446,3 +446,10 @@ Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Pro
 - 같은 SHA의 expected Current 입력 재실행 `31938276531`은 앞선 실행에서 예약된 immutable Version의 META 조건 때문에 다시 실패했다.
 - 기존 Current `catalog-62636954664e0652b7d6a46a9e00e3baefe1e05b`는 보존하고, 예약된 `catalog-5649d4ac79781640be8159c0c21ee7353529e22b`는 Current가 가리키지 않는 폐기 대상으로 남긴다.
 - AWS Item 수동 삭제·수정과 Rollback은 실행하지 않으며, 새 문서 커밋 SHA로 새 Catalog Version을 생성한 뒤 Catalog/Web/Compose Smoke를 재검증한다.
+
+### LUN-047 Production Compose Smoke 계약 수정
+
+- `31938592591`에서 Terraform Apply, Catalog publish, Web publish는 성공했지만 Smoke가 `"plan"` grep 오류로 실패했다.
+- 실제 HTTP 응답은 공개 DTO의 `dayPlans`를 반환하며, 내부 Application 결과의 `plan` 객체를 그대로 노출하지 않는다.
+- Smoke grep을 `"dayPlans"`로 수정하고 Workflow contract test도 같은 API 응답 계약을 확인하도록 변경한다.
+- API health, Web marker, 실제 Compose POST를 새 Catalog Current Version에서 재검증한다.

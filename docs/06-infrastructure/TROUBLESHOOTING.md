@@ -619,6 +619,13 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   새 커밋 SHA로 새 immutable Version을 생성해 기존 Current Version을 expected 값으로 조건부 승격한다.
 - **검증:** 새 SHA Build에서 Catalog publish, Web publish, 실제 Compose POST를 포함한 Production Smoke를 다시 실행한다. 실패 Version 삭제나 Rollback은 수행하지 않는다.
 
+### 42. Production Compose Smoke의 응답 필드 계약 오류
+
+- **문제:** Production deploy `31938592591`은 Terraform Apply, Catalog publish, Web publish까지 성공했지만 최종 Smoke가 실패했다.
+- **원인:** 실제 API는 HTTP 200과 `dayPlans`를 반환했으나 Workflow가 응답에 존재하지 않는 최상위 문자열 `"plan"`을 grep했다. Application 내부 결과에는 `plan` 객체가 있지만 HTTP 응답은 이를 펼친 공개 DTO다.
+- **결정:** API 응답 구조를 바꾸거나 Smoke를 느슨하게 만들지 않는다. 승인된 HTTP 계약에 맞춰 Smoke가 `"dayPlans"`를 확인하도록 수정하고 Workflow contract test로 고정한다.
+- **검증:** 브라우저/Node fetch에서 Production Compose 200과 `catalog-5b1a239ca3593efe7b5afed5cff2bd5c52a6956e` 응답을 확인했다. 수정 Workflow는 새 Release에서 API health, Web marker, `dayPlans` Compose를 다시 검사한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

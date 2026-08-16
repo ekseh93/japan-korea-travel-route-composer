@@ -29,6 +29,7 @@
 > 수정 Release `31937854878`은 짧은 `release_sha`로 Checkout을 시도해 AWS 단계 전 중단됐고, 전체 SHA 재실행 `31937906488`은 새 Catalog JSON 323개가 Prettier 형식과 달라 Build Gate에서 중단됨; Importer 출력 포맷을 고정해 재배포 준비 중
 > 전체 SHA `5649d4ac79781640be8159c0c21ee7353529e22b`의 deploy `31938026813`은 Build와 Terraform plan/apply까지 성공했지만 Catalog publish의 immutable Version 예약 조건에서 중단됨; 기존 Current Version을 명시한 재실행 `31938276531`도 앞선 실행이 남긴 동일 Version 예약 때문에 중단됨
 > 예약된 `catalog-5649d4ac79781640be8159c0c21ee7353529e22b`는 수동 삭제하지 않고 폐기 대상으로 기록했으며, 새 문서 commit SHA로 Catalog/Web/실제 Compose Smoke를 재실행 예정
+> 문서 commit 기반 deploy `31938592591`은 Build·보호 Environment 승인·OIDC·Terraform Apply·새 Catalog Version 승격·Web 게시까지 성공했으나, HTTP 응답의 `dayPlans` 대신 존재하지 않는 `plan`을 검사한 Smoke 계약 오류로 실패함; Workflow를 `dayPlans` 검사로 수정해 재검증 예정
 >
 > 공개 URL: [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/); 사용자 지표·실제 성능 수치는 아직 없음
 >

@@ -81,7 +81,7 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(deploy, /catalog:build -- [\s\S]*?--root data\/catalog-v1/);
   assert.match(deploy, /@route-composer\/api deploy --prod --legacy release\/lambda/);
   assert.match(deploy, /trips:compose/);
-  assert.match(deploy, /grep -q '.*plan.*'/);
+  assert.match(deploy, /grep -q '.*dayPlans.*'/);
 
   const rollback = await workflow("rollback.yml");
   for (const input of [

@@ -243,4 +243,4 @@ jobs:
           curl --fail --silent --show-error \
             -X POST "${api_endpoint}/v1/trips:compose" \
             -H 'content-type: application/json' \
-            --data "$compose_body" | grep -q '"plan"'
+            --data "$compose_body" | grep -q '"dayPlans"'

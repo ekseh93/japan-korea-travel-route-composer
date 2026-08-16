@@ -28,6 +28,7 @@
 > 修正版Release `31937854878`は短い`release_sha`でCheckoutを試みAWS段階前に停止、全SHAで再実行した`31937906488`は新しいCatalog JSON 323件とPrettier形式の差でBuild Gate停止、Importerの出力形式を固定して再配信準備中
 > 全SHA `5649d4ac79781640be8159c0c21ee7353529e22b`のdeploy `31938026813`はBuildとTerraform plan/applyまで成功したが、Catalog publishのimmutable Version予約条件で停止、既存Current Versionを指定した再実行`31938276531`も前回実行が残した同じVersion予約で停止した
 > 予約済み`catalog-5649d4ac79781640be8159c0c21ee7353529e22b`は手動削除せず廃棄対象として記録し、新しい文書commit SHAでCatalog/Web/実Compose Smokeを再実行予定
+> 文書commitベースのdeploy `31938592591`はBuild・保護Environment承認・OIDC・Terraform Apply・新Catalog Version昇格・Web公開まで成功したが、HTTP応答の`dayPlans`ではなく存在しない`plan`を検査するSmoke契約エラーで失敗、Workflowを`dayPlans`検査へ修正して再検証予定
 >
 > 公開URL・ユーザー指標: なし
 >
