@@ -30,7 +30,10 @@ async function createRelease() {
     await writeFile(join(root, file), contents);
   }
   await writeFile(join(root, "release-sha.txt"), `${releaseSha}\n`);
-  await writeFile(join(root, "lambda-source-code-hash.txt"), "YWJjZA==\n");
+  await writeFile(
+    join(root, "lambda-source-code-hash.txt"),
+    `${createHash("sha256").update(files["lambda.zip"]).digest("base64")}\n`,
+  );
   await writeFile(join(root, "sbom.json"), JSON.stringify({ bomFormat: "CycloneDX" }));
   await writeFile(join(root, "web", "index.html"), "<html></html>\n");
   const checksums = Object.entries(files)
@@ -64,6 +67,19 @@ test("rejects a checksum mismatch", async () => {
     await assert.rejects(
       verifyRelease({ releaseDir: root, releaseSha }),
       /Checksum mismatch for lambda\.zip/,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("rejects a lambda source hash mismatch", async () => {
+  const root = await createRelease();
+  try {
+    await writeFile(join(root, "lambda-source-code-hash.txt"), "YWJjZA==\n");
+    await assert.rejects(
+      verifyRelease({ releaseDir: root, releaseSha }),
+      /Lambda source code hash does not match lambda\.zip/,
     );
   } finally {
     await rm(root, { recursive: true, force: true });

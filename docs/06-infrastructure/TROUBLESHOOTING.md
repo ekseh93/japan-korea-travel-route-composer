@@ -373,6 +373,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 `LAMBDA_SOURCE_CODE_HASH`도 요구한다. Build once Artifact가 없거나 checksum이 연결되지 않은
 상태로 Production Plan을 만들지 않는다.
 
+### 17. Lambda source hash가 ZIP과 실제로 일치하는지 검증하지 않던 문제
+
+- **문제:** Release verifier가 `lambda-source-code-hash.txt`의 Base64 형식만 확인해, 다른
+  Lambda ZIP의 해시를 metadata에 넣어도 통과할 수 있었다.
+- **결정:** verifier가 배포 패키지 `lambda.zip`의 SHA-256을 직접 계산해 Base64 metadata와
+  비교하도록 변경했다. 형식 검사는 일치 검사를 대신하지 않는다.
+- **검증:** Release 계약 테스트에 해시 불일치 실패 케이스를 추가했고, 5개 테스트가 모두 통과했다.
+  이 검사는 AWS 호출 없이 Build once Artifact 연결 오류를 배포 전에 차단한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

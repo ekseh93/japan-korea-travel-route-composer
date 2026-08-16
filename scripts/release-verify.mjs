@@ -33,6 +33,10 @@ function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
 }
 
+function base64Sha256(buffer) {
+  return createHash("sha256").update(buffer).digest("base64");
+}
+
 function parseSha256Sums(contents) {
   return new Map(
     contents
@@ -62,11 +66,12 @@ async function verifyRelease({ releaseDir, releaseSha }) {
     throw new Error("Release SHA does not match the reviewed commit.");
   }
 
+  const lambdaZip = await readRequired(join(root, "lambda.zip"));
   const sums = parseSha256Sums((await readRequired(join(root, "SHA256SUMS"))).toString("utf8"));
   for (const file of ["lambda.zip", "catalog-projection.json"]) {
     const expected = sums.get(file);
     if (expected === undefined) throw new Error(`SHA256SUMS does not cover ${file}.`);
-    const actual = sha256(await readRequired(join(root, file)));
+    const actual = sha256(file === "lambda.zip" ? lambdaZip : await readRequired(join(root, file)));
     if (actual !== expected) throw new Error(`Checksum mismatch for ${file}.`);
   }
 
@@ -75,6 +80,9 @@ async function verifyRelease({ releaseDir, releaseSha }) {
     .trim();
   if (!/^[A-Za-z0-9+/]+={0,2}$/.test(lambdaHash)) {
     throw new Error("Lambda source code hash is not valid base64.");
+  }
+  if (lambdaHash !== base64Sha256(lambdaZip)) {
+    throw new Error("Lambda source code hash does not match lambda.zip.");
   }
   const sbom = JSON.parse((await readRequired(join(root, "sbom.json"))).toString("utf8"));
   if (sbom === null || typeof sbom !== "object") throw new Error("SBOM must be a JSON object.");
