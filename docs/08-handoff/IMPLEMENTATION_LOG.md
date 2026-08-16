@@ -330,6 +330,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   import하도록 보완했다. 기존 AWS 함수와 State를 삭제하지 않는다.
 - 계약 테스트를 갱신했으며, 수정 commit에서 Lambda replacement·삭제 없는 Plan과 후속 Apply/Smoke를 재검증한다.
 
+### LUN-041 Lambda permission 존재 조건 복구
+
+- State reconcile `31935919549`에서 실제 Lambda 함수는 존재했지만 `AllowHttpApiInvoke` permission은 생성되지 않은 상태라 import가 실패했다.
+- 함수 존재만으로 permission을 추정하지 않고, 실제 Lambda resource policy에 해당 statement가 있을 때만 import하도록 복구 스크립트를 보완했다.
+- workflow 계약 테스트와 10개 로컬 계약 테스트를 갱신·실행했으며, 수정 commit에서 State reconcile 후 Plan·Apply·Smoke를 재검증한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

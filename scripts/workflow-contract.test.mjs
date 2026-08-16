@@ -155,6 +155,8 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
   assert.match(reconcile, /import_if_unmanaged aws_iam_role_policy\.lambda_runtime/);
   assert.match(reconcile, /PendingConfirmation/);
   assert.match(reconcile, /untaint_if_managed/);
+  assert.match(reconcile, /lambda get-policy/);
+  assert.match(reconcile, /AllowHttpApiInvoke/);
   const deploy = await workflow("deploy-production.yml");
   assert.match(deploy, /Verify approved deployment inputs/);
   assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);

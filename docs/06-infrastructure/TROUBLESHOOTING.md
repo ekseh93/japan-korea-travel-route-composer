@@ -562,6 +562,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 복구 스크립트에 `untaint_if_managed`를 추가하고 계약 테스트에 경계를 고정했다. 수정 commit의 State
   reconcile 후 Plan에서 Lambda replacement와 삭제가 없는지 확인하고 Apply를 재실행한다.
 
+### 36. Lambda permission 미생성 상태의 import 충돌
+
+- **문제:** State reconcile `31935919549`는 실제 Lambda 함수는 확인했지만, 이전 부분 Apply에서 API Gateway invoke permission까지 생성되지 않아
+  존재하지 않는 `AllowHttpApiInvoke` Lambda permission을 import하려다 `Cannot import non-existent remote object`로 중단됐다.
+- **결정:** 함수 존재 여부만으로 하위 권한을 추정하지 않는다. `aws lambda get-policy` 결과에 정확한 `AllowHttpApiInvoke` 문장이 있을 때만 permission을 import하고,
+  없으면 Terraform이 API Gateway와 Lambda permission을 정상 생성하도록 둔다.
+- **검증:** 복구 스크립트와 workflow 계약 테스트를 갱신했다. 수정 commit에서 State reconcile 후 Plan·Apply·API/Web/Smoke를 재검증한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

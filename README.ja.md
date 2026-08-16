@@ -21,6 +21,7 @@
 > backend宣言後、Terraform `1.9.8`が`use_lockfile`をサポートしないエラーを確認、すべてのTerraform実行を固定`1.10.5`へ更新し、修正commitでState復旧を再検証する
 > Production run `31934959968`はRemote Stateを読み`15 to add, 2 to change, 0 to destroy`まで進んだが、AWSアカウントのunreserved concurrency最小10制約でLambda作成が停止、Production workflowでconcurrency管理を明示的に無効化する修正が必要
 > 続くrun `31935488510`は前回失敗でtaintedになったLambdaを再作成しようとして`Function already exist`で停止、既存Functionを削除せずState復旧でLambdaアドレスをuntaintして現在のFunctionを維持するよう修正
+> State reconcile `31935919549`は既存Lambda Functionを確認したが`AllowHttpApiInvoke`権限ステートメントがない状態でLambda permissionをimportしようとして停止、実際のresource policyに該当ステートメントがある場合だけimportするよう修正して再検証する
 >
 > 公開URL・ユーザー指標: なし
 >

@@ -176,5 +176,8 @@ function_name="${PROJECT_SLUG}-production-api"
 if aws lambda get-function --function-name "$function_name" >/dev/null 2>&1; then
   untaint_if_managed aws_lambda_function.api
   import_if_unmanaged aws_lambda_function.api "$function_name"
-  import_if_unmanaged aws_lambda_permission.api "${function_name}/AllowHttpApiInvoke"
+  if aws lambda get-policy --function-name "$function_name" --query 'Policy' --output text 2>/dev/null |
+    grep -q 'AllowHttpApiInvoke'; then
+    import_if_unmanaged aws_lambda_permission.api "${function_name}/AllowHttpApiInvoke"
+  fi
 fi

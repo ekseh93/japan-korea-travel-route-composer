@@ -21,6 +21,7 @@
 > backend 선언 후 Terraform `1.9.8`이 `use_lockfile`을 지원하지 않는 오류를 확인해 모든 Terraform 실행을 고정 `1.10.5`로 올렸고, 수정 commit에서 State 복구를 재검증할 예정
 > Production run `31934959968`은 원격 State를 읽어 `15 to add, 2 to change, 0 to destroy`까지 진행했으나 AWS 계정의 unreserved concurrency 최소 10 제약으로 Lambda 생성이 중단됨; Production workflow에서 concurrency 관리를 명시적으로 끄는 보완이 필요함
 > 후속 run `31935488510`은 이전 실패에서 tainted로 남은 Lambda를 다시 생성하려다 `Function already exist`로 중단됨; 기존 함수 삭제 없이 State 복구에서 Lambda 주소를 untaint하고 현재 함수를 유지하도록 보완함
+> State reconcile `31935919549`는 실제 Lambda 함수는 확인했지만 `AllowHttpApiInvoke` 권한 문장이 없는 상태에서 Lambda permission import를 시도해 중단됨; 실제 resource policy에 해당 문장이 있을 때만 import하도록 보완하고 재검증 예정
 >
 > 공개 URL·사용자 지표: 없음
 >
