@@ -162,6 +162,10 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
   assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);
   assert.match(deploy, /MONTHLY_BUDGET_USD must be an explicitly approved integer/);
   assert.match(deploy, /monthly_budget_usd=\$\{\{ vars\.MONTHLY_BUDGET_USD \}\}/);
+  assert.match(
+    deploy,
+    /Publish immutable Catalog projection[\s\S]*?AWS_SESSION_TOKEN[\s\S]*?catalog-publisher-cli/,
+  );
 });
 
 test("rollback workflow does not apply Terraform or modify application resources", async () => {

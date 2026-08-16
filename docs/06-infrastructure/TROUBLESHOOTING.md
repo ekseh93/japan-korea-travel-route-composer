@@ -273,17 +273,17 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 
 ## 실제로 발생한 문제와 확인 결과
 
-| 증상                                                      | 원인                                           | 처리·현재 상태                                                            |
-| --------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------- |
-| AWS Console은 열리지만 `aws sts get-caller-identity` 실패 | 브라우저 세션과 PowerShell 자격 증명은 별도    | SSO Profile을 별도로 설정해야 함                                          |
-| `Unable to locate credentials`                            | AWS Profile, 환경변수, credentials 파일이 없음 | 실제 계정 호출·Plan·Apply를 실행하지 않음                                 |
-| `aws`, `terraform`, `tflint` 명령이 없음                  | 로컬 개발 도구가 설치되지 않음                 | Terraform 1.15.8, TFLint 0.64.0을 사용자 영역에 설치하고 정적 검증 완료    |
-| `aws sso login`이 동작하지 않음                           | AWS CLI v1에는 CLI v2의 SSO 로그인 명령이 없음 | AWS CLI v2 또는 승인된 단기 세션을 준비해야 하며 장기 Access Key로 우회하지 않음 |
-| GitHub CI는 통과하지만 AWS Plan이 없음                    | CI 정적 검증은 AWS 계정 호출을 하지 않음       | OIDC Role·Repository Variables·Environment가 아직 미구성                  |
-| CloudShell이 AWS Sign-In으로 이동                         | 브라우저 자동화 세션에 AWS 로그인 정보가 없음  | 비밀번호·OTP를 대신 입력하거나 우회하지 않음                              |
-| GitHub에 IAM을 넣어야 하는가                              | OIDC와 장기 Access Key 방식의 혼동             | Access Key는 저장하지 않고 OIDC Role을 사용                               |
-| Bootstrap Apply의 S3 `GetBucketAcl` 거부                  | 임시 역할에 Terraform의 버킷 read 권한이 없음  | 버킷을 재생성하지 않고 최소 read action 보완 대기                           |
-| IAM 역할 생성 후 `ListAttachedRolePolicies`/`GetRolePolicy` 거부 | 생성 후 provider 확인 action 부족          | 역할과 정책은 유지하고 최소 확인 action 보완 후 state 확정                 |
+| 증상                                                             | 원인                                           | 처리·현재 상태                                                                   |
+| ---------------------------------------------------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------- |
+| AWS Console은 열리지만 `aws sts get-caller-identity` 실패        | 브라우저 세션과 PowerShell 자격 증명은 별도    | SSO Profile을 별도로 설정해야 함                                                 |
+| `Unable to locate credentials`                                   | AWS Profile, 환경변수, credentials 파일이 없음 | 실제 계정 호출·Plan·Apply를 실행하지 않음                                        |
+| `aws`, `terraform`, `tflint` 명령이 없음                         | 로컬 개발 도구가 설치되지 않음                 | Terraform 1.15.8, TFLint 0.64.0을 사용자 영역에 설치하고 정적 검증 완료          |
+| `aws sso login`이 동작하지 않음                                  | AWS CLI v1에는 CLI v2의 SSO 로그인 명령이 없음 | AWS CLI v2 또는 승인된 단기 세션을 준비해야 하며 장기 Access Key로 우회하지 않음 |
+| GitHub CI는 통과하지만 AWS Plan이 없음                           | CI 정적 검증은 AWS 계정 호출을 하지 않음       | OIDC Role·Repository Variables·Environment가 아직 미구성                         |
+| CloudShell이 AWS Sign-In으로 이동                                | 브라우저 자동화 세션에 AWS 로그인 정보가 없음  | 비밀번호·OTP를 대신 입력하거나 우회하지 않음                                     |
+| GitHub에 IAM을 넣어야 하는가                                     | OIDC와 장기 Access Key 방식의 혼동             | Access Key는 저장하지 않고 OIDC Role을 사용                                      |
+| Bootstrap Apply의 S3 `GetBucketAcl` 거부                         | 임시 역할에 Terraform의 버킷 read 권한이 없음  | 버킷을 재생성하지 않고 최소 read action 보완 대기                                |
+| IAM 역할 생성 후 `ListAttachedRolePolicies`/`GetRolePolicy` 거부 | 생성 후 provider 확인 action 부족              | 역할과 정책은 유지하고 최소 확인 action 보완 후 state 확정                       |
 
 ## 검증 증거
 
@@ -569,6 +569,12 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **결정:** 함수 존재 여부만으로 하위 권한을 추정하지 않는다. `aws lambda get-policy` 결과에 정확한 `AllowHttpApiInvoke` 문장이 있을 때만 permission을 import하고,
   없으면 Terraform이 API Gateway와 Lambda permission을 정상 생성하도록 둔다.
 - **검증:** 복구 스크립트와 workflow 계약 테스트를 갱신했다. 수정 commit에서 State reconcile 후 Plan·Apply·API/Web/Smoke를 재검증한다.
+
+### 37. Catalog publisher Docker의 OIDC 자격 증명 누락
+
+- **문제:** Production deploy `31936300645`는 Terraform Apply까지 성공했지만, Catalog publisher 단계에서 원격 Terraform output을 읽는 Docker 컨테이너가 `No valid credential sources found`로 중단됐다.
+- **결정:** 장기 Access Key를 추가하지 않는다. 같은 GitHub Actions OIDC 세션의 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`을 Terraform CLI Docker 컨테이너에 명시적으로 전달한다.
+- **검증:** deploy workflow와 계약 테스트를 갱신했다. 수정 commit에서 Catalog publish, Web publish, API/Web Smoke를 재실행한다.
 
 ## 하지 않는 해결 방법
 

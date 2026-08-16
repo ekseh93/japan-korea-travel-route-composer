@@ -6,16 +6,16 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 현재 기준선
 
-| 항목                     | 상태                                                                                                                                                                                            |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sol 설계 Phase Gate      | 완료                                                                                                                                                                                            |
-| Luna handoff             | `LUNA HANDOFF: READY`                                                                                                                                                                           |
-| 구현                     | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료                                                                              |
-| 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 5건, workflow contract 5건, Terraform contract 4건, browser E2E 4건, build, catalog validation/build, audit 완료 |
-| GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
-| 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
+| 항목                     | 상태                                                                                                                                                                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sol 설계 Phase Gate      | 완료                                                                                                                                                                                                                              |
+| Luna handoff             | `LUNA HANDOFF: READY`                                                                                                                                                                                                             |
+| 구현                     | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료                                                                                                                |
+| 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 5건, workflow contract 5건, Terraform contract 4건, browser E2E 4건, build, catalog validation/build, audit 완료                                   |
+| GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                                                       |
+| 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                                                      |
 | AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build·package·GitHub artifact upload 성공, protected deploy 승인 전 취소, Production Apply·배포 미실행 |
-| 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행 |
+| 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행                                                                                               |
 
 ## 커밋 기준
 
@@ -335,6 +335,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - State reconcile `31935919549`에서 실제 Lambda 함수는 존재했지만 `AllowHttpApiInvoke` permission은 생성되지 않은 상태라 import가 실패했다.
 - 함수 존재만으로 permission을 추정하지 않고, 실제 Lambda resource policy에 해당 statement가 있을 때만 import하도록 복구 스크립트를 보완했다.
 - workflow 계약 테스트와 10개 로컬 계약 테스트를 갱신·실행했으며, 수정 commit에서 State reconcile 후 Plan·Apply·Smoke를 재검증한다.
+
+### LUN-042 Catalog publisher Docker 자격 증명 전달
+
+- Production deploy `31936300645`에서 Terraform Apply는 `9 added, 1 changed, 0 destroyed`로 성공했으나 Catalog publisher의 Docker Terraform output 조회가 OIDC 자격 증명 누락으로 실패했다.
+- 장기 키를 도입하지 않고 GitHub Actions OIDC 임시 자격 증명을 Catalog 단계의 Terraform Docker 컨테이너에 전달하도록 workflow를 보완했다.
+- workflow 계약 테스트를 갱신했으며, 수정 commit에서 Catalog/Web publish와 API/Web Smoke를 재검증한다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

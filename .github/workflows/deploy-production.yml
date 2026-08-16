@@ -181,7 +181,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          catalog_table="$(docker run --rm -v "$PWD:/workspace" -w /workspace hashicorp/terraform:1.10.5 \
+          docker_args=(
+            --rm
+            -e AWS_ACCESS_KEY_ID
+            -e AWS_SECRET_ACCESS_KEY
+            -e AWS_SESSION_TOKEN
+            -e AWS_REGION
+            -e AWS_DEFAULT_REGION
+            -v "$PWD:/workspace"
+            -w /workspace
+          )
+          catalog_table="$(docker run "${docker_args[@]}" hashicorp/terraform:1.10.5 \
             -chdir=infra/environments/production output -raw catalog_table_name)"
           node release/lambda/dist/infrastructure/catalog-publisher-cli.js \
             --table-name "$catalog_table" \
