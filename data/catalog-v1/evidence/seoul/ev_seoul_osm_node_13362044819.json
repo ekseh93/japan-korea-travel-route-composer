@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_13362044819",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/13362044819",
   "sourceTitle": "OpenStreetMap node/13362044819: 우성스포츠센터",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

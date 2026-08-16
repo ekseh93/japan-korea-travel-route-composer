@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_11070559019",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/11070559019",
   "sourceTitle": "OpenStreetMap node/11070559019: 케이바",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

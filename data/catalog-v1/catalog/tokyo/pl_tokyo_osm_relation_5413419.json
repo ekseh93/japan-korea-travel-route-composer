@@ -12,16 +12,8 @@
     "longitude": 139.7732671
   },
   "category": "PARK_NATURE",
-  "themeTags": [
-    "NATURE_PARK",
-    "RELAXATION"
-  ],
-  "companionFit": [
-    "SOLO",
-    "FRIEND",
-    "COUPLE",
-    "FAMILY"
-  ],
+  "themeTags": ["NATURE_PARK", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
   "costBand": "UNKNOWN",
   "indoorOutdoor": "OUTDOOR",
   "typicalDurationMinutes": 75,
@@ -32,12 +24,8 @@
     "exceptions": [],
     "checkedAt": "2026-08-16"
   },
-  "accessibility": [
-    "UNKNOWN"
-  ],
-  "evidenceRefs": [
-    "ev_tokyo_osm_relation_5413419"
-  ],
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_tokyo_osm_relation_5413419"],
   "reviewPointers": [],
   "officialUrl": null,
   "editorialSummary": {

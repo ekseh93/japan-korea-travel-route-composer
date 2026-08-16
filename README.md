@@ -26,6 +26,7 @@
 > 재실행 `31936509852`는 Apply까지 성공(`0 added, 1 changed, 0 destroyed`)했으나 배포 Lambda 패키지에서 AWS SDK 중첩 의존성 `@aws-sdk/core/account-id-endpoint`를 찾지 못해 Catalog publish 전 중단됨; Build에서 `node-linker=hoisted`를 사용하도록 보완하고 재검증 예정
 > Production deploy `31936843773`은 Build·보호 Environment 승인·OIDC·Terraform Apply(`0 added, 1 changed, 0 destroyed`)·Catalog publish·Web publish·CloudFront invalidation·API/Web Smoke를 모두 통과함; API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`, Web `https://d2r0admgel5eik.cloudfront.net/`, Catalog는 Tokyo/Seoul 각 80개
 > 이후 실제 기본 Compose 요청에서 `No publishable candidate is available.`를 확인함; 원인은 카페만 선택된 OSM Catalog와 `UNKNOWN` 영업시간이었으며, 반입 선별·Production Gate·실제 Compose Smoke를 보완했고 수정 Release 재배포 전임
+> 수정 Release `31937854878`은 짧은 `release_sha`로 Checkout을 시도해 AWS 단계 전 중단됐고, 전체 SHA 재실행 `31937906488`은 새 Catalog JSON 323개가 Prettier 형식과 달라 Build Gate에서 중단됨; Importer 출력 포맷을 고정해 재배포 준비 중
 >
 > 공개 URL: [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/); 사용자 지표·실제 성능 수치는 아직 없음
 >

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_11669259008",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/11669259008",
   "sourceTitle": "OpenStreetMap node/11669259008: 球体展望室",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

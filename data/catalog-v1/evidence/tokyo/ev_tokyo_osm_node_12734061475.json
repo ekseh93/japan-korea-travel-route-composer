@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_12734061475",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/12734061475",
   "sourceTitle": "OpenStreetMap node/12734061475: インターネット & マンガ喫茶 Dice",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_368278186",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/368278186",
   "sourceTitle": "OpenStreetMap way/368278186: 달터공원",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

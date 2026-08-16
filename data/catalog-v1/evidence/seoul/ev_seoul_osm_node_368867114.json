@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_368867114",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/368867114",
   "sourceTitle": "OpenStreetMap node/368867114: Yuseong Swimming Pool",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

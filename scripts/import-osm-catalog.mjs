@@ -2,6 +2,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import prettier from "prettier";
 
 const { URL, URLSearchParams, fetch, console } = globalThis;
 const repositoryRoot = resolve(fileURLToPath(new URL("../", import.meta.url)));
@@ -418,7 +419,7 @@ function routeMatrix(city) {
 }
 
 async function writeJson(file, value) {
-  await writeFile(file, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await writeFile(file, await prettier.format(JSON.stringify(value), { parser: "json" }), "utf8");
 }
 
 async function main() {

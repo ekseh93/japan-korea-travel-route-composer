@@ -6,11 +6,7 @@
   "robotsUrl": "https://www.openstreetmap.org/robots.txt",
   "licenseId": "ODbL-1.0",
   "collectionMode": "API",
-  "allowedFields": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "allowedFields": ["NAME", "COORDINATES", "CATEGORY"],
   "forbiddenFields": [
     "REVIEW_TEXT",
     "USER_PROFILE",

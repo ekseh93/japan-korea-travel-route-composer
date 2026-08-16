@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_12074811032",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/12074811032",
   "sourceTitle": "OpenStreetMap node/12074811032: Udagawa Park",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_10158207561",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/10158207561",
   "sourceTitle": "OpenStreetMap node/10158207561: 荒川三丁目グリーンスポット",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_3680941300",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/3680941300",
   "sourceTitle": "OpenStreetMap node/3680941300: Trent Warrior Fitness and Resiliency Center",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

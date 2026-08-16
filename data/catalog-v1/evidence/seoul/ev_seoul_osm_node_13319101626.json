@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_13319101626",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/13319101626",
   "sourceTitle": "OpenStreetMap node/13319101626: 상도근린공원",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

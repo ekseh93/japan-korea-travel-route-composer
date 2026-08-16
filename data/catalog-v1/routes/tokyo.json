@@ -3,9 +3,7 @@
   "routeMatrixVersion": "route-osm-centroid-2026-08-16",
   "checkedAt": "2026-08-16",
   "methodology": "CURATED_ZONE_MATRIX_FROM_OSM_COORDINATES: directional estimates are conservative editorial bounds derived from zone centroids; they are not provider travel times.",
-  "sourceRefs": [
-    "geo_osm"
-  ],
+  "sourceRefs": ["geo_osm"],
   "zones": [
     "TOKYO_SHIBUYA_HARAJUKU",
     "TOKYO_SHINJUKU",

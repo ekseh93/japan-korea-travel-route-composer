@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_1192367364",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/1192367364",
   "sourceTitle": "OpenStreetMap way/1192367364: 교대어린이공원",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

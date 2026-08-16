@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_relation_9612753",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/relation/9612753",
   "sourceTitle": "OpenStreetMap relation/9612753: Higashi-Kubomachi Park",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

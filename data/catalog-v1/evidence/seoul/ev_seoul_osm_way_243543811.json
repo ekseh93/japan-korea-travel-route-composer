@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_243543811",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/243543811",
   "sourceTitle": "OpenStreetMap way/243543811: Dalteo Park",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

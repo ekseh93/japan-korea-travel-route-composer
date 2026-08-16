@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_12470768294",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/12470768294",
   "sourceTitle": "OpenStreetMap node/12470768294: 온플릭클라이밍 삼성점",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

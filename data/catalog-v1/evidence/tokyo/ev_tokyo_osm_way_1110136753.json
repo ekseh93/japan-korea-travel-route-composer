@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_way_1110136753",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/1110136753",
   "sourceTitle": "OpenStreetMap way/1110136753: 富士見二丁目広場",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

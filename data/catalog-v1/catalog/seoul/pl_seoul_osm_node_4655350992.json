@@ -10,15 +10,8 @@
     "longitude": 127.0660003
   },
   "category": "DISTRICT_WALK",
-  "themeTags": [
-    "LOCAL_MOOD"
-  ],
-  "companionFit": [
-    "SOLO",
-    "FRIEND",
-    "COUPLE",
-    "FAMILY"
-  ],
+  "themeTags": ["LOCAL_MOOD"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
   "costBand": "UNKNOWN",
   "indoorOutdoor": "UNKNOWN",
   "typicalDurationMinutes": 60,
@@ -29,12 +22,8 @@
     "exceptions": [],
     "checkedAt": "2026-08-16"
   },
-  "accessibility": [
-    "UNKNOWN"
-  ],
-  "evidenceRefs": [
-    "ev_seoul_osm_node_4655350992"
-  ],
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_osm_node_4655350992"],
   "reviewPointers": [],
   "officialUrl": null,
   "editorialSummary": {

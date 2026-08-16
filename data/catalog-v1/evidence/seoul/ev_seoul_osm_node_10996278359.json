@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_10996278359",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/10996278359",
   "sourceTitle": "OpenStreetMap node/10996278359: 온사이트 클라이밍 onsight climbing",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

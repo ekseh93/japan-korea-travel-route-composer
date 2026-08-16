@@ -12,16 +12,8 @@
     "longitude": 126.9830775
   },
   "category": "VIEWPOINT",
-  "themeTags": [
-    "NIGHT_VIEW",
-    "LOCAL_MOOD"
-  ],
-  "companionFit": [
-    "SOLO",
-    "FRIEND",
-    "COUPLE",
-    "FAMILY"
-  ],
+  "themeTags": ["NIGHT_VIEW", "LOCAL_MOOD"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
   "costBand": "UNKNOWN",
   "indoorOutdoor": "OUTDOOR",
   "typicalDurationMinutes": 45,
@@ -32,12 +24,8 @@
     "exceptions": [],
     "checkedAt": "2026-08-16"
   },
-  "accessibility": [
-    "UNKNOWN"
-  ],
-  "evidenceRefs": [
-    "ev_seoul_osm_node_2518242268"
-  ],
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_osm_node_2518242268"],
   "reviewPointers": [],
   "officialUrl": null,
   "editorialSummary": {

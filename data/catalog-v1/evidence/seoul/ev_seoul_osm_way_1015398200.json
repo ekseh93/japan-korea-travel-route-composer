@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_1015398200",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/1015398200",
   "sourceTitle": "OpenStreetMap way/1015398200: 샘터근린공원",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_2518242268",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/2518242268",
   "sourceTitle": "OpenStreetMap node/2518242268: Buchon 7th Spot :31 Gahoe-dong",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

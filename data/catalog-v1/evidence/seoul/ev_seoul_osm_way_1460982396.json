@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_1460982396",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/1460982396",
   "sourceTitle": "OpenStreetMap way/1460982396: 출발마당",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

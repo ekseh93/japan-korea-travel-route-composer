@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_370278725",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/370278725",
   "sourceTitle": "OpenStreetMap way/370278725: ヌルビッ公園",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

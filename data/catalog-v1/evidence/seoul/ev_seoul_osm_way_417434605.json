@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_way_417434605",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/way/417434605",
   "sourceTitle": "OpenStreetMap way/417434605: 신사무궁화공원",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

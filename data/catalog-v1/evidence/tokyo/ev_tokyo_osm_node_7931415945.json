@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_7931415945",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/7931415945",
   "sourceTitle": "OpenStreetMap node/7931415945: 財団法人無外流本部道場",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

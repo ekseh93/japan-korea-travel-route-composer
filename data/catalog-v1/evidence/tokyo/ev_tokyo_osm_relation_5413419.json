@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_relation_5413419",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/relation/5413419",
   "sourceTitle": "OpenStreetMap relation/5413419: Ueno Zoological Gardens",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -355,6 +355,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Catalog import는 조회·선별 성공 후에만 기존 파일을 교체하며, Production Validator가 도시별 게시 가능 Place 최소 수를 추가 검사한다. Deploy workflow의 Smoke는 `/health`와 Web marker뿐 아니라 실제 `POST /v1/trips:compose` 응답의 `plan`도 검사한다.
 - 로컬 Overpass 반입 결과는 도쿄·서울 각 80개, 총 160개였고 Production Catalog validate를 통과했다. 아직 이 수정 Release의 AWS 재배포와 브라우저 Compose 재검증은 다음 단계다.
 
+### LUN-045 Catalog 생성물 포맷 재현성 보완
+
+- 수정 Release `31937906488`이 새 OSM JSON 323개와 Prettier 출력 차이로 `format:check`에서 중단됐다. Checkout·install 이후 AWS 단계 전 실패였다.
+- Importer의 JSON writer가 기존 Prettier dev dependency로 출력하도록 변경했고, 생성된 Catalog 산출물을 동일 포맷으로 정규화했다.
+- 다음 단계는 전체 SHA `22c9167f7621f114d5f2194b1055a348380940ae`에서 Build Gate와 보호된 Production 배포를 재실행하는 것이다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

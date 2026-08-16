@@ -27,6 +27,7 @@
 > Production deploy `31936300645` completed Terraform Apply (`9 added, 1 changed, 0 destroyed`, including the API endpoint and CloudFront domain) but stopped because the Catalog publisher's Docker container did not receive the OIDC session credentials needed to read remote Terraform outputs; the container environment forwarding will be fixed before rerunning Catalog/Web/Smoke
 > Rerun `31936509852` completed Apply (`0 added, 1 changed, 0 destroyed`) but stopped before Catalog publish because the Lambda package could not resolve the AWS SDK nested dependency `@aws-sdk/core/account-id-endpoint`; the Build packaging now uses `node-linker=hoisted` before revalidation
 > The subsequent real default Compose request returned `No publishable candidate is available.` because the OSM selector had published cafes only with `UNKNOWN` opening status; ingestion selection, the Production Gate, and an actual Compose smoke check were fixed, and the corrected Release has not yet been redeployed
+> Release `31937854878` stopped before AWS because Checkout received a short `release_sha`; full-SHA rerun `31937906488` reached the Build Gate but stopped because 323 generated Catalog JSON files differed from Prettier; the importer output is now fixed before redeployment
 >
 > Public URL and user metrics: none
 >

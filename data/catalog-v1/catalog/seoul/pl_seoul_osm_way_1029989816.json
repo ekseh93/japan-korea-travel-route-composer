@@ -10,16 +10,8 @@
     "longitude": 127.0612265
   },
   "category": "PARK_NATURE",
-  "themeTags": [
-    "NATURE_PARK",
-    "RELAXATION"
-  ],
-  "companionFit": [
-    "SOLO",
-    "FRIEND",
-    "COUPLE",
-    "FAMILY"
-  ],
+  "themeTags": ["NATURE_PARK", "RELAXATION"],
+  "companionFit": ["SOLO", "FRIEND", "COUPLE", "FAMILY"],
   "costBand": "UNKNOWN",
   "indoorOutdoor": "OUTDOOR",
   "typicalDurationMinutes": 75,
@@ -30,12 +22,8 @@
     "exceptions": [],
     "checkedAt": "2026-08-16"
   },
-  "accessibility": [
-    "UNKNOWN"
-  ],
-  "evidenceRefs": [
-    "ev_seoul_osm_way_1029989816"
-  ],
+  "accessibility": ["UNKNOWN"],
+  "evidenceRefs": ["ev_seoul_osm_way_1029989816"],
   "reviewPointers": [],
   "officialUrl": null,
   "editorialSummary": {

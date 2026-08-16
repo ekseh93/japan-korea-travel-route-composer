@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_13741908901",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/13741908901",
   "sourceTitle": "OpenStreetMap node/13741908901: A location selected by Seoul for its scenic views",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -598,6 +598,16 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   `catalog:validate --production --as-of 2026-08-16`을 통과시켰다. Production Catalog Validator에 도시별
   `CITY_MIN_PUBLISHABLE_PLACES` Gate와 운영 Smoke의 실제 Compose POST 검사를 추가했다.
 
+### 40. 새 Catalog JSON의 CI 포맷 검사 실패
+
+- **문제:** 수정 Release `31937906488`은 Checkout과 의존성 설치 후 `format:check`에서 새 Catalog JSON 323개가
+  Prettier 형식과 다르다고 보고해 중단됐다. AWS OIDC·Terraform·Apply 단계에는 도달하지 않았다.
+- **원인:** Importer가 `JSON.stringify`만 사용해 배열·객체 줄바꿈을 저장소의 Prettier 출력과 다르게 만들었다.
+- **결정:** CI에서 포맷 검사를 끄거나 생성 데이터를 예외 처리하지 않는다. 기존 Prettier 개발 의존성을 Importer의 JSON writer에도
+  사용해 재생성 결과가 곧바로 CI 형식 계약을 만족하게 하고, 기존 산출물은 한 번 정규화한다.
+- **검증:** `prettier --write data/catalog-v1/**/*.{json,md}`를 실행했고, 다음 Release에서 전체 `format:check`와
+  Catalog validate를 다시 확인한다. 첫 실행의 짧은 `release_sha` 입력 실패와 달리 이번 실패는 전체 SHA로 Checkout 후 발생했다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

@@ -25,6 +25,7 @@
 > Production deploy `31936300645`はTerraform Applyまで成功(`9 added, 1 changed, 0 destroyed`、API endpoint・CloudFront domainを作成)したが、Catalog publisherがRemote Terraform outputを取得するDockerコンテナへOIDC一時認証情報を渡しておらず停止、コンテナ環境変数の引き渡しを修正してCatalog/Web/Smokeを再実行する
 > 再実行 `31936509852`はApplyまで成功(`0 added, 1 changed, 0 destroyed`)したが、Lambda配布パッケージでAWS SDKの依存関係`@aws-sdk/core/account-id-endpoint`を解決できずCatalog publish前に停止、Buildで`node-linker=hoisted`を使うよう修正して再検証する
 > その後、実際の初期Composeリクエストで`No publishable candidate is available.`を確認、原因はカフェだけを選択したOSM Catalogと`UNKNOWN`営業時間だったため、取込選別・Production Gate・実Compose Smokeを修正し、修正版Releaseの再配信前である
+> 修正版Release `31937854878`は短い`release_sha`でCheckoutを試みAWS段階前に停止、全SHAで再実行した`31937906488`は新しいCatalog JSON 323件とPrettier形式の差でBuild Gate停止、Importerの出力形式を固定して再配信準備中
 >
 > 公開URL・ユーザー指標: なし
 >

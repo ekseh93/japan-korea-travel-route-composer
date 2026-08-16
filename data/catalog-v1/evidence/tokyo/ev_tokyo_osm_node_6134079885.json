@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_6134079885",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/6134079885",
   "sourceTitle": "OpenStreetMap node/6134079885: Space Create",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

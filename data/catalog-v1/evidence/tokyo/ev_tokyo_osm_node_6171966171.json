@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_node_6171966171",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/6171966171",
   "sourceTitle": "OpenStreetMap node/6171966171: 健康流水館",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

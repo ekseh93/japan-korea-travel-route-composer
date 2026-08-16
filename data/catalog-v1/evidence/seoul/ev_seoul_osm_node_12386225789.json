@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_12386225789",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/12386225789",
   "sourceTitle": "OpenStreetMap node/12386225789: 한옥마을 전망대",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_tokyo_osm_relation_18472103",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/relation/18472103",
   "sourceTitle": "OpenStreetMap relation/18472103: 巣鴨スポーツセンター",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",

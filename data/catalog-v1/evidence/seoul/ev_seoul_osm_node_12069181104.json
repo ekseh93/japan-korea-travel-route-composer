@@ -3,11 +3,7 @@
   "sourceId": "geo_osm",
   "placeId": "pl_seoul_osm_node_12069181104",
   "evidenceTier": "A_OFFICIAL_OPEN",
-  "supportedClaims": [
-    "NAME",
-    "COORDINATES",
-    "CATEGORY"
-  ],
+  "supportedClaims": ["NAME", "COORDINATES", "CATEGORY"],
   "sourceUrl": "https://www.openstreetmap.org/node/12069181104",
   "sourceTitle": "OpenStreetMap node/12069181104: 청계천이 보이는 쉼터",
   "rightsBasis": "ODBL_OPEN_DATA_WITH_ATTRIBUTION",
