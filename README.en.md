@@ -10,7 +10,7 @@
 > Identity Center project user and temporary Bootstrap permission are connected; Bootstrap State/Artifact
 > buckets, OIDC, and Plan/Deploy Roles are confirmed in the account; immutable OIDC Trust and the GitHub
 > Terraform Plan verification are complete, while application deployment remains incomplete
-> Protected Production Build Gate `31925626381` passed catalog validation after the root fix but failed at pnpm workspace deploy; the `--legacy` correction is pending re-verification and no AWS deployment stage was reached
+> Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
 >
 > Public URL and user metrics: none
 >
@@ -24,7 +24,7 @@
 > GitHub CI verification: quality, browser-e2e,
 > terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and
 > Terraform contract tests all passed
-> ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31916014781),
+> ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31925776953),
 > 2026-08-16)
 
 ## Project Overview
@@ -151,7 +151,7 @@ without a chunk warning.
 | Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                           |
 | Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; Bootstrap partially applied, application AWS stack not applied                            |
 | Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                     |
-| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; local Production Catalog validate/build and legacy package deploy passed, protected Build Gate `31925626381` passed catalog validation after the root fix but failed on pnpm workspace deploy and is being fixed, Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; Bootstrap Apply partially ran, deployment smoke not run |
+| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; local Production Catalog validate/build and legacy package deploy passed, protected Build Gate `31925830262` passed catalog, packaging, checksum, SBOM, and GitHub artifact upload, Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; Bootstrap Apply partially ran, AWS deployment smoke not run |
 | AWS resources and deployment URL                     | Bootstrap State/Artifact buckets, GitHub OIDC Provider, and Plan/Deploy Roles confirmed in the account; no public deployment URL                                                                                                                                                                                                                                                                                |
 | Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 

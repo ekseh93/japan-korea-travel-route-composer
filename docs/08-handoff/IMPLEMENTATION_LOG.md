@@ -14,7 +14,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
 | 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
-| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build Gate는 catalog root와 pnpm deploy 입력 보정 중, Production Apply·배포 미실행 |
+| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build·package·GitHub artifact upload 성공, protected deploy 승인 전 취소, Production Apply·배포 미실행 |
 | 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행 |
 
 ## 커밋 기준
@@ -155,7 +155,9 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 현재 monorepo 설계와 호환되는 pnpm 안내 방식인 `--legacy`를 API package deploy에 추가했고,
   로컬 package deploy 성공과 workflow contract 검사를 확인했다.
 - 새 GitHub CI와 Production Build Gate에서 checksum·SBOM 포함 immutable release package를
-  다시 검증한다. AWS 호출·artifact 업로드·Production Apply는 아직 실행하지 않았다.
+  다시 검증했다. Production Build Gate `31925830262`의 build/package/checksum/SBOM과
+  GitHub artifact upload는 성공했으며, `production` 승인 대기에서 취소해 AWS 호출·실제
+  AWS artifact 업로드·Production Apply는 실행하지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

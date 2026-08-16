@@ -335,9 +335,10 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
   방식으로 설계되지 않아 pnpm이 명시적으로 legacy deploy를 요구했다.
 - **처리:** workflow의 API package deploy에 pnpm이 안내한 `--legacy`를 추가했다.
   로컬 `pnpm --filter @route-composer/api deploy --prod --legacy`가 성공하는 것을 확인했다.
-- **검증 기준:** workflow contract test와 새 Release Build Gate에서 catalog validate,
-  package, checksum, SBOM 단계를 다시 확인한다. 성공해도 Budget 이메일 승인 전에는
-  production 승인·Terraform Apply·artifact upload를 실행하지 않는다.
+- **검증 결과:** workflow contract test와 Production Build Gate `31925830262`에서
+  catalog validate, package, checksum, SBOM, GitHub artifact upload가 모두 성공했다.
+  Deploy job은 `production` 보호 승인 대기에서 취소했으며 AWS OIDC·Terraform Apply와
+  실제 AWS artifact upload에는 도달하지 않았다.
 
 ## 하지 않는 해결 방법
 
