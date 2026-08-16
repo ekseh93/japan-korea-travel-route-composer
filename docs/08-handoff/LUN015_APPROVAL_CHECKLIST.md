@@ -1,9 +1,9 @@
 # LUN-015 승인 체크리스트
 
-> 상태: `APPROVED_FOR_EXECUTION_WITH_BUDGET_GATE`
+> 상태: `APPLY_PARTIAL_IAM_REMEDIATION_REQUIRED`
 > 목적: 실제 Source Catalog와 AWS 배포를 시작하기 전 승인·비용·철거 경계를 확인한다.  
 > 승인 기록: 사용자가 README 가독성 변경 후 Source 반입과 AWS 리소스 생성·Terraform Plan/Apply를 승인했다 (2026-08-16).
-> 원칙: 승인된 Source 반입과 AWS Account/OIDC 사전 검증은 완료했으며, Budget 이메일 승인 전에는 Production Apply·배포 Smoke·Rollback을 실행하지 않는다.
+> 원칙: 승인된 Source 반입과 AWS Account/OIDC 사전 검증은 완료했다. Budget 이메일·월 예산 `1 USD` 승인 후 Production Apply를 실행했으나 Deploy Role 정책 부족으로 부분 적용되어 보완·재시도한다.
 
 ## 1. Source 승인
 
@@ -13,14 +13,14 @@
 - [x] 리뷰 원문·사진·사용자 정보·HTML을 반입하지 않았고, 무단 크롤링·로그인·CAPTCHA 우회를 사용하지 않았다.
 - [x] `pnpm catalog:validate --root data/catalog-v1 --production --as-of 2026-08-16`가 통과했다.
 - [x] Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`과 기준 Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`를 검토 기록에 남겼다.
-- [x] 최신 Production Build Gate `31925830262`가 검토 commit `6c311720af1b65df98e75ef80a814d00c4f78edf`에서 `catalog_as_of=2026-08-16`으로 catalog·immutable package·checksum·SBOM·GitHub artifact upload를 성공시켰다. Deploy는 `production` 승인 대기에서 취소했으며 AWS artifact upload와 Apply는 실행하지 않았다.
+- [x] Production workflow `31932494722`가 검토 commit `fad7a5bc31607570c693700927fc75b95bb96bd0`에서 `catalog_as_of=2026-08-16`으로 catalog·immutable package·checksum·SBOM·GitHub artifact upload를 성공시켰다.
 
 ## 2. AWS 비용·계정 승인
 
 - [x] 생성 대상 Account ID `490220201302`와 Region `ap-northeast-1`을 확인했다.
 - [x] AWS 리소스 생성 및 과금 가능성에 대해 사용자의 명시 승인을 받았다.
-- [ ] 월 예산 한도와 알림 수신 이메일을 승인했다. AWS Budgets는 결제 차단이 아닌 경보다.
-- [ ] 고정비 리소스(NAT Gateway, RDS, ECS 서비스, OpenSearch)를 추가하지 않는다.
+- [x] 월 예산 한도 `1 USD`와 알림 수신 이메일을 승인하고 GitHub 입력을 등록했다. AWS Budgets는 결제 차단이 아닌 경보다.
+- [x] 고정비 리소스(NAT Gateway, RDS, ECS 서비스, OpenSearch)를 추가하지 않는다.
 - [ ] 운영 중단·철거 시점과 예상 비용 상한을 승인 기록에 남겼다.
 
 ## 3. GitHub·OIDC 승인
@@ -47,5 +47,7 @@
 - [ ] GitHub Actions Run URL, 배포 URL, Smoke 결과, Rollback 결과를 기록했다.
 - [ ] 실제 비용 확인과 철거 결과를 README에 검증된 사실로만 반영했다.
 
-현재 Source 반입·Production Catalog 검증, Bootstrap 리소스, GitHub OIDC/Plan과 Environment 보호 증거는
-있다. Budget 수신 이메일 승인, Production Terraform Apply, artifact 업로드, 배포·Smoke·Rollback 증거는 미완료다.
+현재 Source 반입·Production Catalog 검증, Bootstrap 리소스, GitHub OIDC/Environment 보호, Budget 입력,
+Production Build·artifact 업로드·AWS OIDC·Lambda artifact S3 업로드 증거가 있다. `31932494722`의 Terraform
+Apply는 일부 리소스를 생성한 뒤 Deploy Role IAM 정책 부족으로 중단됐고, API/Web 게시·Smoke·Rollback 및
+철거 기준 승인은 미완료다.

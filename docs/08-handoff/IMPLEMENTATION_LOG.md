@@ -250,6 +250,17 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Secret은 stdin으로 전달하고 입력값을 출력하지 않도록 했으며, 값 설정 후에는 이름 목록만 확인한다.
 - 스크립트는 자동 실행하지 않았고, GitHub Secret·Variable과 AWS 상태는 변경하지 않았다.
 
+### LUN-032 Production Apply 권한 경계 재검증
+
+- 승인된 Budget 입력을 GitHub에 등록하고 현재 검토 commit `fad7a5bc31607570c693700927fc75b95bb96bd0`의
+  Production workflow `31932494722`를 실행했다.
+- Build·Catalog 검증·immutable artifact·OIDC·Lambda artifact S3 업로드는 성공했고, Terraform Plan은
+  30개 리소스 추가 계획을 생성했다.
+- Apply 중 Deploy Role의 `iam:ListRolePolicies`와 CloudWatch Alarm 수명주기 권한 부족으로 중단됐다.
+  S3 Web·CloudFront·DynamoDB·SNS·Budget·Log Group 일부는 생성됐으며, API/Web 게시와 Smoke는 실행되지 않았다.
+- Bootstrap Deploy Role 정책에 필요한 최소 IAM/CloudWatch 권한을 추가했고, Remote State를 유지한 채 정책 반영 후
+  같은 release Apply를 재시도한다. 수동 AWS 삭제·강제 롤백은 하지 않는다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.
@@ -258,10 +269,9 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 다음 단계
 
-다음 구현 단위는 Budget 승인 입력을 확정한 뒤, 보호된 `production` Environment에서 검토된 Release SHA의
-artifact를 만들고 Production Plan을 검토하는 것이다. 실제 Source 반입과 Production Catalog 검증은 완료했지만,
-커뮤니티 크롤링·유료 Provider 활성화는 하지 않았다. Budget 이메일 승인 전에는 Production Apply와 배포 Smoke를
-실행하지 않는다.
+다음 구현 단위는 Bootstrap Deploy Role 정책을 반영한 뒤 Remote State를 유지하면서 같은 Release의 Terraform
+Apply를 재시도하고, 성공 시 Catalog·Web 게시와 API/Web/Catalog Smoke를 검증하는 것이다. 실제 Source 반입과
+Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Provider 활성화는 하지 않았다.
 
 ### LUN-013 구현 전 계약
 

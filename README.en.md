@@ -4,7 +4,7 @@
 
 > Status: Sol phased design complete; Luna implementation handoff READY
 >
-> LUN-015 status: Source, Bootstrap, and OIDC execution approved; Budget and Production cost gate incomplete
+> LUN-015 status: Budget inputs approved and configured; Production Apply `31932494722` partially applied then stopped because the Deploy Role IAM policy was incomplete; remediation and retry are pending
 >
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
@@ -12,10 +12,10 @@
 > Identity Center project user and temporary Bootstrap permission are connected; Bootstrap State/Artifact
 > buckets, OIDC, and Plan/Deploy Roles are confirmed in the account; immutable OIDC Trust and the GitHub
 > Terraform Plan verification are complete, while application deployment remains incomplete
-> Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
+> Production workflow `31932494722` passed Build, verification, artifact creation, OIDC, and Lambda artifact upload to S3 for the reviewed commit, but Terraform Apply stopped because the Deploy Role lacked `iam:ListRolePolicies` and CloudWatch Alarm permissions; parts of S3 Web, CloudFront, DynamoDB, SNS, Budget, and Log Group were created, while API/Web publishing and Smoke did not run
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
-> Plan, Deploy, and Teardown workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; Plan `31928188767` skipped OIDC and Terraform after the preflight failed; these inputs remain intentionally unset
-> Latest manual Terraform Plan `31929552323` also stopped at the `BUDGET_EMAIL` preflight; Configure AWS OIDC and Terraform Plan were skipped
+> Plan, Deploy, and Teardown workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; the approved Budget Secret and monthly budget of `1 USD` were configured for this run
+> Latest manual Terraform Plan `31929552323` stopped at the `BUDGET_EMAIL` preflight at that time; the later Production workflow reached OIDC and artifact upload
 > Latest GitHub CI `31929411509` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
 >
 > Public URL and user metrics: none

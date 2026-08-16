@@ -458,6 +458,20 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 실제 스크립트 경로가 존재함을 확인했고, 승인값 입력 및 GitHub Secret·Variable 변경은
   실행하지 않았다.
 
+### 27. Production Apply의 Deploy Role 권한 부족
+
+- **실행:** 보호된 `production` 승인을 기록한 뒤 Production workflow `31932494722`를 실행했다.
+  Build·검증·artifact 생성·OIDC·Lambda artifact S3 업로드는 성공했다.
+- **문제:** Terraform Apply 중 Deploy Role에 `iam:ListRolePolicies`가 없어 Lambda Role refresh가
+  실패했고, CloudWatch Alarm 생성에 `cloudwatch:PutMetricAlarm` 등 Alarm 수명주기 권한이 없어
+  두 Alarm 생성도 실패했다.
+- **영향:** Apply가 부분 진행되어 CloudFront, S3 Web, DynamoDB, SNS, Budget, Log Group 등은
+  생성됐지만 Lambda Role과 Alarm 단계에서 중단됐다. Terraform이 관리하는 Remote State를 유지하며
+  수동 삭제·롤백하지 않는다.
+- **결정:** Bootstrap Deploy Role 정책에 `iam:ListRolePolicies`와 CloudWatch Alarm에 필요한
+  `Put`, `Delete`, `Describe`, `ListTags`, `Tag`, `Untag`만 추가한다. 서비스 전체 권한으로 확대하지
+  않는다. 정책 반영 후 같은 release에서 Terraform Apply를 재시도한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

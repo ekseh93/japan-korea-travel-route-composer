@@ -221,7 +221,10 @@ data "aws_iam_policy_document" "deploy" {
   statement {
     actions = [
       "apigateway:*", "cloudfront:*", "dynamodb:*", "logs:*", "lambda:*", "s3:*", "sns:*",
-      "budgets:*", "iam:CreateRole", "iam:DeleteRole", "iam:GetRole", "iam:PassRole",
+      "budgets:*", "cloudwatch:DeleteAlarms", "cloudwatch:DescribeAlarms",
+      "cloudwatch:ListTagsForResource", "cloudwatch:PutMetricAlarm", "cloudwatch:TagResource",
+      "cloudwatch:UntagResource", "iam:CreateRole", "iam:DeleteRole", "iam:GetRole",
+      "iam:ListRolePolicies", "iam:PassRole",
       "iam:PutRolePolicy", "iam:DeleteRolePolicy", "iam:TagRole",
     ]
     resources = ["*"]

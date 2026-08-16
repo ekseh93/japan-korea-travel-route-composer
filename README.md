@@ -4,16 +4,16 @@
 
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY
 >
-> LUN-015 상태: Source·Bootstrap·OIDC 실행 승인은 완료했지만 Budget·Production 비용 Gate는 미완료
+> LUN-015 상태: Budget 입력 승인·등록 완료; Production Apply `31932494722`는 Deploy Role IAM 정책 부족으로 부분 적용 후 중단되어 보완·재시도 대기
 >
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;
 > Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
-> 보호된 Production Build Gate `31925830262`는 catalog validate·immutable package·checksum·SBOM·GitHub artifact upload까지 성공했고, `production` 승인 대기에서 취소함; AWS 배포 단계에는 도달하지 않음
+> Production workflow `31932494722`는 현재 검토 commit에서 Build·검증·artifact 생성·OIDC·Lambda artifact S3 업로드까지 성공했으나, Terraform Apply 중 Deploy Role의 `iam:ListRolePolicies`와 CloudWatch Alarm 권한 부족으로 중단됨; S3 Web·CloudFront·DynamoDB·SNS·Budget·Log Group 일부는 생성됐고 API/Web 게시·Smoke는 실행되지 않음
 > Terraform Plan `31927331676`은 OIDC·State init 후 미승인 빈 `BUDGET_EMAIL` validation에서 중단됨; Apply·artifact 업로드·배포는 실행하지 않음
-> 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, Plan `31928188767`에서 OIDC·Terraform 단계가 skipped 됨을 확인함; 현재 관련 입력은 미설정 상태임
-> 최신 수동 Terraform Plan `31929552323`도 `BUDGET_EMAIL` 사전검사에서 중단됐고, Configure AWS OIDC·Terraform Plan은 skipped 됨
+> 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, 이번 실행에서 승인된 Budget Secret과 월 예산 `1 USD`를 등록함
+> 최신 수동 Terraform Plan `31929552323`은 당시 `BUDGET_EMAIL` 사전검사에서 중단됐고, 이후 Production workflow에서는 OIDC와 artifact 업로드까지 성공함
 > 최신 GitHub CI `31929411509`에서 quality·browser-e2e·terraform-static과 전체 계약 검사가 성공함; 이 실행은 AWS OIDC·Terraform Apply를 포함하지 않음
 >
 > 공개 URL·사용자 지표: 없음

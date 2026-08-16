@@ -4,16 +4,16 @@
 
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY
 >
-> LUN-015状態: Source・Bootstrap・OIDCの実行承認は完了、Budget・Production費用Gateは未完了
+> LUN-015状態: Budget入力の承認・登録は完了、Production Apply `31932494722`はDeploy Role IAMポリシー不足で部分適用後に停止し、修正・再試行待ち
 >
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
 > BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、アプリケーション配信は未完了
-> 保護されたProduction Build Gate `31925830262`はcatalog検証・immutable package・checksum・SBOM・GitHub artifact uploadに合格し、production承認待ちでキャンセル、AWS配信段階には到達していない
+> Production workflow `31932494722`は現行review commitでBuild・検証・artifact生成・OIDC・Lambda artifactのS3アップロードまで成功したが、Terraform Apply中にDeploy Roleの`iam:ListRolePolicies`とCloudWatch Alarm権限不足で停止、S3 Web・CloudFront・DynamoDB・SNS・Budget・Log Groupの一部は作成済み、API/Web公開・Smokeは未実行
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
-> その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、Plan `31928188767`でOIDC・Terraformがskippedになったことを確認、関連入力は現在意図的に未設定
-> 最新の手動Terraform Plan `31929552323`も`BUDGET_EMAIL`事前検査で停止し、Configure AWS OIDC・Terraform Planはskippedになった
+> その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、今回の実行で承認済みBudget Secretと月額予算`1 USD`を登録
+> 最新の手動Terraform Plan `31929552323`は当時`BUDGET_EMAIL`事前検査で停止したが、その後のProduction workflowではOIDCとartifactアップロードまで成功
 > 最新のGitHub CI `31929411509`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
 >
 > 公開URL・ユーザー指標: なし
