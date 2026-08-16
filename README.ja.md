@@ -29,6 +29,7 @@
 > 全SHA `5649d4ac79781640be8159c0c21ee7353529e22b`のdeploy `31938026813`はBuildとTerraform plan/applyまで成功したが、Catalog publishのimmutable Version予約条件で停止、既存Current Versionを指定した再実行`31938276531`も前回実行が残した同じVersion予約で停止した
 > 予約済み`catalog-5649d4ac79781640be8159c0c21ee7353529e22b`は手動削除せず廃棄対象として記録し、新しい文書commit SHAでCatalog/Web/実Compose Smokeを再実行予定
 > 文書commitベースのdeploy `31938592591`はBuild・保護Environment承認・OIDC・Terraform Apply・新Catalog Version昇格・Web公開まで成功したが、HTTP応答の`dayPlans`ではなく存在しない`plan`を検査するSmoke契約エラーで失敗、Workflowを`dayPlans`検査へ修正して再検証予定
+> 最終deploy `31938802134`はBuild・保護Environment承認・OIDC・Terraform plan/apply(`0 added, 1 changed, 0 destroyed`)・Catalog publish・Web公開・health/Web/Compose Smokeに合格、Catalog Version `catalog-0fbffa632831b4999a5b973d09ca39ecaa88b98f`、東京/ソウル各80件を確認し、ブラウザでも初期ルートと出典リンクを確認した
 >
 > 公開URL・ユーザー指標: なし
 >
@@ -150,8 +151,8 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 | 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                              |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                                                                                          |
 | アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成とProduction AWS Stack適用を完了                                                 |
-| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`、Projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`、修正版のProduction再公開は待機中 |
-| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・69 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約6件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build・hoisted production package検証・Terraform fmt/validate・TFLint・Trivyに合格、修正版deploy `31938026813`・`31938276531`はCatalog条件付き公開で停止 |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`、Projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`、Production Version `catalog-0fbffa632831b4999a5b973d09ca39ecaa88b98f`を公開し東京/ソウル各80件を確認 |
+| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・69 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約6件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build・hoisted production package検証・Terraform fmt/validate・TFLint・Trivyに合格、最終deploy `31938802134`でCatalog/Web/API/Compose Smokeとブラウザ初期ルートを確認 |
 | AWSリソース・公開URL                         | State/Artifact Bucket、GitHub OIDC Provider、Plan/Deploy Role、Lambda・API Gateway・DynamoDB・S3・CloudFront・Budget・SNS・CloudWatchを`ap-northeast-1`に適用、Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/)、API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                      |
 | 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                                                                                        |
 
@@ -211,7 +212,7 @@ Production deploy `31936843773`で実Lambda/API Gateway接続と配信URL Smoke�
    API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog
    Publisher・Rollbackの実装・検証を完了
 2. 承認済みOSM Sourceで東京・ソウル160件のPlaceを取込・Production Gate検証済み
-3. AWSアカウント・Budget・OIDC確認と既存配信・health Smokeは完了、修正版Catalogの再公開と実Compose Smokeは待機中、Rollback検証は未実行
+3. AWSアカウント・Budget・OIDC確認、最終配信とhealth/Web/Compose Smokeは完了、Rollback検証は未実行
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価
 
 ## ライセンスと目的
@@ -222,6 +223,6 @@ codeライセンスは未選択のため、別途LICENSEが作成されるまで
 ## 実装引継ぎ
 
 要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。OSMベースCatalogと
-Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。保護されたProduction deploy `31936843773`でimmutable Release Artifactを適用し、公開URL Smokeに合格しました。
+Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。保護されたProduction deploy `31938802134`でimmutable Release Artifactを適用し、公開URL・Compose Smokeに合格しました。ブラウザでも初期ルートと出典リンクを確認しました。
 
 `LUNA HANDOFF: READY`

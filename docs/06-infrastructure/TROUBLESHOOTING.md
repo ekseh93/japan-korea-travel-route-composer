@@ -626,6 +626,12 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **결정:** API 응답 구조를 바꾸거나 Smoke를 느슨하게 만들지 않는다. 승인된 HTTP 계약에 맞춰 Smoke가 `"dayPlans"`를 확인하도록 수정하고 Workflow contract test로 고정한다.
 - **검증:** 브라우저/Node fetch에서 Production Compose 200과 `catalog-5b1a239ca3593efe7b5afed5cff2bd5c52a6956e` 응답을 확인했다. 수정 Workflow는 새 Release에서 API health, Web marker, `dayPlans` Compose를 다시 검사한다.
 
+### 43. Compose 후보 고갈 수정 후 최종 재배포
+
+- **문제:** Catalog 선별 수정과 Smoke 계약 수정 뒤에도 immutable Version 예약 충돌과 잘못된 응답 필드 검사로 두 번의 재시도가 중단됐다.
+- **결정:** 기존 Current와 예약 Version을 삭제·수정하지 않고 새 SHA와 expected Current Version으로 재배포했다. Smoke는 승인된 HTTP 공개 응답의 `dayPlans`를 검사한다.
+- **검증:** Production deploy `31938802134`가 Terraform plan/apply(`0 added, 1 changed, 0 destroyed`), Catalog/Web publish, health/Web/Compose Smoke를 모두 통과했다. 브라우저에서도 기본 조합 결과, Day 1/Day 2, 지도와 OpenStreetMap 출처 링크를 확인했다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

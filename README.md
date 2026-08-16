@@ -30,6 +30,7 @@
 > 전체 SHA `5649d4ac79781640be8159c0c21ee7353529e22b`의 deploy `31938026813`은 Build와 Terraform plan/apply까지 성공했지만 Catalog publish의 immutable Version 예약 조건에서 중단됨; 기존 Current Version을 명시한 재실행 `31938276531`도 앞선 실행이 남긴 동일 Version 예약 때문에 중단됨
 > 예약된 `catalog-5649d4ac79781640be8159c0c21ee7353529e22b`는 수동 삭제하지 않고 폐기 대상으로 기록했으며, 새 문서 commit SHA로 Catalog/Web/실제 Compose Smoke를 재실행 예정
 > 문서 commit 기반 deploy `31938592591`은 Build·보호 Environment 승인·OIDC·Terraform Apply·새 Catalog Version 승격·Web 게시까지 성공했으나, HTTP 응답의 `dayPlans` 대신 존재하지 않는 `plan`을 검사한 Smoke 계약 오류로 실패함; Workflow를 `dayPlans` 검사로 수정해 재검증 예정
+> 최종 deploy `31938802134`는 Build·보호 Environment 승인·OIDC·Terraform plan/apply(`0 added, 1 changed, 0 destroyed`)·Catalog publish·Web publish·health/Web/Compose Smoke를 모두 통과함; Catalog Version `catalog-0fbffa632831b4999a5b973d09ca39ecaa88b98f`, Tokyo/Seoul 각 80개이며 브라우저에서도 기본 조합과 출처 링크를 확인함
 >
 > 공개 URL: [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/); 사용자 지표·실제 성능 수치는 아직 없음
 >
@@ -154,8 +155,8 @@ Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보�
 | 회사형 요건정의                    | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 및 Production AWS Stack 적용 완료                                                                                                                                     |
-| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`, Projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`; 수정 Projection은 로컬 검증 통과, Production 재게시 대기 |
-| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·69개 Vitest 테스트·Smoke 계약 4건·Release 계약 5건·Workflow 계약 6건·Terraform 계약 4건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build와 hoisted production package 검증, Terraform fmt/validate·TFLint·Trivy 통과, 기존 Production deploy `31936843773`의 Catalog publish·Web publish·API/Web Smoke 통과, 수정 deploy `31938026813`·`31938276531`은 Catalog 조건부 게시에서 중단 |
+| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`, Projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`; Production Version `catalog-0fbffa632831b4999a5b973d09ca39ecaa88b98f` 게시 및 Tokyo/Seoul 각 80개 확인 |
+| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·69개 Vitest 테스트·Smoke 계약 4건·Release 계약 5건·Workflow 계약 6건·Terraform 계약 4건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build와 hoisted production package 검증, Terraform fmt/validate·TFLint·Trivy 통과, 최종 Production deploy `31938802134`에서 Catalog/Web publish·API/Web/Compose Smoke 통과, 브라우저 기본 조합 확인 |
 | AWS 리소스·배포 URL                | State/Artifact Bucket, GitHub OIDC Provider, Plan/Deploy Role, Lambda·API Gateway·DynamoDB·S3·CloudFront·Budget·SNS·CloudWatch가 `ap-northeast-1`에 적용됨; Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/), API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                                                                                                     |
 | 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
@@ -227,7 +228,7 @@ Lambda/API Gateway 연결과 배포 URL Smoke를 통과했습니다. Catalog Pub
 1. LUN-001~014 애플리케이션·Terraform·CI, Source Governance Gate·Projection Build·Catalog
    Publisher·Rollback 구현 및 검증 완료
 2. 승인된 OSM Source로 도쿄·서울 160개 Place를 반입하고 Production Gate 검증 완료
-3. AWS 계정·Budget·OIDC 확인과 기존 AWS 배포·health Smoke는 완료했으며, 수정 Catalog의 Production 재게시와 실제 Compose Smoke는 대기 중; Rollback 검증은 미실행
+3. AWS 계정·Budget·OIDC 확인, 최종 AWS 배포와 health/Web/Compose Smoke는 완료했으며, Rollback 검증은 미실행
 4. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가
 
 ## 라이선스와 목적
@@ -240,6 +241,6 @@ Source code 라이선스는 아직 선택하지 않았으므로 별도 LICENSE�
 
 요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. OSM 기반 Catalog와
 Production Projection은 생성했으며 Bootstrap 리소스와 GitHub OIDC/Plan 검증을 완료했습니다. 보호된
-Production deploy `31936843773`에서 불변 Release Artifact를 적용하고 공개 URL Smoke를 통과했습니다.
+Production deploy `31938802134`에서 불변 Release Artifact를 적용하고 공개 URL·Compose Smoke를 통과했습니다. 브라우저에서도 기본 조합 결과와 출처 링크를 확인했습니다.
 
 `LUNA HANDOFF: READY`

@@ -453,3 +453,10 @@ Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Pro
 - 실제 HTTP 응답은 공개 DTO의 `dayPlans`를 반환하며, 내부 Application 결과의 `plan` 객체를 그대로 노출하지 않는다.
 - Smoke grep을 `"dayPlans"`로 수정하고 Workflow contract test도 같은 API 응답 계약을 확인하도록 변경한다.
 - API health, Web marker, 실제 Compose POST를 새 Catalog Current Version에서 재검증한다.
+
+### LUN-048 최종 Production 검증
+
+- `31938802134`가 reviewed SHA `0fbffa632831b4999a5b973d09ca39ecaa88b98f`에서 Build와 protected Environment 승인을 통과했다.
+- Terraform plan/apply는 `0 added, 1 changed, 0 destroyed`, Catalog publisher는 Tokyo/Seoul 각 80개와 source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`를 게시했다.
+- API health, Web marker, 실제 `trips:compose` 응답의 `dayPlans` 검사와 브라우저 기본 조합·지도·OpenStreetMap 출처 링크를 확인했다.
+- 최종 Catalog Version은 `catalog-0fbffa632831b4999a5b973d09ca39ecaa88b98f`이며, Rollback·철거는 실행하지 않았다.
