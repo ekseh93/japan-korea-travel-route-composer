@@ -25,6 +25,7 @@
 > Follow-up run `31935488510` stopped when a Lambda left tainted by the prior failed apply was recreated and returned `Function already exist`; recovery now untaints the Lambda address and preserves the existing function without deletion
 > State reconcile `31935919549` found the Lambda function but stopped when it attempted to import the Lambda permission without an `AllowHttpApiInvoke` statement; recovery now imports that permission only when the statement exists in the actual resource policy, and will be revalidated
 > Production deploy `31936300645` completed Terraform Apply (`9 added, 1 changed, 0 destroyed`, including the API endpoint and CloudFront domain) but stopped because the Catalog publisher's Docker container did not receive the OIDC session credentials needed to read remote Terraform outputs; the container environment forwarding will be fixed before rerunning Catalog/Web/Smoke
+> Rerun `31936509852` completed Apply (`0 added, 1 changed, 0 destroyed`) but stopped before Catalog publish because the Lambda package could not resolve the AWS SDK nested dependency `@aws-sdk/core/account-id-endpoint`; the Build packaging now uses `node-linker=hoisted` before revalidation
 >
 > Public URL and user metrics: none
 >

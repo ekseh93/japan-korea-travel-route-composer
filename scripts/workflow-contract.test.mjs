@@ -166,6 +166,7 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
     deploy,
     /Publish immutable Catalog projection[\s\S]*?AWS_SESSION_TOKEN[\s\S]*?catalog-publisher-cli/,
   );
+  assert.match(deploy, /config\.node-linker=hoisted[\s\S]*?api deploy --prod --legacy/);
 });
 
 test("rollback workflow does not apply Terraform or modify application resources", async () => {

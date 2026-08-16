@@ -23,6 +23,7 @@
 > 후속 run `31935488510`은 이전 실패에서 tainted로 남은 Lambda를 다시 생성하려다 `Function already exist`로 중단됨; 기존 함수 삭제 없이 State 복구에서 Lambda 주소를 untaint하고 현재 함수를 유지하도록 보완함
 > State reconcile `31935919549`는 실제 Lambda 함수는 확인했지만 `AllowHttpApiInvoke` 권한 문장이 없는 상태에서 Lambda permission import를 시도해 중단됨; 실제 resource policy에 해당 문장이 있을 때만 import하도록 보완하고 재검증 예정
 > Production deploy `31936300645`는 Terraform Apply까지 성공(`9 added, 1 changed, 0 destroyed`, API endpoint·CloudFront domain 생성)했으나 Catalog publisher가 원격 Terraform output 조회용 Docker 컨테이너에 OIDC 임시 자격 증명을 전달하지 않아 중단됨; 컨테이너 환경 전달을 보완하고 Catalog/Web/Smoke를 재실행 예정
+> 재실행 `31936509852`는 Apply까지 성공(`0 added, 1 changed, 0 destroyed`)했으나 배포 Lambda 패키지에서 AWS SDK 중첩 의존성 `@aws-sdk/core/account-id-endpoint`를 찾지 못해 Catalog publish 전 중단됨; Build에서 `node-linker=hoisted`를 사용하도록 보완하고 재검증 예정
 >
 > 공개 URL·사용자 지표: 없음
 >

@@ -342,6 +342,12 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 장기 키를 도입하지 않고 GitHub Actions OIDC 임시 자격 증명을 Catalog 단계의 Terraform Docker 컨테이너에 전달하도록 workflow를 보완했다.
 - workflow 계약 테스트를 갱신했으며, 수정 commit에서 Catalog/Web publish와 API/Web Smoke를 재검증한다.
 
+### LUN-043 Lambda production dependency layout
+
+- 재실행 `31936509852`에서 Terraform Apply는 성공했지만 Lambda artifact의 AWS SDK 중첩 의존성이 런타임에서 해석되지 않아 Catalog publish가 실패했다.
+- `pnpm deploy --legacy`의 isolated layout을 그대로 사용하지 않고 Build에서 `node-linker=hoisted`를 지정해 AWS SDK production dependency를 평탄화하도록 보완했다.
+- hoisted 패키지에서 `@aws-sdk/core/account-id-endpoint.js` 존재를 로컬 확인하고 workflow 계약 테스트를 갱신했으며, 수정 commit에서 Catalog/Web/Smoke를 재검증한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

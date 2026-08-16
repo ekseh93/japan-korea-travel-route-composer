@@ -576,6 +576,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **결정:** 장기 Access Key를 추가하지 않는다. 같은 GitHub Actions OIDC 세션의 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`, `AWS_REGION`을 Terraform CLI Docker 컨테이너에 명시적으로 전달한다.
 - **검증:** deploy workflow와 계약 테스트를 갱신했다. 수정 commit에서 Catalog publish, Web publish, API/Web Smoke를 재실행한다.
 
+### 38. Lambda 패키지의 AWS SDK 중첩 의존성 누락
+
+- **문제:** 재실행 `31936509852`는 Terraform Apply까지 성공했지만 Catalog publisher가 Lambda artifact의 `@aws-sdk/client-dynamodb`를 로드할 때
+  `@aws-sdk/core/account-id-endpoint` 모듈을 찾지 못해 중단됐다. `pnpm deploy --legacy`의 기본 isolated layout에서 이 의존성이 런타임 해석 경로에 노출되지 않았다.
+- **결정:** AWS SDK를 수동 복사하거나 장기 키를 추가하지 않는다. Build 패키징에서 `node-linker=hoisted`를 고정해 production dependency tree를 평탄화하고,
+  생성 artifact에서 해당 모듈을 로드할 수 있게 한다.
+- **검증:** 동일한 `pnpm deploy --prod --legacy`를 hoisted 설정으로 실행해 모듈 존재를 확인했고 workflow 계약 테스트를 갱신했다. 수정 commit에서 Catalog/Web/Smoke를 재실행한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.
