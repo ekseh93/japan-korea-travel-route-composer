@@ -142,8 +142,9 @@ CI가 사람의 AWS 키 없이 동작한다.
   immutable prefix의 `production` Environment를 사용하도록 Terraform 입력 계약을 고정했다.
   branch·전체 repository wildcard로 권한을 넓히지 않았다. 진단 단계는 검증 후 workflow에서
   제거했다.
-- **검증 결과:** run `31924604384`에서 `Configure AWS OIDC`와 Terraform Plan이 모두 성공했다.
-  Fork guard와 protected Environment 설정은 유지된다.
+- **검증 결과:** 진단 포함 run `31924604384`에서 먼저 `Configure AWS OIDC`와 Terraform Plan이
+  성공했고, 진단 단계를 제거한 최종 run `31924876346`에서도 두 단계가 모두 성공했다. Fork
+  guard와 protected Environment 설정은 유지된다.
 
 ### 재발 시 기록 형식
 
@@ -298,7 +299,7 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - Terraform Bootstrap Plan: 최초 `16 add` 확인, 복구 Plan `13 add / 1 change` 확인
 - Terraform Bootstrap Apply: 부분 완료; Bucket 보안 설정·OIDC·Plan/Deploy Role 완료,
   inline policy 생성 후 state read-back 권한에서 중단
-- AWS OIDC AssumeRole: immutable subject Trust로 수정, run `31924604384`에서 OIDC와 Terraform Plan 성공
+- AWS OIDC AssumeRole: immutable subject Trust로 수정, 최종 run `31924876346`에서 OIDC와 Terraform Plan 성공
 - AWS 리소스·배포 Smoke: 미실행
 
 ## 하지 않는 해결 방법

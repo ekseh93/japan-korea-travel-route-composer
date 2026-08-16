@@ -119,7 +119,7 @@ Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Curren
 연결했고, 보호된 rollback Workflow는 기존 Catalog pointer를 조건부로 복구하지만 실제 AWS
 publish·rollback은 실행하지 않았습니다. Terraform fmt/validate·TFLint·Trivy와 Workflow의
 quality·browser-e2e는 GitHub CI에서 실행했습니다. Bootstrap Terraform Plan과 부분 Apply를 실행했고,
-GitHub OIDC subject를 immutable owner/repository ID 형식으로 조정한 뒤 run `31924604384`에서 OIDC와 Terraform Plan 성공을 확인했습니다. Artifact 업로드, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다. Production Terraform
+GitHub OIDC subject를 immutable owner/repository ID 형식으로 조정한 뒤 최종 run `31924876346`에서 OIDC와 Terraform Plan 성공을 확인했습니다. Artifact 업로드, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다. Production Terraform
 Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보강했고, Workflow 계약 테스트로
 원격 State·OIDC·fork 보호를 고정했습니다. MapLibre 지도 렌더러는 결과 화면에서 지연 로드해 초기 Web
 엔트리와 선택 청크를 분리했으며, 로컬 build에서 경고 없이 확인했습니다.
