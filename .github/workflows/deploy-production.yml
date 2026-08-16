@@ -117,10 +117,15 @@ jobs:
       - name: Verify approved deployment inputs
         env:
           BUDGET_EMAIL: ${{ secrets.BUDGET_EMAIL }}
+          MONTHLY_BUDGET_USD: ${{ vars.MONTHLY_BUDGET_USD }}
         run: |
           set -euo pipefail
           if [[ -z "$BUDGET_EMAIL" ]]; then
             echo "::error::BUDGET_EMAIL is not approved or configured; refusing AWS deployment."
+            exit 1
+          fi
+          if [[ ! "$MONTHLY_BUDGET_USD" =~ ^([1-9][0-9]?|100)$ ]]; then
+            echo "::error::MONTHLY_BUDGET_USD must be an explicitly approved integer from 1 to 100; refusing AWS deployment."
             exit 1
           fi
       - name: Configure AWS OIDC
@@ -164,6 +169,7 @@ jobs:
             -out=/workspace/release/tfplan \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
             -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
+            -var="monthly_budget_usd=${{ vars.MONTHLY_BUDGET_USD }}" \
             -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
             -var="lambda_s3_key=${lambda_key}" \
             -var="lambda_source_code_hash=${lambda_hash}" \

@@ -205,6 +205,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Terraform 계약 4건과 Workflow 계약 5건이 새 형식·오류 메시지를 검증하며, 실제 AWS 호출은
   수행하지 않았다.
 
+### LUN-026 월 예산 승인 입력 방어선
+
+- `monthly_budget_usd`의 기본값 `5`가 남아 있으면 이메일만 설정해도 승인되지 않은 Budget 한도가
+  적용될 수 있음을 확인했다.
+- 기본값을 제거하고 `MONTHLY_BUDGET_USD`를 Plan·Deploy·Teardown의 명시 입력으로 연결했다.
+  1~100 범위와 정수 형식을 AWS OIDC 전 사전검사·Terraform validation에서 함께 확인한다.
+- 현재 GitHub 변수는 생성하지 않았으며, 비용 승인 전 AWS Role 요청·Plan·Apply는 실행하지 않는다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

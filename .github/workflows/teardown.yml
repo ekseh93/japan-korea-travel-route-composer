@@ -46,6 +46,7 @@ jobs:
             -chdir=infra/environments/production destroy -input=false -auto-approve \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
             -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
+            -var="monthly_budget_usd=${{ vars.MONTHLY_BUDGET_USD }}" \
             -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
             -var="lambda_s3_key=${{ vars.LAMBDA_ARTIFACT_KEY }}" \
             -var="lambda_source_code_hash=${{ vars.LAMBDA_SOURCE_CODE_HASH }}"

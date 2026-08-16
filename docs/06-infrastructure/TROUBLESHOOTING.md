@@ -391,6 +391,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** Terraform 계약 4건과 Workflow 계약 5건이 형식·오류 메시지를 검증했다. 값이 없거나
   형식이 잘못된 상태에서는 AWS Role을 요청하지 않는다.
 
+### 19. 월 예산 기본값이 승인 없이 적용될 수 있던 문제
+
+- **문제:** `monthly_budget_usd` 기본값 `5` 때문에 Budget 이메일만 설정하면 월 한도가 사용자의
+  명시 승인 없이 Terraform에 전달될 수 있었다.
+- **결정:** 기본값을 제거하고 `MONTHLY_BUDGET_USD`를 명시 입력으로 요구한다. Plan·Deploy·Teardown에
+  전달하고, Plan·Deploy는 AWS OIDC 전에 1~100 정수 형식을 확인한다.
+- **검증:** Terraform 계약 4건과 Workflow 계약 5건이 명시 입력·전달·오류 메시지를 검증했다.
+  현재 변수는 생성하지 않았고 AWS 리소스 변경도 없다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

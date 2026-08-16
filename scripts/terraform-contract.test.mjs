@@ -56,6 +56,12 @@ test("AWS budget is configured as an alert, not a payment block", async () => {
   assert.match(production, /resource "aws_budgets_budget" "monthly"/);
   assert.match(production, /threshold\s*=\s*20/);
   assert.match(production, /threshold\s*=\s*100/);
+  const monthlyBudgetBlock = variables.match(
+    /variable "monthly_budget_usd"[\s\S]*?error_message\s*=\s*"[^"]+"/,
+  )?.[0];
+  assert.ok(monthlyBudgetBlock, "monthly_budget_usd validation must exist");
+  assert.match(monthlyBudgetBlock, /Explicitly approved/);
+  assert.doesNotMatch(monthlyBudgetBlock, /default\s*=/);
 });
 
 test("Lambda release inputs are immutable and strongly shaped", async () => {

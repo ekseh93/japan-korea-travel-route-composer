@@ -97,7 +97,7 @@ ECS, OpenSearch, ElastiCache, WAF, Route 53과 사용자 지정 도메인이다.
 | `aws_region` | Y | `ap-northeast-1` 기본, 구현 전 확인 |
 | `github_repository` | Y | 정확한 owner/repo |
 | `budget_email` | Y | 승인된 이메일 형식 필수, 공개 Output 금지; 미설정·형식 오류는 Apply 차단 |
-| `monthly_budget_usd` | Y | 5 USD 기본, 사용자 승인 필요 |
+| `monthly_budget_usd` | Y | 1~100 USD 범위의 명시 승인 필수; 예시 값 5 USD |
 | `enable_cost_anomaly_detection` | Y | 계정 비용 확인 전 false |
 | `lambda_reserved_concurrency` | Y | 1 기본, 0은 비상 정지 |
 | `api_rate_limit` / `burst_limit` | Y | 1/2 기본 |

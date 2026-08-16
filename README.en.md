@@ -12,7 +12,7 @@
 > Terraform Plan verification are complete, while application deployment remains incomplete
 > Protected Production Build Gate `31925830262` passed catalog validation, immutable packaging, checksum, SBOM, and GitHub artifact upload; it was cancelled while waiting for production approval and no AWS deployment stage was reached
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
-> Plan and Deploy workflows now preflight the Budget Secret and immutable Lambda artifact variables before OIDC; Plan `31928188767` skipped OIDC and Terraform after the preflight failed; these inputs remain intentionally unset
+> Plan and Deploy workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; Plan `31928188767` skipped OIDC and Terraform after the preflight failed; these inputs remain intentionally unset
 > Latest GitHub CI `31928319717` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
 >
 > Public URL and user metrics: none
@@ -217,7 +217,7 @@ pnpm audit --audit-level high
 The Web accepts city, duration, time windows, locale, pace, companion, and rain preferences, then
 displays daily visits, travel time, reasons, and Evidence links from the Compose API. Set
 `VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only. Production deployment is
-blocked at Terraform input validation when the approved `BUDGET_EMAIL` Secret is missing or malformed.
+blocked at Terraform input validation when the approved `BUDGET_EMAIL` Secret or monthly budget input is missing or malformed.
 The pre-publication catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
 cost/security boundary contract tests, and 4 browser accessibility/responsive/map-degradation E2E
 tests ran, but real Lambda/API Gateway integration and deployment URL smoke verification have not

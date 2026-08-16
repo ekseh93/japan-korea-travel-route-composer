@@ -22,12 +22,17 @@ jobs:
       - name: Verify approved plan inputs
         env:
           BUDGET_EMAIL: ${{ secrets.BUDGET_EMAIL }}
+          MONTHLY_BUDGET_USD: ${{ vars.MONTHLY_BUDGET_USD }}
           LAMBDA_ARTIFACT_KEY: ${{ vars.LAMBDA_ARTIFACT_KEY }}
           LAMBDA_SOURCE_CODE_HASH: ${{ vars.LAMBDA_SOURCE_CODE_HASH }}
         run: |
           set -euo pipefail
           if [[ -z "$BUDGET_EMAIL" ]]; then
             echo "::error::BUDGET_EMAIL is not approved or configured; refusing AWS Plan."
+            exit 1
+          fi
+          if [[ ! "$MONTHLY_BUDGET_USD" =~ ^([1-9][0-9]?|100)$ ]]; then
+            echo "::error::MONTHLY_BUDGET_USD must be an explicitly approved integer from 1 to 100; refusing AWS Plan."
             exit 1
           fi
           if [[ -z "$LAMBDA_ARTIFACT_KEY" ]]; then
@@ -70,6 +75,7 @@ jobs:
             -chdir=infra/environments/production plan -input=false -lock-timeout=60s \
             -var="project_slug=${{ vars.PROJECT_SLUG }}" \
             -var="budget_email=${{ secrets.BUDGET_EMAIL }}" \
+            -var="monthly_budget_usd=${{ vars.MONTHLY_BUDGET_USD }}" \
             -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
             -var="lambda_s3_key=${{ vars.LAMBDA_ARTIFACT_KEY }}" \
             -var="lambda_source_code_hash=${{ vars.LAMBDA_SOURCE_CODE_HASH }}" \

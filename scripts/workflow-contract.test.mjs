@@ -83,6 +83,8 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(plan, /environment:\s+terraform-plan/);
   assert.match(plan, /Verify approved plan inputs/);
   assert.match(plan, /BUDGET_EMAIL is not approved or configured/);
+  assert.match(plan, /MONTHLY_BUDGET_USD must be an explicitly approved integer/);
+  assert.match(plan, /monthly_budget_usd=\$\{\{ vars\.MONTHLY_BUDGET_USD \}\}/);
   assert.match(plan, /LAMBDA_ARTIFACT_KEY is not configured/);
   assert.match(plan, /LAMBDA_ARTIFACT_KEY must be a 40-character release SHA/);
   assert.match(plan, /LAMBDA_SOURCE_CODE_HASH is not configured/);
@@ -110,6 +112,8 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
   const deploy = await workflow("deploy-production.yml");
   assert.match(deploy, /Verify approved deployment inputs/);
   assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);
+  assert.match(deploy, /MONTHLY_BUDGET_USD must be an explicitly approved integer/);
+  assert.match(deploy, /monthly_budget_usd=\$\{\{ vars\.MONTHLY_BUDGET_USD \}\}/);
 });
 
 test("rollback workflow does not apply Terraform or modify application resources", async () => {

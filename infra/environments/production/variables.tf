@@ -44,12 +44,11 @@ variable "budget_email" {
 
 variable "monthly_budget_usd" {
   type        = number
-  description = "Budget alert threshold; AWS Budgets is an alert, not a hard payment block."
-  default     = 5
+  description = "Explicitly approved budget alert threshold; AWS Budgets is an alert, not a hard payment block."
 
   validation {
     condition     = var.monthly_budget_usd > 0 && var.monthly_budget_usd <= 100
-    error_message = "monthly_budget_usd must be greater than 0 and no more than 100."
+    error_message = "monthly_budget_usd requires explicit approval and must be greater than 0 and no more than 100."
   }
 }
 

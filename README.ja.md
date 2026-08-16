@@ -10,7 +10,7 @@
 > BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、アプリケーション配信は未完了
 > 保護されたProduction Build Gate `31925830262`はcatalog検証・immutable package・checksum・SBOM・GitHub artifact uploadに合格し、production承認待ちでキャンセル、AWS配信段階には到達していない
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
-> その後、Plan・Deploy workflowにBudget Secretとimmutable Lambda artifact変数の事前検査をOIDC前に追加し、Plan `31928188767`でOIDC・Terraformがskippedになったことを確認、関連入力は現在意図的に未設定
+> その後、Plan・Deploy workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、Plan `31928188767`でOIDC・Terraformがskippedになったことを確認、関連入力は現在意図的に未設定
 > 最新のGitHub CI `31928319717`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
 >
 > 公開URL・ユーザー指標: なし
@@ -184,7 +184,7 @@ APIを呼び出して日別Visit、移動時間、理由、Evidenceリンクを�
 `VITE_API_BASE_URL`で接続先HTTP
 APIを指定します。合成Fixtureはテスト専用で、公開前CatalogにはOSMベース160件のPlaceとEvidenceがあります。純粋HTTP
 Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、Terraformコスト・セキュリティ境界契約3件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E
-4件は実行済みです。承認済みの `BUDGET_EMAIL` Secretが未設定または不正な形式の場合、Terraform入力検証でProduction配信を停止します。実Lambda/API Gateway接続と配信URL
+4件は実行済みです。承認済みの `BUDGET_EMAIL` Secretまたは月額予算承認値が未設定・不正な場合、Terraform入力検証でProduction配信を停止します。実Lambda/API Gateway接続と配信URL
 Smoke検証は未実行です。AWSアカウント・Budget・OIDCの確認前にProduction配信を実行しません。
 
 ## ロードマップ

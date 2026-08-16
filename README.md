@@ -10,7 +10,7 @@
 > Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
 > 보호된 Production Build Gate `31925830262`는 catalog validate·immutable package·checksum·SBOM·GitHub artifact upload까지 성공했고, `production` 승인 대기에서 취소함; AWS 배포 단계에는 도달하지 않음
 > Terraform Plan `31927331676`은 OIDC·State init 후 미승인 빈 `BUDGET_EMAIL` validation에서 중단됨; Apply·artifact 업로드·배포는 실행하지 않음
-> 이후 Plan·Deploy workflow에 Budget Secret과 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, Plan `31928188767`에서 OIDC·Terraform 단계가 skipped 됨을 확인함; 현재 관련 입력은 미설정 상태임
+> 이후 Plan·Deploy workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, Plan `31928188767`에서 OIDC·Terraform 단계가 skipped 됨을 확인함; 현재 관련 입력은 미설정 상태임
 > 최신 GitHub CI `31928319717`에서 quality·browser-e2e·terraform-static과 전체 계약 검사가 성공함; 이 실행은 AWS OIDC·Terraform Apply를 포함하지 않음
 >
 > 공개 URL·사용자 지표: 없음
@@ -197,7 +197,7 @@ pnpm audit --audit-level high
 Web은 도시·기간·시간·언어·속도·동행·우천 여부를 입력하고 Compose API를 호출해 일자별 Visit,
 이동시간, 이유와 Evidence 링크를 표시합니다. 로컬 Web 실행은 `VITE_API_BASE_URL`로 연결할 HTTP API를
 지정해야 하며, 합성 Fixture는 테스트 전용입니다. Production 배포는 승인된 `BUDGET_EMAIL` Secret이
-없거나 형식이 잘못되면 Terraform 입력 단계에서 차단됩니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
+없거나 월 예산 승인값이 없거나 형식이 잘못되면 Terraform 입력 단계에서 차단됩니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
 Evidence가 있으며, 순수 HTTP
 Handler 계약 테스트, 로컬 HTTP 서버 기반 Smoke 계약 4건, Terraform 비용·보안 경계 계약 4건, 브라우저
 접근성·반응형·지도 장애 축소 E2E 4건은 실행했지만 실제 Lambda/API Gateway 연결과 배포 URL Smoke
