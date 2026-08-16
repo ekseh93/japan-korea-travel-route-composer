@@ -243,6 +243,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Placeholder 입력 금지, 값 출력 금지, Plan 검토 후 Production 승인 순서를 명시했다.
   현재 입력 생성이나 AWS 호출은 수행하지 않았다.
 
+### LUN-031 GitHub 입력 설정 자동화 스크립트
+
+- 승인된 네 가지 입력을 대화형으로 받고 이메일·월 예산·Artifact key/hash 형식을 먼저 검증하는
+  `scripts/configure-github-inputs.ps1`을 추가했다.
+- Secret은 stdin으로 전달하고 입력값을 출력하지 않도록 했으며, 값 설정 후에는 이름 목록만 확인한다.
+- 스크립트는 자동 실행하지 않았고, GitHub Secret·Variable과 AWS 상태는 변경하지 않았다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

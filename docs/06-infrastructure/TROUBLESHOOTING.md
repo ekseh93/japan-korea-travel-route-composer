@@ -431,6 +431,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   Production 승인 순서를 하나의 절차로 정리했다.
 - **검증:** 현재 Secret·변수는 생성하지 않았고, Runbook은 실행 절차로만 문서화했다.
 
+### 24. 승인 입력을 수동으로 잘못 설정할 위험
+
+- **문제:** 네 가지 입력을 각각 수동 설정하면 이메일·예산·Artifact key/hash 오타가 AWS 단계까지
+  전달될 수 있었다.
+- **결정:** `scripts/configure-github-inputs.ps1`이 승인값을 대화형으로 받고 로컬 형식 검증 후
+  GitHub에 설정하도록 했다. Secret은 stdin으로 전달하고 값은 출력하지 않는다.
+- **검증:** 스크립트는 작성·구문 검증만 했으며 실행하지 않았다. 실제 Secret·Variable·AWS 상태는
+  변경되지 않았다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

@@ -52,6 +52,13 @@ OIDC Role과 Protected Environment가 필요하며 로컬 AWS Profile을 사용�
 알림 이메일과 철거 기준을 승인하고, 검토된 Release Artifact의 실제 key·hash를 확보한 뒤에만
 설정한다. `<...>` placeholder를 그대로 입력하지 않는다.
 
+대화형 검증·설정을 한 번에 수행하려면 저장소 루트에서 아래 스크립트를 실행한다. 이 명령은
+실행자 확인과 실제 승인값 입력이 필요하므로 Luna가 자동 실행하지 않는다.
+
+```powershell
+pwsh -File scripts/configure-github-inputs.ps1
+```
+
 ```powershell
 $repo = "ekseh93/japan-korea-travel-route-composer"
 
