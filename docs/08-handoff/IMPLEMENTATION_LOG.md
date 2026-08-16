@@ -227,6 +227,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   체크리스트 상태가 전체 실행 승인처럼 표시된 불일치를 확인했다.
 - 상태를 `APPROVED_FOR_EXECUTION_WITH_BUDGET_GATE`로 바꾸고 README 3종에 Production 비용 Gate가
   미완료임을 명시했다. Budget·Artifact 입력 없이 AWS 호출을 허용하는 변경은 하지 않았다.
+- 문서 동기화 커밋의 GitHub CI `31929411509`에서 quality·browser-e2e·terraform-static과 계약
+  검사가 성공했고, AWS OIDC·Terraform Apply는 실행되지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
