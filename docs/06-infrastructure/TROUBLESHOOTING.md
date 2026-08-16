@@ -365,8 +365,9 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
   OIDC AssumeRole과 remote state init을 수행했다.
 - **결정:** `terraform-plan.yml`과 `deploy-production.yml`에 Secret 비어 있음 검사를
   OIDC 단계 앞에 추가했다. 승인되지 않은 Budget 입력이면 AWS Role을 요청하지 않고 즉시 종료한다.
-- **검증:** workflow contract test가 두 workflow의 사전검사와 오류 메시지를 고정한다. Secret이
-  승인·설정되기 전에는 새 Plan·Deploy를 실행하지 않는다.
+- **검증:** workflow contract test가 두 workflow의 사전검사와 오류 메시지를 고정한다.
+  재실행 Plan `31928188767`은 사전검사에서 실패했고 `Configure AWS OIDC`와 Terraform plan이
+  모두 skipped 됐다. Secret이 승인·설정되기 전에는 새 Plan·Deploy를 실행하지 않는다.
 
 ## 하지 않는 해결 방법
 

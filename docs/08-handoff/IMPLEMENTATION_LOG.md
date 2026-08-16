@@ -175,6 +175,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   수행한 점을 확인했다.
 - Plan·Production Deploy workflow에 `BUDGET_EMAIL` 비어 있음 검사를 OIDC 앞에 추가하고,
   workflow contract test로 두 경계를 고정했다. 승인 전에는 AWS Role 요청도 수행하지 않는다.
+- 재실행 Terraform Plan `31928188767`에서 사전검사 실패, OIDC skipped, Terraform plan skipped를
+  확인해 의도한 AWS 호출 차단을 검증했다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
