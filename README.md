@@ -9,7 +9,7 @@
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;
-> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, Deploy Role 정책·Production State 복구 workflow를 추가했으며 애플리케이션 배포는 미완료
+> Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, Deploy Role 정책·Production State 복구 workflow를 추가했으며 Production 배포와 Smoke는 `31936843773`에서 완료
 > Production workflow `31932494722`는 현재 검토 commit에서 Build·검증·artifact 생성·OIDC·Lambda artifact S3 업로드까지 성공했으나, Terraform Apply 중 Deploy Role의 `iam:ListRolePolicies`와 CloudWatch Alarm 권한 부족으로 중단됨; S3 Web·CloudFront·DynamoDB·SNS·Budget·Log Group 일부는 생성됐고 API/Web 게시·Smoke는 실행되지 않음
 > Terraform Plan `31927331676`은 OIDC·State init 후 미승인 빈 `BUDGET_EMAIL` validation에서 중단됨; Apply·artifact 업로드·배포는 실행하지 않음
 > 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, 이번 실행에서 승인된 Budget Secret과 월 예산 `1 USD`를 등록함
@@ -24,8 +24,9 @@
 > State reconcile `31935919549`는 실제 Lambda 함수는 확인했지만 `AllowHttpApiInvoke` 권한 문장이 없는 상태에서 Lambda permission import를 시도해 중단됨; 실제 resource policy에 해당 문장이 있을 때만 import하도록 보완하고 재검증 예정
 > Production deploy `31936300645`는 Terraform Apply까지 성공(`9 added, 1 changed, 0 destroyed`, API endpoint·CloudFront domain 생성)했으나 Catalog publisher가 원격 Terraform output 조회용 Docker 컨테이너에 OIDC 임시 자격 증명을 전달하지 않아 중단됨; 컨테이너 환경 전달을 보완하고 Catalog/Web/Smoke를 재실행 예정
 > 재실행 `31936509852`는 Apply까지 성공(`0 added, 1 changed, 0 destroyed`)했으나 배포 Lambda 패키지에서 AWS SDK 중첩 의존성 `@aws-sdk/core/account-id-endpoint`를 찾지 못해 Catalog publish 전 중단됨; Build에서 `node-linker=hoisted`를 사용하도록 보완하고 재검증 예정
+> Production deploy `31936843773`은 Build·보호 Environment 승인·OIDC·Terraform Apply(`0 added, 1 changed, 0 destroyed`)·Catalog publish·Web publish·CloudFront invalidation·API/Web Smoke를 모두 통과함; API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`, Web `https://d2r0admgel5eik.cloudfront.net/`, Catalog는 Tokyo/Seoul 각 80개
 >
-> 공개 URL·사용자 지표: 없음
+> 공개 URL: [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/); 사용자 지표·실제 성능 수치는 아직 없음
 >
 > LUN-014 검증: format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 5건·Workflow
 > 계약 5건·Terraform 계약 4건·브라우저 E2E 4건·build·catalog:validate·catalog:build·의존성 감사
@@ -132,25 +133,26 @@ Version 승격을 거부하는 로컬 계약도 추가했습니다. 합성 Fixtu
 Projection에서는 차단됩니다. DynamoDB Catalog Publisher는 두 도시 META를 조건부로 예약한 뒤 검증된
 Projection을 Version partition에 제한 재시도로 쓰고, 두 도시 Current pointer를 기대 이전 Version
 조건의 단일 transaction으로 승격합니다. Production Workflow는 apply 직후 Publisher CLI를 호출하도록
-연결했고, 보호된 rollback Workflow는 기존 Catalog pointer를 조건부로 복구하지만 실제 AWS
-publish·rollback은 실행하지 않았습니다. Terraform fmt/validate·TFLint·Trivy와 Workflow의
+연결했고, Production deploy `31936843773`에서 실제 AWS Catalog publish·Web publish·API/Web Smoke를
+통과했습니다. 보호된 rollback Workflow는 기존 Catalog pointer를 조건부로 복구하지만 Rollback 자체는
+실행하지 않았습니다. Terraform fmt/validate·TFLint·Trivy와 Workflow의
 quality·browser-e2e는 GitHub CI에서 실행했습니다. Bootstrap Terraform Plan과 부분 Apply를 실행했고,
-GitHub OIDC subject를 immutable owner/repository ID 형식으로 조정한 뒤 최종 run `31925069545`에서 OIDC와 Terraform Plan 성공을 확인했습니다. Artifact 업로드, Lambda/API Gateway 통합·배포와 운영 Alarm 수신 검증은 아직 실행하지 않았습니다. Production Terraform
+GitHub OIDC subject를 immutable owner/repository ID 형식으로 조정한 뒤 최종 run `31925069545`에서 OIDC와 Terraform Plan 성공을 확인했습니다. Production deploy `31936843773`에서 Artifact 업로드, Lambda/API Gateway 통합·배포와 Catalog publish를 확인했습니다. Production Terraform
 Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보강했고, Workflow 계약 테스트로
 원격 State·OIDC·fork 보호를 고정했습니다. MapLibre 지도 렌더러는 결과 화면에서 지연 로드해 초기 Web
 엔트리와 선택 청크를 분리했으며, 로컬 build에서 경고 없이 확인했습니다.
 
 ## 현재 상태
 
-| 항목                               | 상태                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 회사형 요건정의                    | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 완료, Bootstrap 일부 적용, 애플리케이션 AWS Stack은 미적용                                                                                                                                                   |
-| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                                                                                                           |
-| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 5건·Workflow 계약 5건·Terraform 계약 4건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build와 legacy package deploy 통과, 보호된 Build Gate `31925830262`에서 catalog·package·checksum·SBOM·GitHub artifact upload 통과, Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, Bootstrap Apply는 부분 실행, AWS 배포 Smoke는 미실행 |
-| AWS 리소스·배포 URL                | Bootstrap State/Artifact Bucket, GitHub OIDC Provider, Plan/Deploy Role은 계정에서 확인됨; 공개 배포 URL 없음                                                                                                                                                                                                                                                                                                                                                                                                  |
-| 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| 항목                               | 상태                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 회사형 요건정의                    | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 및 Production AWS Stack 적용 완료                                                                                                                                     |
+| 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                                                                    |
+| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 5건·Workflow 계약 5건·Terraform 계약 4건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build와 hoisted production package 검증, 보호된 Build Gate `31925830262` 통과, Terraform fmt/validate·TFLint·Trivy 통과, Production deploy `31936843773`에서 Catalog publish·Web publish·API/Web Smoke 통과 |
+| AWS 리소스·배포 URL                | State/Artifact Bucket, GitHub OIDC Provider, Plan/Deploy Role, Lambda·API Gateway·DynamoDB·S3·CloudFront·Budget·SNS·CloudWatch가 `ap-northeast-1`에 적용됨; Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/), API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                                                                                                     |
+| 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## 설계 문서
 
@@ -209,20 +211,18 @@ pnpm audit --audit-level high
 Web은 도시·기간·시간·언어·속도·동행·우천 여부를 입력하고 Compose API를 호출해 일자별 Visit,
 이동시간, 이유와 Evidence 링크를 표시합니다. 로컬 Web 실행은 `VITE_API_BASE_URL`로 연결할 HTTP API를
 지정해야 하며, 합성 Fixture는 테스트 전용입니다. Production 배포는 승인된 `BUDGET_EMAIL` Secret이
-없거나 월 예산 승인값이 없거나 형식이 잘못되면 Terraform 입력 단계에서 차단됩니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
-Evidence가 있으며, 순수 HTTP
-Handler 계약 테스트, 로컬 HTTP 서버 기반 Smoke 계약 4건, Terraform 비용·보안 경계 계약 4건, 브라우저
-접근성·반응형·지도 장애 축소 E2E 4건은 실행했지만 실제 Lambda/API Gateway 연결과 배포 URL Smoke
-검증은 아직 실행하지 않았습니다. Catalog Publisher는 Production Artifact와 AWS 자격 증명이 필요한
-배포 Workflow 전용이며, 로컬에서 AWS를 호출하지 않았습니다. AWS 계정·Budget·OIDC를 확인하기
-전에는 Production 배포를 실행하지 않습니다.
+없거나 월 예산 승인값이 없거나 형식이 잘못되면 Terraform 입력 단계에서 차단됩니다. Production Catalog에는 OSM 기반 160개 Place와
+Evidence가 있으며, 순수 HTTP Handler 계약 테스트, 로컬 HTTP 서버 기반 Smoke 계약 4건, Terraform 비용·보안 경계 계약 4건, 브라우저
+접근성·반응형·지도 장애 축소 E2E 4건을 실행했습니다. Production deploy `31936843773`에서 실제
+Lambda/API Gateway 연결과 배포 URL Smoke를 통과했습니다. Catalog Publisher는 Production Artifact와 AWS 자격 증명이 필요한
+배포 Workflow 전용이며, 로컬에서 AWS를 호출하지 않았습니다.
 
 ## 로드맵
 
 1. LUN-001~014 애플리케이션·Terraform·CI, Source Governance Gate·Projection Build·Catalog
    Publisher·Rollback 구현 및 검증 완료
 2. 승인된 OSM Source로 도쿄·서울 160개 Place를 반입하고 Production Gate 검증 완료
-3. AWS 계정·Budget·OIDC 확인 후 AWS 배포·Smoke·Rollback 검증
+3. AWS 계정·Budget·OIDC 확인 후 AWS 배포·Smoke 검증 완료; Rollback 검증은 미실행
 4. 실제 피드백 후 도시 확대와 선택적 Route/AI Adapter 재평가
 
 ## 라이선스와 목적
@@ -234,7 +234,7 @@ Source code 라이선스는 아직 선택하지 않았으므로 별도 LICENSE�
 ## 구현 인계
 
 요건·UX·DDD·Architecture·Data·Delivery 설계의 Phase Gate를 통과했습니다. OSM 기반 Catalog와
-Production Projection은 생성했으며 Bootstrap 리소스와 GitHub OIDC/Plan 검증을 완료했습니다. 애플리케이션 AWS
-배포와 공개 URL 검증은 Budget 승인과 불변 Release Artifact 입력 확정 전까지 차단합니다.
+Production Projection은 생성했으며 Bootstrap 리소스와 GitHub OIDC/Plan 검증을 완료했습니다. 보호된
+Production deploy `31936843773`에서 불변 Release Artifact를 적용하고 공개 URL Smoke를 통과했습니다.
 
 `LUNA HANDOFF: READY`

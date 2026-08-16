@@ -9,7 +9,7 @@
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
-> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、Deploy Roleポリシー・Production State復旧workflowを追加し、アプリケーション配信は未完了
+> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、Deploy Roleポリシー・Production State復旧workflowを追加し、Production配信とSmokeは`31936843773`で完了
 > Production workflow `31932494722`は現行review commitでBuild・検証・artifact生成・OIDC・Lambda artifactのS3アップロードまで成功したが、Terraform Apply中にDeploy Roleの`iam:ListRolePolicies`とCloudWatch Alarm権限不足で停止、S3 Web・CloudFront・DynamoDB・SNS・Budget・Log Groupの一部は作成済み、API/Web公開・Smokeは未実行
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
 > その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、今回の実行で承認済みBudget Secretと月額予算`1 USD`を登録
@@ -128,27 +128,27 @@ pointer候補を作成し、stale Versionの昇格を拒否するローカル契
 Publisherは2都市のMETAを条件付きで予約してから検証済みProjectionをVersion
 partitionへ制限付き再試行で書き込み、2都市のCurrent
 pointerを期待する以前のVersion条件付き単一transactionで昇格します。Production
-Workflowはapply直後にPublisher CLIを呼び出し、保護されたrollback Workflowは既存Catalog
-pointerを条件付きで復元しますが、実AWS
-publish・rollbackは実行していません。合成Fixtureはテストでのみ許可し、Production
+Workflowはapply直後にPublisher CLIを呼び出し、Production deploy `31936843773`で実AWS
+Catalog publish・Web publish・API/Web Smokeに合格しました。保護されたrollback Workflowは既存Catalog
+pointerを条件付きで復元しますが、Rollback自体は未実行です。合成Fixtureはテストでのみ許可し、Production
 Projectionでは拒否します。Terraform
 fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。実AWS
-Bootstrap Terraform Planと一部Applyを実行し、GitHub OIDC subjectをimmutable owner/repository ID形式へ調整した後、最終run `31925069545`でOIDCとTerraform Planの成功を確認しました。Artifactアップロード、実Lambda/API
-Gateway統合・配信、運用Alarmの受信検証は未実行です。Production Terraform
+Bootstrap Terraform Planと一部Applyを実行し、GitHub OIDC subjectをimmutable owner/repository ID形式へ調整した後、最終run `31925069545`でOIDCとTerraform Planの成功を確認しました。Production deploy `31936843773`でArtifactアップロード、実Lambda/API
+Gateway統合・配信、Catalog publish、運用Alarm対象リソース適用を確認しました。Production Terraform
 Workflowは`TERRAFORM_STATE_BUCKET`とlockfile backendを使い、Workflow契約テストでremote
 State・OIDC・fork保護を固定しました。MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエントリと選択チャンクを分離しました。ローカルbuildで警告がないことを確認しました。
 
 ## 現在の状態
 
-| 項目                                         | 状態                                                                                                                                                                                                                                                                                                                                                                            |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                  |
-| プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                                                                              |
-| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成済み、Bootstrap一部適用済み、アプリケーションAWS Stackは未適用       |
-| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                           |
-| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約5件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build合格、Terraform fmt/validate・TFLint・Trivyは直前のGitHub CIで合格、Bootstrap Applyは一部実行、配信Smokeは未実行 |
-| AWSリソース・公開URL                         | Bootstrap State/Artifact Bucket、GitHub OIDC Provider、Plan/Deploy Roleは確認済み、公開配信URLなし                                                                                                                                                                                                                                                                              |
-| 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                                                                            |
+| 項目                                         | 状態                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                              |
+| プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                                                                                          |
+| アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成とProduction AWS Stack適用を完了                                                 |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                       |
+| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約5件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build・hoisted production package検証・Terraform fmt/validate・TFLint・Trivy・Production Catalog/Web publishとAPI/Web Smokeに合格 |
+| AWSリソース・公開URL                         | State/Artifact Bucket、GitHub OIDC Provider、Plan/Deploy Role、Lambda・API Gateway・DynamoDB・S3・CloudFront・Budget・SNS・CloudWatchを`ap-northeast-1`に適用、Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/)、API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                      |
+| 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                                                                                        |
 
 ## 設計ドキュメント
 
@@ -194,10 +194,10 @@ pnpm audit --audit-level high
 Webは都市・期間・時刻・言語・ペース・同行者・雨天を入力し、Compose
 APIを呼び出して日別Visit、移動時間、理由、Evidenceリンクを表示します。ローカルWebは
 `VITE_API_BASE_URL`で接続先HTTP
-APIを指定します。合成Fixtureはテスト専用で、公開前CatalogにはOSMベース160件のPlaceとEvidenceがあります。純粋HTTP
+APIを指定します。合成Fixtureはテスト専用で、Production CatalogにはOSMベース160件のPlaceとEvidenceがあります。純粋HTTP
 Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、Terraformコスト・セキュリティ境界契約3件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E
-4件は実行済みです。承認済みの `BUDGET_EMAIL` Secretまたは月額予算承認値が未設定・不正な場合、Terraform入力検証でProduction配信を停止します。実Lambda/API Gateway接続と配信URL
-Smoke検証は未実行です。AWSアカウント・Budget・OIDCの確認前にProduction配信を実行しません。
+4件を実行済みです。承認済みの `BUDGET_EMAIL` Secretまたは月額予算承認値が未設定・不正な場合、Terraform入力検証でProduction配信を停止します。
+Production deploy `31936843773`で実Lambda/API Gateway接続と配信URL Smokeに合格しました。Catalog PublisherはProduction ArtifactとAWS認証情報が必要な配信Workflow専用で、ローカルではAWSを呼び出していません。
 
 ## ロードマップ
 
@@ -206,7 +206,7 @@ Smoke検証は未実行です。AWSアカウント・Budget・OIDCの確認前�
    API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog
    Publisher・Rollbackの実装・検証を完了
 2. 承認済みOSM Sourceで東京・ソウル160件のPlaceを取込・Production Gate検証済み
-3. AWSアカウント・Budget・OIDC確認後の配信・Smoke・Rollback検証
+3. AWSアカウント・Budget・OIDC確認後の配信・Smoke検証は完了、Rollback検証は未実行
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価
 
 ## ライセンスと目的
@@ -217,6 +217,6 @@ codeライセンスは未選択のため、別途LICENSEが作成されるまで
 ## 実装引継ぎ
 
 要件・UX・DDD・Architecture・Data・Delivery設計のPhase Gateを通過しました。OSMベースCatalogと
-Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。アプリケーションAWS配信と公開URL検証はBudget承認とimmutable Release Artifact入力の確定まで停止します。
+Production Projectionは生成済みで、BootstrapリソースとGitHub OIDC/Planの検証を完了しました。保護されたProduction deploy `31936843773`でimmutable Release Artifactを適用し、公開URL Smokeに合格しました。
 
 `LUNA HANDOFF: READY`

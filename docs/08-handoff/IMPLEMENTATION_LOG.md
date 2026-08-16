@@ -346,7 +346,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 - 재실행 `31936509852`에서 Terraform Apply는 성공했지만 Lambda artifact의 AWS SDK 중첩 의존성이 런타임에서 해석되지 않아 Catalog publish가 실패했다.
 - `pnpm deploy --legacy`의 isolated layout을 그대로 사용하지 않고 Build에서 `node-linker=hoisted`를 지정해 AWS SDK production dependency를 평탄화하도록 보완했다.
-- hoisted 패키지에서 `@aws-sdk/core/account-id-endpoint.js` 존재를 로컬 확인하고 workflow 계약 테스트를 갱신했으며, 수정 commit에서 Catalog/Web/Smoke를 재검증한다.
+- hoisted 패키지에서 `@aws-sdk/core/account-id-endpoint.js` 존재를 로컬 확인하고 workflow 계약 테스트를 갱신했다. Production deploy `31936843773`에서 hoisted artifact, Catalog/Web publish, API/Web Smoke가 성공했다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

@@ -139,8 +139,8 @@ ran in GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIE
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and
 MANUAL_LINK_ONLY/Tier mismatches with contract tests. The Bootstrap Terraform plan and partial apply ran.
 After the GitHub OIDC subject was fixed to the immutable owner/repository ID format, final run `31925069545`
-passed both OIDC AssumeRole and Terraform Plan; artifact upload, Lambda/API Gateway integration,
-deployment, and operational alarm delivery were not run. The
+passed both OIDC AssumeRole and Terraform Plan; Production deploy `31936843773` verified artifact
+upload, Lambda/API Gateway integration, deployment, and Catalog publish. The
 LUN-014 Source Gate also enforces a Production catalog size of 150-250 published Places in total and
 at least 75 per city. The Projection Build tooling builds a canonical Projection from validated Seed
 data, injects catalog metadata and city statistics, computes a source and final SHA-256 checksum,
@@ -152,23 +152,24 @@ from a validated Projection and rejects stale Version promotion. The DynamoDB Ca
 conditionally reserves both city META items before writing the validated Projection to Version
 partitions with bounded retries, then promotes both city Current pointers in one transaction with
 expected-previous-Version conditions. The Production Workflow invokes the publisher CLI immediately
-after apply, and the protected rollback Workflow conditionally restores existing Catalog pointers.
-Production Terraform workflows now pass the approved State bucket, fixed state key, and lockfile
-backend; real AWS publication and rollback have not run. The MapLibre renderer is lazy-loaded on the
+after apply, and Production deploy `31936843773` passed real AWS Catalog publish, Web publish, and
+API/Web Smoke. The protected rollback Workflow conditionally restores existing Catalog pointers, but
+rollback itself has not run. Production Terraform workflows now pass the approved State bucket, fixed state key, and lockfile
+backend; the MapLibre renderer is lazy-loaded on the
 result view, separating the initial Web entry from the optional map chunk; the local build completed
 without a chunk warning.
 
 ## Current Status
 
-| Item                                                 | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; Bootstrap partially applied, application AWS stack not applied                                                                                                                                                    |
-| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                                                                                                                                                                                    |
-| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 5 release contract tests, 5 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; local Production Catalog validate/build and legacy package deploy passed, protected Build Gate `31925830262` passed catalog, packaging, checksum, SBOM, and GitHub artifact upload, Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; Bootstrap Apply partially ran, AWS deployment smoke not run |
-| AWS resources and deployment URL                     | Bootstrap State/Artifact buckets, GitHub OIDC Provider, and Plan/Deploy Roles confirmed in the account; no public deployment URL                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Item                                                 | Status                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built and the Production AWS stack applied                                                                          |
+| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                                                                               |
+| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 5 release contract tests, 5 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; hoisted production package validation and protected Build Gate `31925830262` passed, Terraform fmt/validate, TFLint, and Trivy passed, and Production deploy `31936843773` passed Catalog/Web publish and API/Web Smoke |
+| AWS resources and deployment URL                     | State/Artifact buckets, GitHub OIDC Provider, Plan/Deploy Roles, Lambda, API Gateway, DynamoDB, S3, CloudFront, Budget, SNS, and CloudWatch applied in `ap-northeast-1`; Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/), API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                                                                                                                   |
+| Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## Design Documents
 
@@ -230,12 +231,11 @@ The Web accepts city, duration, time windows, locale, pace, companion, and rain 
 displays daily visits, travel time, reasons, and Evidence links from the Compose API. Set
 `VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only. Production deployment is
 blocked at Terraform input validation when the approved `BUDGET_EMAIL` Secret or monthly budget input is missing or malformed.
-The pre-publication catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
+The Production Catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
 cost/security boundary contract tests, and 4 browser accessibility/responsive/map-degradation E2E
-tests ran, but real Lambda/API Gateway integration and deployment URL smoke verification have not
-run. Production deployment will not run before the AWS account, budget, and OIDC are verified. The
-Catalog Publisher is a deployment-workflow component that requires the immutable artifact and AWS
-credentials; it has not called AWS locally.
+tests ran. Production deploy `31936843773` verified the real Lambda/API Gateway integration and
+deployment URL smoke. The Catalog Publisher is a deployment-workflow component that requires the
+immutable artifact and AWS credentials; it has not called AWS locally.
 
 ## Roadmap
 
@@ -244,7 +244,7 @@ credentials; it has not called AWS locally.
    HTTP API, Web adapters, Terraform, CI, Source Governance Gate, Projection Build, Catalog
    Publisher, and Rollback
 2. Import 160 places from the approved OSM Source in Tokyo and Seoul; Production Gate verification complete
-3. Verify the AWS account, budget, and OIDC, then deploy and verify smoke tests and rollback
+3. AWS account, budget, and OIDC verified; deploy and smoke verification complete, rollback verification pending
 4. Re-evaluate city expansion and optional route/AI adapters from real feedback
 
 ## License and Purpose
@@ -258,7 +258,7 @@ terms, licenses, and attribution requirements.
 
 Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. The OSM-based
 catalog and Production Projection are built, Bootstrap resources are confirmed, and GitHub OIDC/Plan
-verification is complete. Application AWS deployment and public URL verification remain blocked pending
-Budget approval and immutable Release Artifact inputs.
+verification is complete. Protected Production deploy `31936843773` applied the immutable Release
+Artifact and passed public URL smoke verification.
 
 `LUNA HANDOFF: READY`
