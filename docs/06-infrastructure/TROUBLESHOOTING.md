@@ -484,6 +484,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 계약 테스트에 State reconcile workflow의 protected environment·OIDC·import-only 경계를 추가했다.
   아직 State reconcile과 재배포는 실행하지 않았다.
 
+### 29. State import 중 IAM attached policy 조회 권한 부족
+
+- **문제:** State reconcile `31933541202`는 기존 리소스를 Remote State에 import하는 중 Lambda Role의
+  `iam:ListAttachedRolePolicies`에서 중단됐다.
+- **결정:** Deploy Role에 해당 Role 조회에 필요한 `iam:ListAttachedRolePolicies`만 추가한다. 이미 성공한
+  import 결과는 유지하고, 다음 reconcile은 State에 등록된 주소를 건너뛰고 중단 지점부터 이어간다.
+- **검증:** Bootstrap 정책 복구 workflow의 최소 권한 JSON과 Terraform 정책에 같은 Action을 추가했다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

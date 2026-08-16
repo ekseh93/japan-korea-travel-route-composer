@@ -272,6 +272,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - State reconcile은 리소스를 삭제하거나 Apply하지 않고 import만 수행하며, 이후 별도 Plan에서 변경·삭제를
   검토한 뒤 Production Apply를 실행한다.
 
+### LUN-034 State import IAM 조회 권한 보완
+
+- State reconcile `31933541202`가 기존 리소스 import 중 `iam:ListAttachedRolePolicies`에서 중단된 것을
+  확인했다. 앞선 S3·CloudFront OAC·DynamoDB·Log Group import 결과는 State에 남아 있다.
+- Bootstrap Deploy Role 정책과 복구 workflow에 해당 조회 Action만 추가하고, 다음 reconcile에서 기존 주소는
+  건너뛰도록 유지했다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

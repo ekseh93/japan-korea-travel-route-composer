@@ -224,7 +224,7 @@ data "aws_iam_policy_document" "deploy" {
       "budgets:*", "cloudwatch:DeleteAlarms", "cloudwatch:DescribeAlarms",
       "cloudwatch:ListTagsForResource", "cloudwatch:PutMetricAlarm", "cloudwatch:TagResource",
       "cloudwatch:UntagResource", "iam:CreateRole", "iam:DeleteRole", "iam:GetRole",
-      "iam:GetRolePolicy", "iam:ListRolePolicies", "iam:PassRole",
+      "iam:GetRolePolicy", "iam:ListAttachedRolePolicies", "iam:ListRolePolicies", "iam:PassRole",
       "iam:PutRolePolicy", "iam:DeleteRolePolicy", "iam:TagRole",
     ]
     resources = ["*"]
