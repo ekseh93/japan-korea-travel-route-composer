@@ -503,6 +503,16 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 복구 스크립트의 정책 존재 조건을 계약 테스트에 추가했고, 로컬 Bash 구문 검사와 Workflow/Terraform
   계약 테스트 9건을 통과했다. 수정 commit으로 보호된 State reconcile을 재실행해야 한다.
 
+### 31. State import 중 확인 전 SNS 이메일 구독
+
+- **문제:** State reconcile `31933964803`은 Web·CloudFront OAC·DynamoDB·Log Group·Lambda Role·SNS Topic까지
+  import한 뒤, SNS 이메일 구독의 `SubscriptionArn`이 `PendingConfirmation`인 상태값을 ARN으로 import하려 해
+  `could not parse import ID "PendingConfirmation" as ARN`으로 중단됐다.
+- **결정:** `PendingConfirmation`과 `None`은 Terraform import 대상에서 제외하고, 이메일 확인이 완료되어 실제 ARN이
+  반환될 때만 구독을 import한다. 확인 메일을 승인하지 않은 상태에서 구독을 강제로 State에 넣거나 재전송을 반복하지 않는다.
+- **검증:** 복구 스크립트와 계약 테스트에 미확인 상태 차단 조건을 추가했다. Budget SNS Topic은 이미 import됐고,
+  구독 ARN과 Budget 알림 경로는 이메일 확인 후 다음 State reconcile에서 검증한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

@@ -16,6 +16,7 @@
 > 최신 수동 Terraform Plan `31929552323`은 당시 `BUDGET_EMAIL` 사전검사에서 중단됐고, 이후 Production workflow에서는 OIDC와 artifact 업로드까지 성공함
 > 최신 GitHub CI `31929411509`에서 quality·browser-e2e·terraform-static과 전체 계약 검사가 성공함; 이 실행은 AWS OIDC·Terraform Apply를 포함하지 않음
 > State reconcile `31933697630`은 기존 리소스 import 중 Lambda 인라인 정책이 아직 존재하지 않아 중단됨; 복구 스크립트가 해당 정책이 존재할 때만 import하도록 수정되었고 계약 테스트 9건을 통과함
+> 후속 State reconcile `31933964803`은 Budget SNS 이메일 구독이 `PendingConfirmation`인 상태에서 중단됨; 미확인 구독은 ARN이 아니므로 import하지 않도록 보완했으며, 이메일 확인 후 재검증해야 함
 >
 > 공개 URL·사용자 지표: 없음
 >

@@ -16,6 +16,7 @@
 > 最新の手動Terraform Plan `31929552323`は当時`BUDGET_EMAIL`事前検査で停止したが、その後のProduction workflowではOIDCとartifactアップロードまで成功
 > 最新のGitHub CI `31929411509`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
 > State reconcile `31933697630`は既存リソースのimport中にLambdaインラインポリシーが未作成で停止、ポリシーが存在する場合だけimportするよう復旧スクリプトを修正し、契約テスト9件に合格
+> 続くState reconcile `31933964803`はBudget SNSメール購読が`PendingConfirmation`の状態で停止、未確認購読はARNではないためimportせず、メール確認後に再検証するよう修正中
 >
 > 公開URL・ユーザー指標: なし
 >

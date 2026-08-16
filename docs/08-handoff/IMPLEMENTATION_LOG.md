@@ -287,6 +287,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   미생성 정책은 다음 Production Plan에서 Terraform이 생성하며, 복구 workflow는 계속 import-only 경계를 유지한다.
 - Bash 구문 검사와 Terraform/Workflow 계약 테스트 9건을 통과했으며, 실제 AWS 재실행은 수정 commit 반영 후 수행한다.
 
+### LUN-036 State import의 미확인 SNS 구독 처리
+
+- 후속 State reconcile `31933964803`은 Budget SNS Topic까지 import한 뒤 이메일 구독의
+  `PendingConfirmation` 상태값을 ARN으로 import하려 해 중단됐다.
+- 복구 스크립트가 `PendingConfirmation`과 `None`을 건너뛰고 실제 Subscription ARN만 import하도록 수정했다.
+  사용자가 확인 메일을 승인하기 전에는 구독을 강제로 State에 넣지 않는다.
+- 구독 확인 후 수정 commit으로 State reconcile을 재실행하고, 이후 Production Plan에서 Budget 알림 경로를
+  검토한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

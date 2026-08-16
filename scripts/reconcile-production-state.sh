@@ -107,7 +107,7 @@ fi
 if aws sns get-topic-attributes --topic-arn "$budget_topic" >/dev/null 2>&1; then
   import_if_unmanaged aws_sns_topic.budget "$budget_topic"
   subscription_arn="$(aws sns list-subscriptions-by-topic --topic-arn "$budget_topic" --query "Subscriptions[?Protocol=='email'].SubscriptionArn | [0]" --output text)"
-  if [[ "$subscription_arn" != "None" && -n "$subscription_arn" ]]; then
+  if [[ "$subscription_arn" != "None" && "$subscription_arn" != "PendingConfirmation" && -n "$subscription_arn" ]]; then
     import_if_unmanaged aws_sns_topic_subscription.budget_email "$subscription_arn"
   fi
 fi

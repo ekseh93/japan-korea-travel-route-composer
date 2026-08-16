@@ -18,6 +18,7 @@
 > Latest manual Terraform Plan `31929552323` stopped at the `BUDGET_EMAIL` preflight at that time; the later Production workflow reached OIDC and artifact upload
 > Latest GitHub CI `31929411509` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
 > State reconcile `31933697630` stopped while importing existing resources because the Lambda inline policy was not yet present; the recovery script now imports that policy only when it exists, and 9 contract tests passed
+> The follow-up State reconcile `31933964803` stopped because the Budget SNS email subscription was `PendingConfirmation`; unconfirmed subscriptions are not ARNs, so recovery now skips them until the email is confirmed
 >
 > Public URL and user metrics: none
 >
