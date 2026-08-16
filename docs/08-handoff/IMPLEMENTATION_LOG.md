@@ -438,3 +438,11 @@ Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Pro
 - 스타일·타일 요청이 실패하거나 WebGL을 사용할 수 없으면 텍스트 일정과 OpenStreetMap 좌표 링크를 유지한다.
 - 지도에는 OpenFreeMap Attribution을 표시하고, 타일 차단 브라우저 E2E로 축소 동작을 검증한다.
 - `maplibre-gl` 버전과 `VITE_MAP_STYLE_URL`은 고정·설정 가능하게 하며 유료 Provider는 추가하지 않는다.
+
+### LUN-046 운영 Catalog 재배포 실패 기록
+
+- 운영 Compose 후보 고갈을 수정한 `5649d4ac79781640be8159c0c21ee7353529e22b`를 전체 SHA로 Build했다.
+- Production deploy `31938026813`은 Terraform plan/apply까지 성공했으나 Catalog Current pointer 조건에서 실패했다.
+- 같은 SHA의 expected Current 입력 재실행 `31938276531`은 앞선 실행에서 예약된 immutable Version의 META 조건 때문에 다시 실패했다.
+- 기존 Current `catalog-62636954664e0652b7d6a46a9e00e3baefe1e05b`는 보존하고, 예약된 `catalog-5649d4ac79781640be8159c0c21ee7353529e22b`는 Current가 가리키지 않는 폐기 대상으로 남긴다.
+- AWS Item 수동 삭제·수정과 Rollback은 실행하지 않으며, 새 문서 커밋 SHA로 새 Catalog Version을 생성한 뒤 Catalog/Web/Compose Smoke를 재검증한다.

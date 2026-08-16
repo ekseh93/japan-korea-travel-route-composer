@@ -26,15 +26,17 @@
 > 再実行 `31936509852`はApplyまで成功(`0 added, 1 changed, 0 destroyed`)したが、Lambda配布パッケージでAWS SDKの依存関係`@aws-sdk/core/account-id-endpoint`を解決できずCatalog publish前に停止、Buildで`node-linker=hoisted`を使うよう修正して再検証する
 > その後、実際の初期Composeリクエストで`No publishable candidate is available.`を確認、原因はカフェだけを選択したOSM Catalogと`UNKNOWN`営業時間だったため、取込選別・Production Gate・実Compose Smokeを修正し、修正版Releaseの再配信前である
 > 修正版Release `31937854878`は短い`release_sha`でCheckoutを試みAWS段階前に停止、全SHAで再実行した`31937906488`は新しいCatalog JSON 323件とPrettier形式の差でBuild Gate停止、Importerの出力形式を固定して再配信準備中
+> 全SHA `5649d4ac79781640be8159c0c21ee7353529e22b`のdeploy `31938026813`はBuildとTerraform plan/applyまで成功したが、Catalog publishのimmutable Version予約条件で停止、既存Current Versionを指定した再実行`31938276531`も前回実行が残した同じVersion予約で停止した
+> 予約済み`catalog-5649d4ac79781640be8159c0c21ee7353529e22b`は手動削除せず廃棄対象として記録し、新しい文書commit SHAでCatalog/Web/実Compose Smokeを再実行予定
 >
 > 公開URL・ユーザー指標: なし
 >
-> LUN-014検証: format・lint・typecheck・67
-> Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約5件・Terraform契約4件・ブラウザE2E
+> LUN-014検証: format・lint・typecheck・69
+> Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約6件・Terraform契約4件・ブラウザE2E
 > 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform
 > fmt/validate・TFLint・Trivyは直前のCIで合格、ローカルのProduction Catalog validate/buildとlegacy package deployには合格、保護されたBuild Gate `31925830262`はcatalog・package・checksum・SBOM・GitHub artifact uploadに合格
-> (2026-08-16、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum
-> `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`)
+> (2026-08-16、Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`、Projection checksum
+> `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`)
 >
 > GitHub CI検証:
 > quality・browser-e2e・terraform-static、Smoke contract tests、Release contract tests、Workflow
@@ -147,8 +149,8 @@ State・OIDC・fork保護を固定しました。MapLibre地図レンダラー�
 | 会社形式の要件定義                           | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                              |
 | プロダクト・UX・DDD・AWS・Data・Delivery設計 | Phase Gate検証完了                                                                                                                                                                                                                                                                                                                                                                          |
 | アプリケーション・インフラコード             | LUN-001~013 workspace・契約・Domain・合成Fixture・Repository・Routing・Compose・HTTP API・旅行UX・障害縮退マップ・Terraformコスト/可観測性制御・Build once OIDC WorkflowとLUN-014 Source Governance Gate・Projection Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSM Catalog・Projection生成とProduction AWS Stack適用を完了                                                 |
-| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                       |
-| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・67 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約5件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build・hoisted production package検証・Terraform fmt/validate・TFLint・Trivy・Production Catalog/Web publishとAPI/Web Smokeに合格 |
+| 実データ150～250件のCatalog                  | OSMベース160件を取込・Production Gate合格、Source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`、Projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`、修正版のProduction再公開は待機中 |
+| テスト・ビルド                               | LUN-001~014 Gate基準のformat・lint・typecheck・69 Vitestテスト・Smoke契約4件・Release契約5件・Workflow契約6件・Terraform契約4件・ブラウザE2E 4件・build・catalog:validate・catalog:build・frozen install・依存関係監査を実行、Production Catalog validate/build・hoisted production package検証・Terraform fmt/validate・TFLint・Trivyに合格、修正版deploy `31938026813`・`31938276531`はCatalog条件付き公開で停止 |
 | AWSリソース・公開URL                         | State/Artifact Bucket、GitHub OIDC Provider、Plan/Deploy Role、Lambda・API Gateway・DynamoDB・S3・CloudFront・Budget・SNS・CloudWatchを`ap-northeast-1`に適用、Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/)、API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                      |
 | 実測性能・可用性・ユーザー指標               | なし                                                                                                                                                                                                                                                                                                                                                                                        |
 
@@ -208,7 +210,7 @@ Production deploy `31936843773`で実Lambda/API Gateway接続と配信URL Smoke�
    API・Web・Terraform・CI、Source Governance Gate・Projection Build・Catalog
    Publisher・Rollbackの実装・検証を完了
 2. 承認済みOSM Sourceで東京・ソウル160件のPlaceを取込・Production Gate検証済み
-3. AWSアカウント・Budget・OIDC確認後の配信・Smoke検証は完了、Rollback検証は未実行
+3. AWSアカウント・Budget・OIDC確認と既存配信・health Smokeは完了、修正版Catalogの再公開と実Compose Smokeは待機中、Rollback検証は未実行
 4. 実フィードバック後に都市拡大と任意Route/AI Adapterを再評価
 
 ## ライセンスと目的

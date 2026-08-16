@@ -608,6 +608,17 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** `prettier --write data/catalog-v1/**/*.{json,md}`를 실행했고, 다음 Release에서 전체 `format:check`와
   Catalog validate를 다시 확인한다. 첫 실행의 짧은 `release_sha` 입력 실패와 달리 이번 실패는 전체 SHA로 Checkout 후 발생했다.
 
+### 41. Catalog 재배포에서 immutable Version 예약 충돌
+
+- **문제:** Production deploy `31938026813`은 전체 SHA Build와 Terraform plan/apply까지 성공했지만, Catalog
+  publish에서 `ConditionalCheckFailed` 2건으로 중단됐다. 재배포 `31938276531`도 같은 오류로 중단됐다.
+- **원인:** 첫 실행은 새 Version의 META와 Place 쓰기 이후 Current pointer 승격에서 실패해 `catalog-5649d4ac79781640be8159c0c21ee7353529e22b`를 이미 예약했다.
+  Publisher는 같은 immutable Version을 덮어쓰지 않도록 `attribute_not_exists(pk)`를 사용하므로 같은 SHA 재실행은 의도적으로 거부된다.
+  재배포 입력에는 기존 Current인 `catalog-62636954664e0652b7d6a46a9e00e3baefe1e05b`를 명시했지만, Version 예약 조건이 먼저 실패했다.
+- **결정:** AWS DynamoDB Item을 수동 삭제하거나 기존 Version을 수정하지 않는다. 예약된 Version은 Current pointer가 가리키지 않는 폐기 대상으로 기록하고,
+  새 커밋 SHA로 새 immutable Version을 생성해 기존 Current Version을 expected 값으로 조건부 승격한다.
+- **검증:** 새 SHA Build에서 Catalog publish, Web publish, 실제 Compose POST를 포함한 Production Smoke를 다시 실행한다. 실패 Version 삭제나 Rollback은 수행하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

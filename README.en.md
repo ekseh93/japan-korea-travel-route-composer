@@ -28,15 +28,17 @@
 > Rerun `31936509852` completed Apply (`0 added, 1 changed, 0 destroyed`) but stopped before Catalog publish because the Lambda package could not resolve the AWS SDK nested dependency `@aws-sdk/core/account-id-endpoint`; the Build packaging now uses `node-linker=hoisted` before revalidation
 > The subsequent real default Compose request returned `No publishable candidate is available.` because the OSM selector had published cafes only with `UNKNOWN` opening status; ingestion selection, the Production Gate, and an actual Compose smoke check were fixed, and the corrected Release has not yet been redeployed
 > Release `31937854878` stopped before AWS because Checkout received a short `release_sha`; full-SHA rerun `31937906488` reached the Build Gate but stopped because 323 generated Catalog JSON files differed from Prettier; the importer output is now fixed before redeployment
+> Full-SHA deploy `31938026813` for `5649d4ac79781640be8159c0c21ee7353529e22b` passed Build and Terraform plan/apply but stopped at the immutable Catalog Version reservation condition; rerun `31938276531` with the existing Current Version also stopped because the previous attempt had already reserved the same Version
+> The reserved `catalog-5649d4ac79781640be8159c0c21ee7353529e22b` is recorded for discard without manual deletion, and a new documentation commit SHA will rerun Catalog/Web publication and the real Compose Smoke
 >
 > Public URL and user metrics: none
 >
-> LUN-014 verification: format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 5 release
-> contract tests, 5 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build,
+> LUN-014 verification: format, lint, typecheck, 69 Vitest tests, 4 smoke contract tests, 5 release
+> contract tests, 6 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build,
 > catalog:validate, catalog:build, and dependency audit passed; Terraform fmt/validate, TFLint, and
 > Trivy passed in the preceding CI; the Production Catalog validate/build and OSM Source Gate passed
-> (2026-08-16; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum
-> `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`)
+> (2026-08-16; source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`; projection checksum
+> `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`)
 >
 > GitHub CI verification: quality, browser-e2e,
 > terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and
@@ -168,8 +170,8 @@ without a chunk warning.
 | Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built and the Production AWS stack applied                                                                          |
-| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                                                                               |
-| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 5 release contract tests, 5 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; hoisted production package validation and protected Build Gate `31925830262` passed, Terraform fmt/validate, TFLint, and Trivy passed, and Production deploy `31936843773` passed Catalog/Web publish and API/Web Smoke |
+| Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `5b580a04a5955d7101663126ce9b2ac4dd1cf7306c7a48c2ee43030f92756896`; projection checksum `745651044bfb8345cb44778985cb91625e9754794be62955fd787d9d4645afd6`; corrected Production publication is pending |
+| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 69 Vitest tests, 4 smoke contract tests, 5 release contract tests, 6 workflow contract tests, 4 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; hoisted production package validation and Terraform fmt/validate, TFLint, and Trivy passed, the prior Production deploy `31936843773` passed Catalog/Web publish and API/Web Smoke, and corrected deploys `31938026813` and `31938276531` stopped at Catalog conditional publication |
 | AWS resources and deployment URL                     | State/Artifact buckets, GitHub OIDC Provider, Plan/Deploy Roles, Lambda, API Gateway, DynamoDB, S3, CloudFront, Budget, SNS, and CloudWatch applied in `ap-northeast-1`; Web [https://d2r0admgel5eik.cloudfront.net/](https://d2r0admgel5eik.cloudfront.net/), API `https://o37ec3iu55.execute-api.ap-northeast-1.amazonaws.com`                                                                                                                                                                   |
 | Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
@@ -246,7 +248,7 @@ immutable artifact and AWS credentials; it has not called AWS locally.
    HTTP API, Web adapters, Terraform, CI, Source Governance Gate, Projection Build, Catalog
    Publisher, and Rollback
 2. Import 160 places from the approved OSM Source in Tokyo and Seoul; Production Gate verification complete
-3. AWS account, budget, and OIDC verified; deploy and smoke verification complete, rollback verification pending
+3. AWS account, budget, and OIDC verified; the prior deployment and health Smoke are complete, corrected Catalog publication and real Compose Smoke are pending, and rollback verification is pending
 4. Re-evaluate city expansion and optional route/AI adapters from real feedback
 
 ## License and Purpose
