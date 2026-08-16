@@ -14,8 +14,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
 | 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
-| AWS 리소스·배포          | 미실행, AWS Account ID·Budget·OIDC 사전 검증 대기                                                                                                                                               |
-| 로컬 Terraform 사전 검증 | Terraform 1.9.8·TFLint 0.64.0 설치 및 backend 없는 정적 검증 통과; AWS 자격 증명 없음                                                                                                           |
+| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Apply·배포 미실행                            |
+| 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행 |
 
 ## 커밋 기준
 
@@ -128,6 +128,17 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 실제로 확인한 `Unable to locate credentials`, 도구 미설치, CloudShell Sign-In, GitHub CI 정적 검증과 AWS 미호출의 차이를 재현 가능한 상태로 기록했다.
 - README.md·README.ja.md·README.en.md의 설계 문서 목록에 `docs/06-infrastructure/TROUBLESHOOTING.md` 링크를 동기화했다.
 
+### LUN-018 AWS Bootstrap·GitHub OIDC 및 Environment 검증 결과
+
+- AWS Account `490220201302`와 `ap-northeast-1`을 확인하고 State/Artifact Bucket, GitHub OIDC Provider,
+  Plan/Deploy Role이 계정에 존재함을 확인했다.
+- GitHub OIDC 실제 `sub`가 immutable owner/repository ID 형식임을 확인하고 Plan·Deploy Role Trust를
+  각각 `terraform-plan`·`production` Environment subject로 수정했다. 장기 Access Key는 사용하지 않았다.
+- Repository Variables 6개를 등록했고, `production`과 `production-teardown`에 `ekseh93` 승인자와
+  `main` branch 제한을 설정했다. `terraform-plan`은 PR/수동 Plan 자동화를 위해 승인 없이 유지한다.
+- 최종 GitHub CI `31925019912`, Terraform Plan `31925069545`가 성공했다. 실제 Production Apply,
+  artifact upload, Catalog publish, Web/API Smoke, rollback과 운영 알림 수신은 실행하지 않았다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.
@@ -136,9 +147,10 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 
 ## 다음 단계
 
-다음 설계 순서의 구현 단위는 AWS Account·Budget·OIDC 사전 검증과 Bootstrap Plan이다.
-실제 Source 반입과 Production Catalog 검증은 완료했지만, 커뮤니티 크롤링·유료 Provider 활성화는
-하지 않았다. AWS 자격 증명과 계정 경계가 확인되기 전에는 AWS 리소스 생성과 `terraform apply`를 실행하지 않는다.
+다음 구현 단위는 Budget 승인 입력을 확정한 뒤, 보호된 `production` Environment에서 검토된 Release SHA의
+artifact를 만들고 Production Plan을 검토하는 것이다. 실제 Source 반입과 Production Catalog 검증은 완료했지만,
+커뮤니티 크롤링·유료 Provider 활성화는 하지 않았다. Budget 이메일 승인 전에는 Production Apply와 배포 Smoke를
+실행하지 않는다.
 
 ### LUN-013 구현 전 계약
 
@@ -156,7 +168,8 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Deploy job이 Build artifact만 다운로드해 checksum·SBOM을 검증하고 재빌드하지 않도록 구현했다.
 - Terraform Docker 실행에 OIDC 임시 자격 증명을 명시적으로 전달하고, protected Production 및 Fork guard를 적용했다.
 - 로컬 format·lint·typecheck·unit·browser E2E·build와 GitHub CI의 quality·browser-e2e·terraform-static이 통과했다.
-- 실제 OIDC AssumeRole, artifact 업로드, Terraform Plan/Apply, AWS Smoke와 운영 Alarm 수신은 미실행이다.
+- GitHub OIDC AssumeRole과 Terraform Plan은 `31925069545`에서 성공했다. artifact 업로드, Production
+  Terraform Apply, AWS Smoke와 운영 Alarm 수신은 미실행이다.
 
 ### LUN-014 구현 결과
 

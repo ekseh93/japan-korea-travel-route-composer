@@ -1,6 +1,6 @@
 # Terraform 전략
 
-> 상태: 설계 승인, LUN-012 Terraform 및 LUN-013 Bootstrap/Artifact 연결 코드 구현·GitHub 정적 검증 완료, AWS Apply 미실행
+> 상태: 설계 승인, LUN-012 Terraform 및 LUN-013 Bootstrap/Artifact 연결 코드 구현·GitHub CI 검증 완료, Bootstrap 일부 Apply 및 OIDC Trust 확인, Production Apply 미실행
 > 기준일: 2026-08-15  
 > 목표: 모든 AWS 인프라를 코드로 재현하고 Console Drift를 금지
 

@@ -3,7 +3,7 @@
 > 상태: `APPROVED_FOR_EXECUTION`
 > 목적: 실제 Source Catalog와 AWS 배포를 시작하기 전 승인·비용·철거 경계를 확인한다.  
 > 승인 기록: 사용자가 README 가독성 변경 후 Source 반입과 AWS 리소스 생성·Terraform Plan/Apply를 승인했다 (2026-08-16).
-> 원칙: 승인된 Source 반입은 실행했으며, AWS 계정 식별·Budget·OIDC 사전 검증이 끝나기 전에는 AWS 리소스 생성·Terraform Plan/Apply·배포 Smoke를 실행하지 않는다.
+> 원칙: 승인된 Source 반입과 AWS Account/OIDC 사전 검증은 완료했으며, Budget 이메일 승인 전에는 Production Apply·배포 Smoke·Rollback을 실행하지 않는다.
 
 ## 1. Source 승인
 
@@ -16,7 +16,7 @@
 
 ## 2. AWS 비용·계정 승인
 
-- [ ] 생성 대상 Account ID와 Region `ap-northeast-1`을 확인했다.
+- [x] 생성 대상 Account ID `490220201302`와 Region `ap-northeast-1`을 확인했다.
 - [x] AWS 리소스 생성 및 과금 가능성에 대해 사용자의 명시 승인을 받았다.
 - [ ] 월 예산 한도와 알림 수신 이메일을 승인했다. AWS Budgets는 결제 차단이 아닌 경보다.
 - [ ] 고정비 리소스(NAT Gateway, RDS, ECS 서비스, OpenSearch)를 추가하지 않는다.
@@ -25,9 +25,9 @@
 ## 3. GitHub·OIDC 승인
 
 - [x] 정확한 Repository `ekseh93/japan-korea-travel-route-composer`를 확인했다.
-- [ ] Terraform Plan Role과 Deploy Role의 OIDC trust 조건을 확인했다.
-- [ ] `terraform-plan`, `production`, `production-teardown` Environment 보호 규칙과 승인자를 확인했다.
-- [ ] `TERRAFORM_STATE_BUCKET`, `LAMBDA_ARTIFACT_BUCKET`, `AWS_REGION`, `PROJECT_SLUG` 변수를 준비했다.
+- [x] Terraform Plan Role과 Deploy Role의 immutable OIDC trust 조건을 확인했다.
+- [x] `production`·`production-teardown`에 `ekseh93` 필수 승인자와 `main` branch 제한을 설정했고, `terraform-plan` Environment는 Plan 자동 실행을 위해 별도 승인 없이 유지했다.
+- [x] `TERRAFORM_STATE_BUCKET`, `LAMBDA_ARTIFACT_BUCKET`, `AWS_REGION`, `PROJECT_SLUG`, Plan/Deploy Role ARN 변수를 준비했다.
 - [x] 장기 AWS Access Key를 GitHub Secret이나 로컬 파일에 저장하지 않는다.
 
 ## 4. 실행 순서 승인
@@ -46,5 +46,5 @@
 - [ ] GitHub Actions Run URL, 배포 URL, Smoke 결과, Rollback 결과를 기록했다.
 - [ ] 실제 비용 확인과 철거 결과를 README에 검증된 사실로만 반영했다.
 
-현재 Source 반입·Production Catalog 검증 증거는 있으나, AWS Account ID·Budget 수신 이메일·OIDC
-Environment와 Role 확인, Terraform Plan/Apply, 배포·Smoke·Rollback 증거는 미완료다.
+현재 Source 반입·Production Catalog 검증, Bootstrap 리소스, GitHub OIDC/Plan과 Environment 보호 증거는
+있다. Budget 수신 이메일 승인, Production Terraform Apply, artifact 업로드, 배포·Smoke·Rollback 증거는 미완료다.

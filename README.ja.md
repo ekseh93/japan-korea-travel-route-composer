@@ -117,7 +117,7 @@ pointerを条件付きで復元しますが、実AWS
 publish・rollbackは実行していません。合成Fixtureはテストでのみ許可し、Production
 Projectionでは拒否します。Terraform
 fmt/validate・TFLint・TrivyとWorkflowのquality・browser-e2eはGitHub CIで実行しました。実AWS
-Bootstrap Terraform Planと一部Applyを実行し、GitHub OIDC subjectをimmutable owner/repository ID形式へ調整した後、最終run `31924876346`でOIDCとTerraform Planの成功を確認しました。Artifactアップロード、実Lambda/API
+Bootstrap Terraform Planと一部Applyを実行し、GitHub OIDC subjectをimmutable owner/repository ID形式へ調整した後、最終run `31925069545`でOIDCとTerraform Planの成功を確認しました。Artifactアップロード、実Lambda/API
 Gateway統合・配信、運用Alarmの受信検証は未実行です。Production Terraform
 Workflowは`TERRAFORM_STATE_BUCKET`とlockfile backendを使い、Workflow契約テストでremote
 State・OIDC・fork保護を固定しました。MapLibre地図レンダラーは結果画面で遅延ロードし、初期Webエントリと選択チャンクを分離しました。ローカルbuildで警告がないことを確認しました。

@@ -1,12 +1,13 @@
 # GitHub Actions CI/CD 설계
 
-> 상태: 설계 승인, LUN-013 Build once·OIDC와 LUN-014 Catalog Publisher Workflow 코드 구현 및 GitHub CI 정적 검증 완료; AWS OIDC/배포 미실행
+> 상태: 설계 승인, LUN-013 Build once·OIDC와 LUN-014 Catalog Publisher Workflow 코드 구현 및 GitHub CI 검증 완료; Plan OIDC 성공, Production Apply·배포 미실행
 > 기준일: 2026-08-16
 > 원칙: Build once, OIDC short-lived credentials, 승인 후 Production 배포
 
-현재 확인된 GitHub CI 실행은 [31914519023](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31914519023)이며,
-`quality`, `browser-e2e`, `terraform-static` 작업과 Workflow·Terraform contract tests가 모두 통과했다. 이 결과는 AWS
-자격 증명, Terraform Plan/Apply 또는 Production 배포를 검증한 결과가 아니다.
+현재 확인된 GitHub CI 실행은 [31925019912](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31925019912)이며,
+`quality`, `browser-e2e`, `terraform-static` 작업과 Workflow·Terraform contract tests가 모두 통과했다. Terraform Plan은
+[31925069545](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31925069545)에서 OIDC와 함께 성공했지만,
+이 결과는 Production Apply·배포를 검증한 결과가 아니다.
 
 모든 Workflow는 Node 24-compatible `actions/checkout` v5.0.1을 검증된 SHA로 고정한다.
 

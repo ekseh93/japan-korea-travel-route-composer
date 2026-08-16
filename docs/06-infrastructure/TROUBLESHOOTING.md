@@ -302,6 +302,16 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - AWS OIDC AssumeRole: immutable subject Trust로 수정, 최종 run `31924876346`에서 OIDC와 Terraform Plan 성공
 - AWS 리소스·배포 Smoke: 미실행
 
+### 11. 문서에 있던 GitHub Environment 보호 규칙이 실제로 없었던 이유
+
+- **문제:** 문서는 `production` 수동 승인과 `production-teardown` 별도 보호를 요구했지만,
+  GitHub API 확인 당시 실제 Environment는 `terraform-plan` 하나뿐이고 보호 규칙도 없었다.
+- **결정:** 단일 관리자 저장소의 자동화 흐름을 막지 않도록 `terraform-plan`은 승인 없이 유지하고,
+  `production`과 `production-teardown`에는 `ekseh93` 필수 승인자와 `main` branch 제한을 추가했다.
+  self-review는 유일한 관리자 승인자가 없는 상태에서 영구 차단되지 않도록 허용했다.
+- **검증:** 두 Environment에 required reviewer와 branch policy가 생성된 것을 GitHub API로 확인했다.
+  이 설정은 Production Apply나 teardown을 실행한 증거가 아니며, 실제 workflow는 승인 대기 게이트를 거친다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

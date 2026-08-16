@@ -122,7 +122,7 @@ from the same commit. Terraform fmt/validate, TFLint, Trivy, and the quality/bro
 ran in GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Source references,
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and
 MANUAL_LINK_ONLY/Tier mismatches with contract tests. The Bootstrap Terraform plan and partial apply ran.
-After the GitHub OIDC subject was fixed to the immutable owner/repository ID format, final run `31924876346`
+After the GitHub OIDC subject was fixed to the immutable owner/repository ID format, final run `31925069545`
 passed both OIDC AssumeRole and Terraform Plan; artifact upload, Lambda/API Gateway integration,
 deployment, and operational alarm delivery were not run. The
 LUN-014 Source Gate also enforces a Production catalog size of 150-250 published Places in total and
