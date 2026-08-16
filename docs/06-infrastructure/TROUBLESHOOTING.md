@@ -1,6 +1,6 @@
 # AWS·GitHub 인증 트러블슈팅
 
-> 상태: Identity Center 프로젝트 사용자·임시 Bootstrap 권한 연결 완료, 실제 AWS AssumeRole·Plan·Apply 미실행
+> 상태: Identity Center 프로젝트 사용자·임시 Bootstrap 권한 연결 완료, Bootstrap Apply 부분 완료 및 권한 보완 대기
 > 확인일: 2026-08-16  
 > 저장소: `ekseh93/japan-korea-travel-route-composer`
 
@@ -99,6 +99,33 @@ CI가 사람의 AWS 키 없이 동작한다.
 - **최종 결정:** 계획·검증·문서화는 연속 진행하고, 외부 상태를 바꾸는 단계는 대상과
   영향이 명확히 제시된 뒤 사용자의 명시적 승인을 받은 경우에만 실행한다.
 
+### 8. Bootstrap Apply 중 이미 존재한 OIDC Provider를 어떻게 처리할 것인가
+
+- **문제:** 승인된 Apply에서 GitHub OIDC Provider 생성이 `EntityAlreadyExists`로
+  중단됐다. 읽기 전용 확인 결과 URL, audience, thumbprint가 승인 설계와 일치했다.
+- **설명한 기준:** 기존 Provider를 삭제하거나 중복 생성하면 GitHub Trust 경계와
+  다른 프로젝트의 연동을 훼손할 수 있다. 일치하는 기존 리소스는 import로 Terraform
+  state에 편입하고, 의도한 태그만 관리하는 편이 안전하다.
+- **최종 결정:** `arn:aws:iam::490220201302:oidc-provider/token.actions.githubusercontent.com`
+  을 Terraform state에 import하고 태그를 반영했다. Provider 삭제·교체는 하지 않았다.
+- **검증 결과:** `sts.amazonaws.com` client ID와 승인된 thumbprint를 읽기 전용으로
+  확인했고, Provider 태그 반영은 Apply에서 성공했다.
+
+### 9. Bootstrap 역할에 Terraform 확인용 IAM 권한을 추가할 것인가
+
+- **문제:** Apply가 생성 후 읽기 단계에서 `s3:GetBucketAcl`,
+  `iam:ListAttachedRolePolicies`, `iam:GetRolePolicy` 부족으로 중단됐다. 이 과정에서
+  State/Artifact Bucket 설정과 Plan/Deploy Role 생성은 완료됐고, 두 inline policy의
+  AWS API 생성도 완료됐지만 Terraform state 확정만 실패했다.
+- **설명한 위험:** 이 오류를 해결하려고 `AdministratorAccess`나 GitHub OIDC 전체 권한을
+  부여하면 임시 Bootstrap의 범위가 계정 전체로 확대된다. 필요한 API 확인 권한만
+  1시간 임시 permission set에 추가하면 같은 자동화 흐름을 유지하면서 범위를 제한할 수 있다.
+- **최종 결정:** 관리자 세션에서 `JapanKoreaBootstrap`에 위 3개 action만 일시 추가하고,
+  state import/refresh/검증을 끝낸 뒤 permission set에서 제거한다. CloudShell 권한,
+  장기 Access Key, OIDC AdministratorAccess는 추가하지 않는다.
+- **현재 차단:** 관리자 세션 로그인과 permission set 변경 전에는 Terraform Apply를
+  재실행하지 않는다.
+
 ### 재발 시 기록 형식
 
 새로운 의견 충돌은 다음 순서로 이 문서에 추가한다.
@@ -114,8 +141,9 @@ CI가 사람의 AWS 키 없이 동작한다.
 - 계정: `490220201302` (`kthwan93@gmail.com`), 리전: `ap-northeast-1`
 - 사용자: `japan-korea-dev` (`yukihwana1@gmail.com`)
 - 연결된 임시 권한 세트: `JapanKoreaBootstrap` (세션 1시간, 사용자 지정 인라인 정책)
-- 애플리케이션 AWS 리소스, GitHub OIDC Provider, Plan/Deploy Role, Terraform State/Artifact
-  Bucket은 아직 생성하지 않았다.
+- Bootstrap 부분 Apply 결과: State Bucket과 Artifact Bucket 생성·보안 설정 완료, 기존 GitHub
+  OIDC Provider import·태그 반영 완료, Plan/Deploy Role 생성 완료, 두 inline policy는 AWS
+  생성 확인 후 Terraform state 확정 대기
 - CloudShell은 임시 권한 세트의 최소 권한에 환경 생성 권한이 없어 사용할 수 없다. 로컬 실행은
   AWS CLI v2 SSO 또는 별도의 승인된 단기 세션이 필요하다.
 
@@ -232,10 +260,12 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 | GitHub CI는 통과하지만 AWS Plan이 없음                    | CI 정적 검증은 AWS 계정 호출을 하지 않음       | OIDC Role·Repository Variables·Environment가 아직 미구성                  |
 | CloudShell이 AWS Sign-In으로 이동                         | 브라우저 자동화 세션에 AWS 로그인 정보가 없음  | 비밀번호·OTP를 대신 입력하거나 우회하지 않음                              |
 | GitHub에 IAM을 넣어야 하는가                              | OIDC와 장기 Access Key 방식의 혼동             | Access Key는 저장하지 않고 OIDC Role을 사용                               |
+| Bootstrap Apply의 S3 `GetBucketAcl` 거부                  | 임시 역할에 Terraform의 버킷 read 권한이 없음  | 버킷을 재생성하지 않고 최소 read action 보완 대기                           |
+| IAM 역할 생성 후 `ListAttachedRolePolicies`/`GetRolePolicy` 거부 | 생성 후 provider 확인 action 부족          | 역할과 정책은 유지하고 최소 확인 action 보완 후 state 확정                 |
 
 ## 검증 증거
 
-- 저장소 `main` 최신 구현 커밋: `a0a029b`
+- 저장소 `main` 최신 구현 커밋: `c747558`
 - GitHub CI: [31921517514](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31921517514)
 - 로컬 Terraform `fmt -check`, `init -backend=false`, `validate`: 두 루트 통과
 - 로컬 TFLint `0.64.0`: `infra` 재귀 검사 통과
@@ -243,8 +273,11 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - AWS Identity Center 사용자·임시 Bootstrap 권한 할당: 완료
 - AWS Console의 `JapanKoreaBootstrap/japan-korea-dev` 역할 진입: 확인
 - CloudShell 환경 생성: 최소 권한 부족으로 미실행
+- AWS OIDC Provider: 기존 Provider 일치 여부 확인, Terraform import·태그 Apply 완료
+- Terraform Bootstrap Plan: 최초 `16 add` 확인, 복구 Plan `13 add / 1 change` 확인
+- Terraform Bootstrap Apply: 부분 완료; Bucket 보안 설정·OIDC·Plan/Deploy Role 완료,
+  inline policy 생성 후 state read-back 권한에서 중단
 - AWS OIDC AssumeRole: 미실행
-- Terraform Plan/Apply: 미실행
 - AWS 리소스·배포 Smoke: 미실행
 
 ## 하지 않는 해결 방법

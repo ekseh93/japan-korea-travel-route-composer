@@ -7,8 +7,9 @@
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
 > catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; the AWS IAM
-> Identity Center project user and temporary Bootstrap permission are connected; application AWS
-> resource validation, OIDC AssumeRole, Terraform Plan/Apply, and deployment not run
+> Identity Center project user and temporary Bootstrap permission are connected; Bootstrap State/Artifact
+> buckets, OIDC, and Plan/Deploy Roles are partially applied; inline policy state finalization, OIDC
+> AssumeRole, and application deployment remain incomplete
 >
 > Public URL and user metrics: none
 >
@@ -120,8 +121,9 @@ implemented. The protected deploy job consumes Web/Lambda artifacts, checksums, 
 from the same commit. Terraform fmt/validate, TFLint, Trivy, and the quality/browser-e2e workflows
 ran in GitHub CI. LUN-014 adds deterministic `asOf` checks for BLOCKED/UNVERIFIED Source references,
 expired Source/Evidence, unregistered Source hosts, missing Production Route SourceRefs, and
-MANUAL_LINK_ONLY/Tier mismatches with contract tests. The real AWS plan, OIDC AssumeRole, artifact
-upload, Lambda/API Gateway integration, deployment, and operational alarm delivery were not run. The
+MANUAL_LINK_ONLY/Tier mismatches with contract tests. The Bootstrap Terraform plan and partial apply
+ran, but OIDC AssumeRole after inline-policy state finalization, artifact upload, Lambda/API Gateway
+integration, deployment, and operational alarm delivery were not run. The
 LUN-014 Source Gate also enforces a Production catalog size of 150-250 published Places in total and
 at least 75 per city. The Projection Build tooling builds a canonical Projection from validated Seed
 data, injects catalog metadata and city statistics, computes a source and final SHA-256 checksum,
@@ -145,10 +147,10 @@ without a chunk warning.
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Company-style requirements definition                | v1.0 BASELINED                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | Product, UX, DDD, AWS, data, and delivery design     | Phase Gate validation complete                                                                                                                                                                                                                                                                                                                                                                                                           |
-| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; AWS application not run                            |
+| Application and infrastructure code                  | LUN-001~013 workspace, contracts, domain, synthetic fixtures, rights validation, repository, routing, Compose, HTTP API, travel UX, resilient map enhancement, Terraform cost/observability controls, Build once OIDC workflow, and LUN-014 Source Governance Gate, Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; OSM catalog and Projection built; Bootstrap partially applied, application AWS stack not applied                            |
 | Real catalog of 150-250 places                       | 160 OSM-based places imported and Production Gate passed; source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`; projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                                                                                     |
-| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Production Catalog validate/build passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; real plan and deployment smoke not run |
-| AWS resources and deployment URL                     | None                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Tests and builds                                     | LUN-001~014 Gate format, lint, typecheck, 67 Vitest tests, 4 smoke contract tests, 4 release contract tests, 5 workflow contract tests, 3 Terraform contract tests, 4 browser E2E tests, build, catalog:validate, catalog:build, frozen install, and dependency audit run; Production Catalog validate/build passed; Terraform fmt/validate, TFLint, and Trivy passed in the preceding GitHub CI; Bootstrap Apply partially ran, deployment smoke not run |
+| AWS resources and deployment URL                     | Bootstrap State/Artifact buckets, GitHub OIDC Provider, and Plan/Deploy Roles confirmed in the account; no public deployment URL                                                                                                                                                                                                                                                                                |
 | Measured performance, availability, and user metrics | None                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## Design Documents
@@ -237,7 +239,8 @@ terms, licenses, and attribution requirements.
 ## Implementation Handoff
 
 Requirements, UX, DDD, architecture, data, and delivery design passed their Phase Gates. The OSM-based
-catalog and Production Projection are built, while AWS apply and public deployment remain blocked
-pending account, budget, and OIDC verification.
+catalog and Production Projection are built, and Bootstrap is partially applied. Inline policy state
+finalization, OIDC AssumeRole, application AWS deployment, and public URL verification remain blocked
+pending account budget and permission verification.
 
 `LUNA HANDOFF: READY`
