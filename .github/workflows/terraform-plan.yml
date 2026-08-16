@@ -22,10 +22,20 @@ jobs:
       - name: Verify approved plan inputs
         env:
           BUDGET_EMAIL: ${{ secrets.BUDGET_EMAIL }}
+          LAMBDA_ARTIFACT_KEY: ${{ vars.LAMBDA_ARTIFACT_KEY }}
+          LAMBDA_SOURCE_CODE_HASH: ${{ vars.LAMBDA_SOURCE_CODE_HASH }}
         run: |
           set -euo pipefail
           if [[ -z "$BUDGET_EMAIL" ]]; then
             echo "::error::BUDGET_EMAIL is not approved or configured; refusing AWS Plan."
+            exit 1
+          fi
+          if [[ -z "$LAMBDA_ARTIFACT_KEY" ]]; then
+            echo "::error::LAMBDA_ARTIFACT_KEY is not configured; refusing AWS Plan."
+            exit 1
+          fi
+          if [[ -z "$LAMBDA_SOURCE_CODE_HASH" ]]; then
+            echo "::error::LAMBDA_SOURCE_CODE_HASH is not configured; refusing AWS Plan."
             exit 1
           fi
       - name: Configure AWS OIDC

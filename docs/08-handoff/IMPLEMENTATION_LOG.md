@@ -178,6 +178,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 재실행 Terraform Plan `31928188767`에서 사전검사 실패, OIDC skipped, Terraform plan skipped를
   확인해 의도한 AWS 호출 차단을 검증했다.
 
+### LUN-023 Terraform Plan immutable artifact 입력 방어선
+
+- Plan workflow가 `LAMBDA_ARTIFACT_KEY`와 `LAMBDA_SOURCE_CODE_HASH`를 Repository Variable로
+  요구하면서도 미설정 상태를 OIDC 후 Terraform 단계에서야 발견할 수 있음을 확인했다.
+- Build once 원칙에 맞춰 두 값의 비어 있음 검사를 Budget Secret 검사와 함께 OIDC 앞에 추가하고,
+  workflow contract test로 오류 메시지를 고정했다. Artifact와 checksum이 연결되기 전에는 AWS
+  Plan을 요청하지 않는다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

@@ -369,6 +369,10 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
   재실행 Plan `31928188767`은 사전검사에서 실패했고 `Configure AWS OIDC`와 Terraform plan이
   모두 skipped 됐다. Secret이 승인·설정되기 전에는 새 Plan·Deploy를 실행하지 않는다.
 
+Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
+`LAMBDA_SOURCE_CODE_HASH`도 요구한다. Build once Artifact가 없거나 checksum이 연결되지 않은
+상태로 Production Plan을 만들지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.
