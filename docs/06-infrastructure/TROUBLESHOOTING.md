@@ -325,6 +325,20 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
   Build 성공 뒤 `production` 승인 단계에 도달하는지 확인한다. Budget 이메일 승인 전에는
   해당 승인이나 AWS Apply를 진행하지 않는다.
 
+### 13. Production package 단계에서 pnpm workspace deploy가 거부된 이유
+
+- **문제:** catalog root 수정 후 Production Build Gate `31925626381`은
+  `Install and verify`까지 통과했지만 `Package immutable release`의
+  `pnpm deploy --prod`에서 실패했다. AWS 단계에는 도달하지 않았다.
+- **원인:** pnpm 11은 workspace package를 deploy할 때 기본적으로
+  `inject-workspace-packages=true`를 요구한다. 현재 monorepo는 injected dependency
+  방식으로 설계되지 않아 pnpm이 명시적으로 legacy deploy를 요구했다.
+- **처리:** workflow의 API package deploy에 pnpm이 안내한 `--legacy`를 추가했다.
+  로컬 `pnpm --filter @route-composer/api deploy --prod --legacy`가 성공하는 것을 확인했다.
+- **검증 기준:** workflow contract test와 새 Release Build Gate에서 catalog validate,
+  package, checksum, SBOM 단계를 다시 확인한다. 성공해도 Budget 이메일 승인 전에는
+  production 승인·Terraform Apply·artifact upload를 실행하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

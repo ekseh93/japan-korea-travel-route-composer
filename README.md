@@ -8,7 +8,7 @@
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;
 > Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
-> 보호된 Production Build Gate `31925333862`는 workflow의 catalog root 누락으로 실패했고 수정 후 재검증 예정; AWS 배포 단계에는 도달하지 않음
+> 보호된 Production Build Gate `31925626381`는 catalog root 수정 후 pnpm workspace deploy 옵션에서 실패했고 `--legacy` 보정 후 재검증 예정; AWS 배포 단계에는 도달하지 않음
 >
 > 공개 URL·사용자 지표: 없음
 >
@@ -133,7 +133,7 @@ Workflow는 `TERRAFORM_STATE_BUCKET`과 lockfile backend를 사용하도록 보�
 | 제품·UX·DDD·AWS·Data·Delivery 설계 | Phase Gate 검증 완료                                                                                                                                                                                                                                                                                                                                        |
 | 애플리케이션·인프라 코드           | LUN-001~013 workspace·계약·Domain·합성 Fixture·Repository·Routing·Compose·HTTP API·Web 여행 UX·장애 축소 지도·Terraform 비용/관측성 제어·Build once OIDC Workflow와 LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM Catalog·Projection 생성 완료, Bootstrap 일부 적용, 애플리케이션 AWS Stack은 미적용                              |
 | 실제 150~250개 Catalog             | OSM 기반 160개 반입·Production Gate 통과; Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`, Projection checksum `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`                                                                                                                                        |
-| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build 통과, 보호된 Build Gate `31925333862`는 catalog root 누락으로 실패 후 수정 중, Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, Bootstrap Apply는 부분 실행, 배포 Smoke는 미실행 |
+| 테스트·빌드                        | LUN-001~014 Gate 기준 format·lint·typecheck·67개 Vitest 테스트·Smoke 계약 4건·Release 계약 4건·Workflow 계약 5건·Terraform 계약 3건·브라우저 E2E 4건·build·catalog:validate·catalog:build·frozen install·의존성 감사 실행; 로컬 Production Catalog validate/build와 legacy package deploy 통과, 보호된 Build Gate `31925626381`는 pnpm workspace deploy 옵션에서 실패 후 수정 중, Terraform fmt/validate·TFLint·Trivy는 직전 GitHub CI 통과, Bootstrap Apply는 부분 실행, 배포 Smoke는 미실행 |
 | AWS 리소스·배포 URL                | Bootstrap State/Artifact Bucket, GitHub OIDC Provider, Plan/Deploy Role은 계정에서 확인됨; 공개 배포 URL 없음                                                                                                                                                                                                                                                  |
 | 실제 성능·가용성·사용자 지표       | 없음                                                                                                                                                                                                                                                                                                                                                        |
 

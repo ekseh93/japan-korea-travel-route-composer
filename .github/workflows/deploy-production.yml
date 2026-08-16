@@ -68,7 +68,7 @@ jobs:
             --catalog-version "catalog-${{ inputs.release_sha }}" \
             --generated-at "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" \
             --output release/catalog-projection.json
-          pnpm --filter @route-composer/api deploy --prod release/lambda
+          pnpm --filter @route-composer/api deploy --prod --legacy release/lambda
           (cd release/lambda && zip -qr ../lambda.zip .)
           mkdir -p release/web
           cp -R apps/web/dist/. release/web/

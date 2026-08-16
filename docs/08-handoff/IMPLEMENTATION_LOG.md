@@ -14,7 +14,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
 | 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
-| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build Gate는 catalog root 누락으로 실패 후 수정 중, Production Apply·배포 미실행 |
+| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build Gate는 catalog root와 pnpm deploy 입력 보정 중, Production Apply·배포 미실행 |
 | 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행 |
 
 ## 커밋 기준
@@ -147,6 +147,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   추가했다. 이 변경은 AWS 호출이나 배포를 수행하지 않으며, fixture를 Production으로 승격하지 않는다.
 - 수정 후 workflow contract test, GitHub CI, 재실행 Build Gate를 검증 대상으로 남겼다. Budget 이메일
   승인 전에는 `production` 승인, Terraform Apply, artifact upload와 Smoke를 실행하지 않는다.
+
+### LUN-020 Production package deploy 옵션 보정
+
+- catalog root 수정 후 재실행한 Production Build Gate `31925626381`에서 `Install and verify`는
+  통과했지만 pnpm 11 workspace deploy가 `inject-workspace-packages=true` 누락으로 거부됐다.
+- 현재 monorepo 설계와 호환되는 pnpm 안내 방식인 `--legacy`를 API package deploy에 추가했고,
+  로컬 package deploy 성공과 workflow contract 검사를 확인했다.
+- 새 GitHub CI와 Production Build Gate에서 checksum·SBOM 포함 immutable release package를
+  다시 검증한다. AWS 호출·artifact 업로드·Production Apply는 아직 실행하지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
