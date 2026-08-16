@@ -213,8 +213,9 @@ pnpm audit --audit-level high
 
 The Web accepts city, duration, time windows, locale, pace, companion, and rain preferences, then
 displays daily visits, travel time, reasons, and Evidence links from the Compose API. Set
-`VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only, while the pre-publication
-catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
+`VITE_API_BASE_URL` for the local HTTP API; synthetic fixtures are test-only. Production deployment is
+blocked at Terraform input validation when the approved `BUDGET_EMAIL` Secret is missing or malformed.
+The pre-publication catalog contains 160 OSM-based places and Evidence records. Pure HTTP Handler contract tests, 4 local HTTP smoke contract tests, 3 Terraform
 cost/security boundary contract tests, and 4 browser accessibility/responsive/map-degradation E2E
 tests ran, but real Lambda/API Gateway integration and deployment URL smoke verification have not
 run. Production deployment will not run before the AWS account, budget, and OIDC are verified. The

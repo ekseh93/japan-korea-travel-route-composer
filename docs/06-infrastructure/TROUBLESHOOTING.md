@@ -340,6 +340,15 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
   Deploy job은 `production` 보호 승인 대기에서 취소했으며 AWS OIDC·Terraform Apply와
   실제 AWS artifact upload에는 도달하지 않았다.
 
+### 14. Budget 이메일 미승인 상태를 Terraform 입력에서도 차단하는 이유
+
+- **문제:** GitHub `BUDGET_EMAIL` Secret이 아직 승인·설정되지 않았는데 Deploy workflow가
+  빈 문자열을 Terraform 변수로 전달하면, 실패 시점이 SNS subscription Apply까지 늦어질 수 있다.
+- **결정:** `budget_email`에 이메일 형식 validation을 추가해 빈 값·형식 오류를 Terraform
+  입력 단계에서 즉시 거부한다. 이는 이메일을 자동 승인하거나 Secret을 생성하는 동작이 아니다.
+- **검증:** Terraform contract test에 validation 문구를 고정하고, 승인 전에는 Secret 생성·AWS
+  Apply를 실행하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

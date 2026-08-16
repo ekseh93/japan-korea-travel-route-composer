@@ -159,6 +159,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   GitHub artifact upload는 성공했으며, `production` 승인 대기에서 취소해 AWS 호출·실제
   AWS artifact 업로드·Production Apply는 실행하지 않았다.
 
+### LUN-021 Budget 이메일 입력 방어선
+
+- `budget_email`이 비어 있거나 형식이 잘못된 상태로 Production Apply까지 전달되지 않도록
+  Terraform variable validation을 추가했다.
+- Terraform contract test, Terraform 문서와 README 3종에 Secret 미설정 시 Apply가 차단되는
+  경계를 기록했다. 이 변경은 이메일 승인·Secret 생성·AWS 호출을 수행하지 않는다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

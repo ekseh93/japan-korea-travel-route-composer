@@ -193,7 +193,8 @@ pnpm audit --audit-level high
 
 Web은 도시·기간·시간·언어·속도·동행·우천 여부를 입력하고 Compose API를 호출해 일자별 Visit,
 이동시간, 이유와 Evidence 링크를 표시합니다. 로컬 Web 실행은 `VITE_API_BASE_URL`로 연결할 HTTP API를
-지정해야 하며, 합성 Fixture는 테스트 전용입니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
+지정해야 하며, 합성 Fixture는 테스트 전용입니다. Production 배포는 승인된 `BUDGET_EMAIL` Secret이
+없거나 형식이 잘못되면 Terraform 입력 단계에서 차단됩니다. 실제 공개 전 Catalog에는 OSM 기반 160개 Place와
 Evidence가 있으며, 순수 HTTP
 Handler 계약 테스트, 로컬 HTTP 서버 기반 Smoke 계약 4건, Terraform 비용·보안 경계 계약 3건, 브라우저
 접근성·반응형·지도 장애 축소 E2E 4건은 실행했지만 실제 Lambda/API Gateway 연결과 배포 URL Smoke

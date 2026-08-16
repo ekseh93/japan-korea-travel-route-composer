@@ -181,7 +181,7 @@ APIを呼び出して日別Visit、移動時間、理由、Evidenceリンクを�
 `VITE_API_BASE_URL`で接続先HTTP
 APIを指定します。合成Fixtureはテスト専用で、公開前CatalogにはOSMベース160件のPlaceとEvidenceがあります。純粋HTTP
 Handler契約テスト、ローカルHTTPサーバーSmoke契約4件、Terraformコスト・セキュリティ境界契約3件、ブラウザのアクセシビリティ・レスポンシブ・マップ障害縮退E2E
-4件は実行済みですが、実Lambda/API Gateway接続と配信URL
+4件は実行済みです。承認済みの `BUDGET_EMAIL` Secretが未設定または不正な形式の場合、Terraform入力検証でProduction配信を停止します。実Lambda/API Gateway接続と配信URL
 Smoke検証は未実行です。AWSアカウント・Budget・OIDCの確認前にProduction配信を実行しません。
 
 ## ロードマップ

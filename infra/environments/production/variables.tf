@@ -35,6 +35,11 @@ variable "budget_email" {
   type        = string
   description = "Budget notification recipient. It is not exposed as an output."
   sensitive   = true
+
+  validation {
+    condition     = can(regex("^[^@]+@[^@]+\\.[^@]+$", var.budget_email))
+    error_message = "budget_email must be an approved email address; an empty or malformed value blocks Production Apply."
+  }
 }
 
 variable "monthly_budget_usd" {

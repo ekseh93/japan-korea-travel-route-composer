@@ -52,6 +52,7 @@ test("AWS budget is configured as an alert, not a payment block", async () => {
   const production = await terraform("infra/environments/production/main.tf");
   const variables = await terraform("infra/environments/production/variables.tf");
   assert.match(variables, /AWS Budgets is an alert, not a hard payment block/);
+  assert.match(variables, /budget_email[\s\S]*?approved email address/);
   assert.match(production, /resource "aws_budgets_budget" "monthly"/);
   assert.match(production, /threshold\s*=\s*20/);
   assert.match(production, /threshold\s*=\s*100/);
