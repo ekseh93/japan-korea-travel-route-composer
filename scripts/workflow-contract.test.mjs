@@ -38,6 +38,7 @@ test("all workflows use the Node 24-compatible pinned checkout action", async ()
     "terraform-plan.yml",
     "deploy-production.yml",
     "bootstrap-policy-reconcile.yml",
+    "production-state-reconcile.yml",
     "rollback.yml",
     "teardown.yml",
   ]) {
@@ -102,6 +103,7 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
     "terraform-plan.yml",
     "deploy-production.yml",
     "bootstrap-policy-reconcile.yml",
+    "production-state-reconcile.yml",
     "rollback.yml",
     "teardown.yml",
   ]) {
@@ -122,6 +124,11 @@ test("AWS-capable workflows require OIDC and protected fork guards", async () =>
   assert.match(bootstrap, /role-to-assume:\s+\$\{\{ vars\.TERRAFORM_DEPLOY_ROLE_ARN \}\}/);
   assert.match(bootstrap, /iam:GetRolePolicy/);
   assert.match(bootstrap, /cloudwatch:PutMetricAlarm/);
+  const state = await workflow("production-state-reconcile.yml");
+  assert.match(state, /reviewed_sha:[\s\S]*?required:\s+true/);
+  assert.match(state, /environment:\s+name:\s+production/);
+  assert.match(state, /bash scripts\/reconcile-production-state\.sh/);
+  assert.doesNotMatch(state, /terraform.*\bapply\b/);
   const deploy = await workflow("deploy-production.yml");
   assert.match(deploy, /Verify approved deployment inputs/);
   assert.match(deploy, /BUDGET_EMAIL is not approved or configured/);

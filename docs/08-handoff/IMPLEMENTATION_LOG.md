@@ -262,6 +262,16 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   같은 release Apply를 재시도한다. 로컬 장기 키 대신 보호된 `bootstrap-policy-reconcile.yml`을 OIDC로
   실행하도록 했으며, 수동 AWS 삭제·강제 롤백은 하지 않는다.
 
+### LUN-033 부분 Apply State 복구 workflow
+
+- 첫 Production Apply의 생성 결과가 Remote State에 남지 않아 재시도 시 `AlreadyExists`가 발생한 사실을
+  `31933241159`에서 확인했다.
+- AWS 조회로 존재를 확인한 Web S3, CloudFront, DynamoDB, Log Group, IAM, SNS, Budget, Alarm, API Gateway
+  리소스만 Terraform State에 import하는 `scripts/reconcile-production-state.sh`와 보호된
+  `production-state-reconcile.yml`을 추가했다.
+- State reconcile은 리소스를 삭제하거나 Apply하지 않고 import만 수행하며, 이후 별도 Plan에서 변경·삭제를
+  검토한 뒤 Production Apply를 실행한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

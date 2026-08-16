@@ -11,7 +11,7 @@
 > catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; the AWS IAM
 > Identity Center project user and temporary Bootstrap permission are connected; Bootstrap State/Artifact
 > buckets, OIDC, and Plan/Deploy Roles are confirmed in the account; immutable OIDC Trust and the GitHub
-> Terraform Plan verification are complete, a Deploy Role policy recovery workflow has been added, and application deployment remains incomplete
+> Terraform Plan verification are complete, Deploy Role policy and Production State recovery workflows have been added, and application deployment remains incomplete
 > Production workflow `31932494722` passed Build, verification, artifact creation, OIDC, and Lambda artifact upload to S3 for the reviewed commit, but Terraform Apply stopped because the Deploy Role lacked `iam:ListRolePolicies` and CloudWatch Alarm permissions; parts of S3 Web, CloudFront, DynamoDB, SNS, Budget, and Log Group were created, while API/Web publishing and Smoke did not run
 > Terraform Plan `31927331676` passed OIDC and state initialization, then stopped on the unapproved empty `BUDGET_EMAIL` validation; no Apply, artifact upload, or deployment ran
 > Plan, Deploy, and Teardown workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; the approved Budget Secret and monthly budget of `1 USD` were configured for this run

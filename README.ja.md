@@ -9,7 +9,7 @@
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
-> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、Deploy Roleポリシー復旧workflowを追加し、アプリケーション配信は未完了
+> BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、Deploy Roleポリシー・Production State復旧workflowを追加し、アプリケーション配信は未完了
 > Production workflow `31932494722`は現行review commitでBuild・検証・artifact生成・OIDC・Lambda artifactのS3アップロードまで成功したが、Terraform Apply中にDeploy Roleの`iam:ListRolePolicies`とCloudWatch Alarm権限不足で停止、S3 Web・CloudFront・DynamoDB・SNS・Budget・Log Groupの一部は作成済み、API/Web公開・Smokeは未実行
 > Terraform Plan `31927331676`はOIDC・State initまで成功した後、未承認で空の`BUDGET_EMAIL` validationにより停止、Apply・artifact upload・配信は未実行
 > その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、今回の実行で承認済みBudget Secretと月額予算`1 USD`を登録

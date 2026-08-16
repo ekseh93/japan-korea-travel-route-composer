@@ -473,6 +473,17 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   않는다. 로컬 장기 키 대신 보호된 `bootstrap-policy-reconcile.yml`을 OIDC로 실행해 정책을
   반영한 후 같은 release에서 Terraform Apply를 재시도한다.
 
+### 28. 부분 Apply 후 Remote State가 비어 있던 문제
+
+- **문제:** Deploy Role 정책 복구 후 재시도한 `31933241159`가 기존 S3·CloudFront·DynamoDB·Log Group·IAM
+  Role·Budget을 다시 생성하려 했고 `AlreadyExists`로 중단됐다. 첫 부분 Apply의 생성 결과가 Remote State에
+  저장되지 않은 상태였다.
+- **결정:** 리소스를 수동 삭제하지 않고 AWS 조회로 존재를 확인한 항목만 `terraform import`하는
+  `production-state-reconcile.yml`과 `scripts/reconcile-production-state.sh`를 추가했다. 이 workflow는
+  Apply를 실행하지 않으며, import 후 별도 Production Plan·Apply를 수행한다.
+- **검증:** 계약 테스트에 State reconcile workflow의 protected environment·OIDC·import-only 경계를 추가했다.
+  아직 State reconcile과 재배포는 실행하지 않았다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

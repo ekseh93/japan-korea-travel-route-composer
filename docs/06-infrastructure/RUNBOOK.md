@@ -137,6 +137,23 @@ gh workflow run bootstrap-policy-reconcile.yml `
 `production` 승인을 거친 뒤 같은 Release의 Production workflow를 다시 실행한다.
 정책 복구가 실패하면 추가 Apply를 실행하지 않고 로그와 AWS Role 정책을 확인한다.
 
+### 2-B. 부분 Apply 후 Production State 복구
+
+부분 Apply에서 AWS 리소스가 생성됐지만 State가 저장되지 않은 경우에는 리소스를 삭제하지 않고
+보호된 `production-state-reconcile.yml`을 검토된 commit으로 실행한다.
+
+```powershell
+$sha = (git rev-parse HEAD).Trim()
+gh workflow run production-state-reconcile.yml `
+  --repo ekseh93/japan-korea-travel-route-composer `
+  --ref main `
+  --field reviewed_sha=$sha
+```
+
+Workflow는 AWS 조회 결과가 있는 리소스만 `terraform import`하고, 새 리소스를 생성하거나
+Terraform Apply를 실행하지 않는다. Import 후 Production workflow를 다시 실행해 Plan에서
+예상치 못한 삭제·변경이 없는지 확인한다.
+
 ## 3. Production 배포
 
 1. Main Commit의 CI, Rights Gate, Golden Set과 IaC scan을 확인한다.

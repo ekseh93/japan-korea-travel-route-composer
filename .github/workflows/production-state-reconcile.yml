@@ -1,0 +1,52 @@
+name: Production State Reconcile
+
+on:
+  workflow_dispatch:
+    inputs:
+      reviewed_sha:
+        description: "Reviewed commit containing the Production Terraform configuration"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-state-reconcile
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: github.event.repository.fork == false
+    runs-on: ubuntu-24.04
+    environment:
+      name: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout reviewed commit
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        with:
+          ref: ${{ inputs.reviewed_sha }}
+      - name: Configure AWS OIDC
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          role-to-assume: ${{ vars.TERRAFORM_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: state-reconcile-${{ github.run_id }}
+      - name: Reconcile existing Production resources into Terraform State
+        shell: bash
+        env:
+          AWS_ACCOUNT_ID: "490220201302"
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          PROJECT_SLUG: ${{ vars.PROJECT_SLUG }}
+          TERRAFORM_STATE_BUCKET: ${{ vars.TERRAFORM_STATE_BUCKET }}
+          TF_VAR_project_slug: ${{ vars.PROJECT_SLUG }}
+          TF_VAR_budget_email: ${{ secrets.BUDGET_EMAIL }}
+          TF_VAR_monthly_budget_usd: ${{ vars.MONTHLY_BUDGET_USD }}
+          TF_VAR_lambda_s3_bucket: ${{ vars.LAMBDA_ARTIFACT_BUCKET }}
+          TF_VAR_lambda_s3_key: ${{ inputs.reviewed_sha }}/lambda.zip
+          TF_VAR_lambda_source_code_hash: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          TF_VAR_release_sha: ${{ inputs.reviewed_sha }}
+        run: bash scripts/reconcile-production-state.sh
