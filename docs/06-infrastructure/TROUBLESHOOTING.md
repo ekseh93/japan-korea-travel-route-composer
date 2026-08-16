@@ -449,6 +449,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** `powershell.exe`와 `gh.exe`의 설치 경로를 확인했다. 승인값 입력과 GitHub Secret·Variable
   변경은 실행하지 않았다.
 
+### 26. PowerShell `-File` 스크립트 경로를 찾지 못한 문제
+
+- **문제:** 프로젝트 루트가 아닌 위치에서 상대 경로 `.scripts\configure-github-inputs.ps1`를 실행해
+  `-File` 매개 변수의 인수에 `.ps1` 파일이 없다는 오류가 발생했다.
+- **결정:** Runbook에 저장소 루트로 먼저 이동하는 절차와, 임의의 위치에서 실행할 수 있는 절대 경로
+  명령을 함께 기록했다.
+- **검증:** 실제 스크립트 경로가 존재함을 확인했고, 승인값 입력 및 GitHub Secret·Variable 변경은
+  실행하지 않았다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

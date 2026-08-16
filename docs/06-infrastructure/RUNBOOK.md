@@ -55,6 +55,12 @@ OIDC Role과 Protected Environment가 필요하며 로컬 AWS Profile을 사용�
 대화형 검증·설정을 한 번에 수행하려면 저장소 루트에서 아래 스크립트를 실행한다. 이 명령은
 실행자 확인과 실제 승인값 입력이 필요하므로 Luna가 자동 실행하지 않는다.
 
+상대 경로는 현재 PowerShell 위치를 기준으로 하므로, 먼저 저장소 루트로 이동한다.
+
+```powershell
+Set-Location "C:\Users\hwan\Documents\ChatGPT\일본 여행 랜덤 동선 추천 웹사이트"
+```
+
 ```powershell
 pwsh -File scripts/configure-github-inputs.ps1
 ```
@@ -64,6 +70,12 @@ PowerShell 7(`pwsh`)이 설치되지 않은 Windows 환경에서는 기본 Windo
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\configure-github-inputs.ps1
+```
+
+다른 위치에서 실행할 때는 스크립트의 절대 경로를 사용한다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\hwan\Documents\ChatGPT\일본 여행 랜덤 동선 추천 웹사이트\scripts\configure-github-inputs.ps1"
 ```
 
 ```powershell
