@@ -94,6 +94,12 @@ variable "lambda_reserved_concurrency" {
   }
 }
 
+variable "manage_lambda_reserved_concurrency" {
+  type        = bool
+  description = "Whether Terraform should manage Lambda reserved concurrency. Disable only for accounts whose unreserved minimum rejects the configured ceiling."
+  default     = true
+}
+
 variable "api_rate_limit" {
   type        = number
   description = "HTTP API steady-state request limit."

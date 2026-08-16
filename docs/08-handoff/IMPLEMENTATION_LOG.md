@@ -318,7 +318,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Production run `31934959968`은 Remote State 기반 Plan `15 to add, 2 to change, 0 to destroy` 후 Lambda 생성 중
   계정의 unreserved concurrency 최소 10 조건으로 중단됐다.
 - 승인 설계의 기본값 1과 비상값 0은 유지하고, 현재 Production Plan/Deploy에만
-  `lambda_reserved_concurrency=null`을 전달해 예약 동시성 설정을 생략하도록 보완했다.
+  `manage_lambda_reserved_concurrency=false`를 전달해 예약 동시성 설정을 생략하도록 보완했다.
 - API Gateway rate limit 1/burst 2와 Lambda timeout은 유지한다. 이 예외는 비용·DoS 통제를 약화하므로
   계정 quota 확인 후 concurrency 1 복구 여부를 별도로 검토한다.
 

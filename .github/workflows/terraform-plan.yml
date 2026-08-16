@@ -79,5 +79,5 @@ jobs:
             -var="lambda_s3_bucket=${{ vars.LAMBDA_ARTIFACT_BUCKET }}" \
             -var="lambda_s3_key=${{ vars.LAMBDA_ARTIFACT_KEY }}" \
             -var="lambda_source_code_hash=${{ vars.LAMBDA_SOURCE_CODE_HASH }}" \
-            -var="lambda_reserved_concurrency=null" \
+            -var="manage_lambda_reserved_concurrency=false" \
             -var="release_sha=${{ github.sha }}"

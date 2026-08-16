@@ -19,7 +19,7 @@
 > 후속 State reconcile `31933964803`은 Budget SNS 이메일 구독이 `PendingConfirmation`인 상태에서 중단됨; 미확인 구독은 ARN이 아니므로 import하지 않도록 보완했으며, 이메일 확인 후 재검증해야 함
 > Production run `31934294917`은 Build와 OIDC·artifact 업로드 후 Terraform이 `30 to add, 0 to change, 0 to destroy`를 계산해 기존 리소스 생성 충돌로 중단됨; 원인은 production backend 선언 누락으로 확인되어 S3 backend 선언을 추가하고 State 복구를 재실행할 예정
 > backend 선언 후 Terraform `1.9.8`이 `use_lockfile`을 지원하지 않는 오류를 확인해 모든 Terraform 실행을 고정 `1.10.5`로 올렸고, 수정 commit에서 State 복구를 재검증할 예정
-> Production run `31934959968`은 원격 State를 읽어 `15 to add, 2 to change, 0 to destroy`까지 진행했으나 AWS 계정의 unreserved concurrency 최소 10 제약으로 Lambda 생성이 중단됨; Production workflow에서 reserved concurrency를 `null`로 override하는 보완이 필요함
+> Production run `31934959968`은 원격 State를 읽어 `15 to add, 2 to change, 0 to destroy`까지 진행했으나 AWS 계정의 unreserved concurrency 최소 10 제약으로 Lambda 생성이 중단됨; Production workflow에서 concurrency 관리를 명시적으로 끄는 보완이 필요함
 >
 > 공개 URL·사용자 지표: 없음
 >

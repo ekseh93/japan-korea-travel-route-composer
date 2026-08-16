@@ -544,11 +544,11 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **원인:** 승인 설계의 reserved concurrency 기본값 1이 현재 계정의 unreserved concurrency 최소 10 조건과 함께
   적용될 수 없었다. 이는 코드 오류가 아니라 계정 quota/보호 한계다.
 - **결정:** 기본 Terraform 변수와 비상 중지값 `0`은 유지한다. Production Plan/Deploy에서만
-  `lambda_reserved_concurrency=null`을 전달해 예약 동시성 설정을 생략하고, API Gateway 1 rps/burst 2와
+  `manage_lambda_reserved_concurrency=false`를 전달해 예약 동시성 설정을 생략하고, API Gateway 1 rps/burst 2와
   timeout 10초를 유지한다. 계정 quota를 올리거나 concurrency를 강제로 1로 설정하지 않는다.
 - **영향:** 현재 Production Lambda에는 reserved concurrency 하드 ceiling이 없으므로 DoS·비용 통제가 약해진다.
   CloudWatch Lambda Error/Duration/Throttle Alarm과 API rate limit을 확인하고, 계정 quota 확인 후에만 1로 복구한다.
-- **검증:** Deploy/Plan workflow의 null override 계약 테스트를 추가했으며, 수정 commit에서 Terraform Apply와
+- **검증:** Deploy/Plan workflow의 concurrency 관리 비활성화 계약 테스트를 추가했으며, 수정 commit에서 Terraform Apply와
   이후 API/Web/Catalog Smoke를 재실행한다.
 
 ## 하지 않는 해결 방법

@@ -208,7 +208,7 @@ resource "aws_lambda_function" "api" {
   source_code_hash               = var.lambda_source_code_hash
   timeout                        = 10
   memory_size                    = 256
-  reserved_concurrent_executions = var.lambda_reserved_concurrency
+  reserved_concurrent_executions = var.manage_lambda_reserved_concurrency ? var.lambda_reserved_concurrency : null
   environment {
     variables = {
       CATALOG_TABLE_NAME = aws_dynamodb_table.catalog.name

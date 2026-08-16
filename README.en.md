@@ -21,7 +21,7 @@
 > The follow-up State reconcile `31933964803` stopped because the Budget SNS email subscription was `PendingConfirmation`; unconfirmed subscriptions are not ARNs, so recovery now skips them until the email is confirmed
 > Production run `31934294917` passed Build, OIDC, and artifact upload, then stopped when Terraform calculated `30 to add, 0 to change, 0 to destroy` and collided with existing resources; the cause was the missing production backend declaration, so an S3 backend declaration was added before retrying State recovery
 > After adding the backend declaration, Terraform `1.9.8` failed because it does not support `use_lockfile`; all Terraform executions are now pinned to `1.10.5` before revalidating State recovery
-> Production run `31934959968` read the remote State and reached `15 to add, 2 to change, 0 to destroy`, then Lambda creation stopped because this AWS account requires at least 10 unreserved concurrency; the Production workflow must override reserved concurrency to `null`
+> Production run `31934959968` read the remote State and reached `15 to add, 2 to change, 0 to destroy`, then Lambda creation stopped because this AWS account requires at least 10 unreserved concurrency; the Production workflow must explicitly disable concurrency management
 >
 > Public URL and user metrics: none
 >
