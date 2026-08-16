@@ -382,6 +382,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** Release 계약 테스트에 해시 불일치 실패 케이스를 추가했고, 5개 테스트가 모두 통과했다.
   이 검사는 AWS 호출 없이 Build once Artifact 연결 오류를 배포 전에 차단한다.
 
+### 18. Lambda Terraform 입력값이 비어 있지 않기만 하면 통과하던 문제
+
+- **문제:** `LAMBDA_ARTIFACT_KEY`와 `LAMBDA_SOURCE_CODE_HASH`가 임의의 비어 있지 않은 문자열이어도
+  Terraform 단계까지 진행할 수 있었다.
+- **결정:** Artifact key는 `40자리 Release SHA/lambda.zip`, source hash는 32-byte SHA-256
+  Base64 형식으로 고정하고, Terraform 변수와 AWS OIDC 전 Plan 사전검사에 같은 경계를 추가했다.
+- **검증:** Terraform 계약 4건과 Workflow 계약 5건이 형식·오류 메시지를 검증했다. 값이 없거나
+  형식이 잘못된 상태에서는 AWS Role을 요청하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

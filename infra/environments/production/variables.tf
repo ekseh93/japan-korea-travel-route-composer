@@ -61,11 +61,21 @@ variable "lambda_s3_bucket" {
 variable "lambda_s3_key" {
   type        = string
   description = "Release artifact key for the Lambda zip."
+
+  validation {
+    condition     = can(regex("^[0-9a-f]{40}/lambda\\.zip$", var.lambda_s3_key))
+    error_message = "lambda_s3_key must be the immutable 40-character release SHA followed by /lambda.zip."
+  }
 }
 
 variable "lambda_source_code_hash" {
   type        = string
   description = "Base64 SHA-256 hash of the immutable Lambda artifact."
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9+/]{43}=$", var.lambda_source_code_hash))
+    error_message = "lambda_source_code_hash must be a 32-byte SHA-256 digest encoded as Base64."
+  }
 }
 
 variable "release_sha" {

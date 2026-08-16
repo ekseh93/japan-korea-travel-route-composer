@@ -84,7 +84,9 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(plan, /Verify approved plan inputs/);
   assert.match(plan, /BUDGET_EMAIL is not approved or configured/);
   assert.match(plan, /LAMBDA_ARTIFACT_KEY is not configured/);
+  assert.match(plan, /LAMBDA_ARTIFACT_KEY must be a 40-character release SHA/);
   assert.match(plan, /LAMBDA_SOURCE_CODE_HASH is not configured/);
+  assert.match(plan, /LAMBDA_SOURCE_CODE_HASH must be a Base64 SHA-256 digest/);
 });
 
 test("AWS-capable workflows require OIDC and protected fork guards", async () => {

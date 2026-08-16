@@ -57,3 +57,12 @@ test("AWS budget is configured as an alert, not a payment block", async () => {
   assert.match(production, /threshold\s*=\s*20/);
   assert.match(production, /threshold\s*=\s*100/);
 });
+
+test("Lambda release inputs are immutable and strongly shaped", async () => {
+  const variables = await terraform("infra/environments/production/variables.tf");
+  assert.match(
+    variables,
+    /lambda_s3_key[\s\S]*?40-character release SHA followed by \/lambda\.zip/,
+  );
+  assert.match(variables, /lambda_source_code_hash[\s\S]*?32-byte SHA-256 digest[\s\S]*?Base64/);
+});

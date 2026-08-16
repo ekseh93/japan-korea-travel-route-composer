@@ -34,8 +34,16 @@ jobs:
             echo "::error::LAMBDA_ARTIFACT_KEY is not configured; refusing AWS Plan."
             exit 1
           fi
+          if [[ ! "$LAMBDA_ARTIFACT_KEY" =~ ^[0-9a-f]{40}/lambda\.zip$ ]]; then
+            echo "::error::LAMBDA_ARTIFACT_KEY must be a 40-character release SHA followed by /lambda.zip; refusing AWS Plan."
+            exit 1
+          fi
           if [[ -z "$LAMBDA_SOURCE_CODE_HASH" ]]; then
             echo "::error::LAMBDA_SOURCE_CODE_HASH is not configured; refusing AWS Plan."
+            exit 1
+          fi
+          if [[ ! "$LAMBDA_SOURCE_CODE_HASH" =~ ^[A-Za-z0-9+/]{43}=$ ]]; then
+            echo "::error::LAMBDA_SOURCE_CODE_HASH must be a Base64 SHA-256 digest; refusing AWS Plan."
             exit 1
           fi
       - name: Configure AWS OIDC

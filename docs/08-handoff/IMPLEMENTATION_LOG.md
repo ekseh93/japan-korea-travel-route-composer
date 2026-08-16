@@ -11,7 +11,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | Sol 설계 Phase Gate      | 완료                                                                                                                                                                                            |
 | Luna handoff             | `LUNA HANDOFF: READY`                                                                                                                                                                           |
 | 구현                     | LUN-001~013 완료, LUN-014 Source Governance Gate·Projection Build·DynamoDB Catalog Publisher·Catalog Rollback 완료                                                                              |
-| 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 5건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
+| 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 5건, workflow contract 5건, Terraform contract 4건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
 | 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
 | AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build·package·GitHub artifact upload 성공, protected deploy 승인 전 취소, Production Apply·배포 미실행 |
@@ -195,6 +195,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   일치하는지는 검사하지 않던 공백을 확인했다.
 - ZIP의 SHA-256 Base64를 다시 계산해 metadata와 비교하고, 불일치 실패 계약 테스트를 추가했다.
   Build once Artifact가 다른 Lambda binary와 연결되는 경우를 배포 전 차단한다.
+
+### LUN-025 Lambda Terraform 입력 형식 방어선
+
+- `lambda_s3_key`와 `lambda_source_code_hash`가 비어 있지 않기만 하면 Terraform 단계까지
+  도달할 수 있던 공백을 확인했다.
+- Release SHA 기반 `40자리/lambda.zip` key와 32-byte SHA-256 Base64 형식을 Terraform 변수와
+  Plan OIDC 전 사전검사에서 함께 강제했다.
+- Terraform 계약 4건과 Workflow 계약 5건이 새 형식·오류 메시지를 검증하며, 실제 AWS 호출은
+  수행하지 않았다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 
