@@ -57,6 +57,8 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(deploy, /environment:\s+name:\s+production/);
   assert.match(deploy, /Fresh Terraform plan and apply/);
   assert.match(deploy, /-chdir=infra\/environments\/production apply/);
+  assert.match(deploy, /catalog:validate --root data\/catalog-v1 --production/);
+  assert.match(deploy, /catalog:build -- [\s\S]*?--root data\/catalog-v1/);
 
   const rollback = await workflow("rollback.yml");
   for (const input of [

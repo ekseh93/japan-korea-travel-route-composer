@@ -8,13 +8,14 @@
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、
 > BootstrapのState/Artifact Bucket・OIDC・Plan/Deploy Roleはアカウントで確認済み、immutable OIDC TrustとGitHub Terraform Planの検証は完了、アプリケーション配信は未完了
+> 保護されたProduction Build Gate `31925333862`はworkflowでcatalog rootの指定が抜けていたため失敗し、修正後に再検証予定、AWS配信段階には到達していない
 >
 > 公開URL・ユーザー指標: なし
 >
 > LUN-014検証: format・lint・typecheck・67
 > Vitestテスト・Smoke契約4件・Release契約4件・Workflow契約5件・Terraform契約3件・ブラウザE2E
 > 4件・build・catalog:validate・catalog:build・依存関係監査に合格、Terraform
-> fmt/validate・TFLint・Trivyは直前のCIで合格、Production Catalog validate/buildとOSM Source Gateにも合格
+> fmt/validate・TFLint・Trivyは直前のCIで合格、ローカルのProduction Catalog validate/buildとOSM Source Gateには合格、保護されたBuild Gate `31925333862`はcatalog root指定漏れで失敗し修正中
 > (2026-08-16、Source checksum `6d0d9bd96a3ff7a753fdcafe093c2967a2086f525a764790e69280a9a552f6ea`、Projection checksum
 > `6d23621e5c3ec835c47cb40beda6d8408803e54a3e15381451b36aebe15c440a`)
 >

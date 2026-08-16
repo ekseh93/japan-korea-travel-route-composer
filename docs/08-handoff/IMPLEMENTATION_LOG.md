@@ -14,7 +14,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | 로컬 검증                | format, lint, typecheck, 67 Vitest tests, smoke contract 4건, release contract 4건, workflow contract 5건, Terraform contract 3건, browser E2E 4건, build, catalog validation/build, audit 완료 |
 | GitHub CI                | quality, browser-e2e, terraform-static 통과                                                                                                                                                     |
 | 실제 Source 반입         | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과                                                                                                                    |
-| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Apply·배포 미실행                            |
+| AWS 리소스·배포          | Bootstrap State/Artifact Bucket·OIDC Provider·Plan/Deploy Role 확인, GitHub OIDC/Plan 및 Environment 보호 검증; Production Build Gate는 catalog root 누락으로 실패 후 수정 중, Production Apply·배포 미실행 |
 | 로컬 Terraform 사전 검증 | Terraform 1.15.8·TFLint 0.64.0·AWS CLI v2 설치 및 fmt/validate/lint 통과; 최종 Bootstrap Apply 재실행은 로컬 SSO 세션 만료로 미실행 |
 
 ## 커밋 기준
@@ -138,6 +138,15 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   `main` branch 제한을 설정했다. `terraform-plan`은 PR/수동 Plan 자동화를 위해 승인 없이 유지한다.
 - 최종 GitHub CI `31925019912`, Terraform Plan `31925069545`가 성공했다. 실제 Production Apply,
   artifact upload, Catalog publish, Web/API Smoke, rollback과 운영 알림 수신은 실행하지 않았다.
+
+### LUN-019 Production Build 입력 경로 보정
+
+- 수동 Production Build Gate `31925333862`에서 기본 fixture root가 Production 검증에 사용되는
+  것을 확인했다. 실제 catalog는 `data/catalog-v1`인데 workflow가 CLI 기본 root를 사용한 것이 원인이었다.
+- `deploy-production.yml`의 `catalog:validate`와 `catalog:build`에 `--root data/catalog-v1`를
+  추가했다. 이 변경은 AWS 호출이나 배포를 수행하지 않으며, fixture를 Production으로 승격하지 않는다.
+- 수정 후 workflow contract test, GitHub CI, 재실행 Build Gate를 검증 대상으로 남겼다. Budget 이메일
+  승인 전에는 `production` 승인, Terraform Apply, artifact upload와 Smoke를 실행하지 않는다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

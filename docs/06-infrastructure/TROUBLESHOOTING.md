@@ -312,6 +312,19 @@ Workflow는 Fork Repository에서 AWS OIDC 권한을 사용하지 않으며,
 - **검증:** 두 Environment에 required reviewer와 branch policy가 생성된 것을 GitHub API로 확인했다.
   이 설정은 Production Apply나 teardown을 실행한 증거가 아니며, 실제 workflow는 승인 대기 게이트를 거친다.
 
+### 12. 보호된 Production Build Gate가 fixture를 검증한 이유
+
+- **문제:** 수동으로 실행한 Production Build Gate `31925333862`가 실제
+  `data/catalog-v1`가 아니라 기본 `packages/test-fixtures`를 Production catalog로
+  검증해 실패했다. AWS OIDC·artifact 업로드·Terraform 단계에는 도달하지 않았다.
+- **원인:** `deploy-production.yml`의 `catalog:validate`와 `catalog:build` 호출에
+  production catalog root인 `data/catalog-v1` 인자가 빠져 CLI 기본값이 사용됐다.
+- **처리:** 두 호출 모두 `--root data/catalog-v1`를 명시해 local command와 CI
+  command의 입력 경로를 일치시켰다. fixture는 계약 테스트 전용으로 유지한다.
+- **검증 기준:** 수정 후 workflow contract test와 Production Build Gate를 다시 실행하고,
+  Build 성공 뒤 `production` 승인 단계에 도달하는지 확인한다. Budget 이메일 승인 전에는
+  해당 승인이나 AWS Apply를 진행하지 않는다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

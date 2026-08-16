@@ -52,7 +52,7 @@ jobs:
           pnpm test
           pnpm test:e2e
           pnpm build
-          pnpm catalog:validate --production --as-of "${{ inputs.catalog_as_of }}"
+          pnpm catalog:validate --root data/catalog-v1 --production --as-of "${{ inputs.catalog_as_of }}"
           pnpm release:verify:test
           pnpm audit --audit-level high
       - name: Package immutable release
@@ -62,6 +62,7 @@ jobs:
           rm -rf release
           mkdir -p release
           pnpm catalog:build -- \
+            --root data/catalog-v1 \
             --production \
             --as-of "${{ inputs.catalog_as_of }}" \
             --catalog-version "catalog-${{ inputs.release_sha }}" \
