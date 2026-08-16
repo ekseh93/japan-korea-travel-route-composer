@@ -22,6 +22,7 @@
 > Production run `31934294917` passed Build, OIDC, and artifact upload, then stopped when Terraform calculated `30 to add, 0 to change, 0 to destroy` and collided with existing resources; the cause was the missing production backend declaration, so an S3 backend declaration was added before retrying State recovery
 > After adding the backend declaration, Terraform `1.9.8` failed because it does not support `use_lockfile`; all Terraform executions are now pinned to `1.10.5` before revalidating State recovery
 > Production run `31934959968` read the remote State and reached `15 to add, 2 to change, 0 to destroy`, then Lambda creation stopped because this AWS account requires at least 10 unreserved concurrency; the Production workflow must explicitly disable concurrency management
+> Follow-up run `31935488510` stopped when a Lambda left tainted by the prior failed apply was recreated and returned `Function already exist`; recovery now untaints the Lambda address and preserves the existing function without deletion
 >
 > Public URL and user metrics: none
 >

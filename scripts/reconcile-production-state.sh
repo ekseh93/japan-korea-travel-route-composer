@@ -30,6 +30,11 @@ import_if_unmanaged() {
   tf -chdir="$terraform_dir" import -input=false "$address" "$import_id"
 }
 
+untaint_if_managed() {
+  local address="$1"
+  tf -chdir="$terraform_dir" untaint "$address" >/dev/null 2>&1 || true
+}
+
 import_if_bucket_exists() {
   local address="$1"
   local bucket="$2"
@@ -169,6 +174,7 @@ fi
 
 function_name="${PROJECT_SLUG}-production-api"
 if aws lambda get-function --function-name "$function_name" >/dev/null 2>&1; then
+  untaint_if_managed aws_lambda_function.api
   import_if_unmanaged aws_lambda_function.api "$function_name"
   import_if_unmanaged aws_lambda_permission.api "${function_name}/AllowHttpApiInvoke"
 fi

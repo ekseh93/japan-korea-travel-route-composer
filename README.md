@@ -20,6 +20,7 @@
 > Production run `31934294917`은 Build와 OIDC·artifact 업로드 후 Terraform이 `30 to add, 0 to change, 0 to destroy`를 계산해 기존 리소스 생성 충돌로 중단됨; 원인은 production backend 선언 누락으로 확인되어 S3 backend 선언을 추가하고 State 복구를 재실행할 예정
 > backend 선언 후 Terraform `1.9.8`이 `use_lockfile`을 지원하지 않는 오류를 확인해 모든 Terraform 실행을 고정 `1.10.5`로 올렸고, 수정 commit에서 State 복구를 재검증할 예정
 > Production run `31934959968`은 원격 State를 읽어 `15 to add, 2 to change, 0 to destroy`까지 진행했으나 AWS 계정의 unreserved concurrency 최소 10 제약으로 Lambda 생성이 중단됨; Production workflow에서 concurrency 관리를 명시적으로 끄는 보완이 필요함
+> 후속 run `31935488510`은 이전 실패에서 tainted로 남은 Lambda를 다시 생성하려다 `Function already exist`로 중단됨; 기존 함수 삭제 없이 State 복구에서 Lambda 주소를 untaint하고 현재 함수를 유지하도록 보완함
 >
 > 공개 URL·사용자 지표: 없음
 >

@@ -322,6 +322,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - API Gateway rate limit 1/burst 2와 Lambda timeout은 유지한다. 이 예외는 비용·DoS 통제를 약화하므로
   계정 quota 확인 후 concurrency 1 복구 여부를 별도로 검토한다.
 
+### LUN-040 Tainted Lambda State 복구
+
+- Production run `31935488510`은 이전 부분 Apply의 concurrency 오류로 tainted된 Lambda 주소를 다시 생성하려 해
+  함수명 충돌로 중단됐다.
+- State 복구 스크립트가 실제 Lambda 함수가 존재하는 경우 `terraform untaint`를 시도하고, 관리되지 않은 주소에만
+  import하도록 보완했다. 기존 AWS 함수와 State를 삭제하지 않는다.
+- 계약 테스트를 갱신했으며, 수정 commit에서 Lambda replacement·삭제 없는 Plan과 후속 Apply/Smoke를 재검증한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

@@ -551,6 +551,17 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** Deploy/Plan workflow의 concurrency 관리 비활성화 계약 테스트를 추가했으며, 수정 commit에서 Terraform Apply와
   이후 API/Web/Catalog Smoke를 재실행한다.
 
+### 35. 부분 Apply 후 tainted Lambda 재생성 충돌
+
+- **문제:** 후속 Production run `31935488510`은 이전 Apply가 Lambda 함수 생성 후 concurrency 설정에서 실패해
+  State에 `aws_lambda_function.api`를 tainted로 남긴 상태에서 같은 함수명을 재생성하려 해
+  `ResourceConflictException: Function already exist`로 중단됐다.
+- **결정:** AWS Lambda 함수나 State 리소스를 삭제하지 않는다. 실제 함수가 존재할 때 State 복구 workflow가 해당
+  주소에 `terraform untaint`를 시도하고, 주소가 State에 없으면 기존 import 경로를 사용한다. 이후 Terraform은
+  현재 함수를 기준으로 artifact와 설정을 in-place 갱신한다.
+- **검증:** 복구 스크립트에 `untaint_if_managed`를 추가하고 계약 테스트에 경계를 고정했다. 수정 commit의 State
+  reconcile 후 Plan에서 Lambda replacement와 삭제가 없는지 확인하고 Apply를 재실행한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

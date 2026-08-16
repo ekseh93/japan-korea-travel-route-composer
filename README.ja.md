@@ -20,6 +20,7 @@
 > Production run `31934294917`はBuild・OIDC・artifact uploadまで成功した後、Terraformが`30 to add, 0 to change, 0 to destroy`を計画し、既存リソース作成競合で停止、production backend宣言の欠落が原因と確認したためS3 backend宣言を追加してState復旧を再実行する
 > backend宣言後、Terraform `1.9.8`が`use_lockfile`をサポートしないエラーを確認、すべてのTerraform実行を固定`1.10.5`へ更新し、修正commitでState復旧を再検証する
 > Production run `31934959968`はRemote Stateを読み`15 to add, 2 to change, 0 to destroy`まで進んだが、AWSアカウントのunreserved concurrency最小10制約でLambda作成が停止、Production workflowでconcurrency管理を明示的に無効化する修正が必要
+> 続くrun `31935488510`は前回失敗でtaintedになったLambdaを再作成しようとして`Function already exist`で停止、既存Functionを削除せずState復旧でLambdaアドレスをuntaintして現在のFunctionを維持するよう修正
 >
 > 公開URL・ユーザー指標: なし
 >
