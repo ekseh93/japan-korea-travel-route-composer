@@ -4,6 +4,8 @@
 
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY
 >
+> LUN-015 상태: Source·Bootstrap·OIDC 실행 승인은 완료했지만 Budget·Production 비용 Gate는 미완료
+>
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
 > 반입·Production Projection 생성 완료; AWS IAM Identity Center 프로젝트 사용자와 임시 Bootstrap 권한 연결 완료;

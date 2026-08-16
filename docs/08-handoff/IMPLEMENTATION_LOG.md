@@ -221,6 +221,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   AWS Role을 요청하도록 통일했다.
 - Workflow 계약 테스트가 네 가지 형식 오류를 고정하며, 실제 Teardown·AWS OIDC·리소스 삭제는 실행하지 않았다.
 
+### LUN-028 LUN-015 승인 상태 명확화
+
+- Source·Bootstrap·OIDC 실행 승인은 완료됐지만 월 예산·알림 이메일·철거 기준 승인은 미완료인데
+  체크리스트 상태가 전체 실행 승인처럼 표시된 불일치를 확인했다.
+- 상태를 `APPROVED_FOR_EXECUTION_WITH_BUDGET_GATE`로 바꾸고 README 3종에 Production 비용 Gate가
+  미완료임을 명시했다. Budget·Artifact 입력 없이 AWS 호출을 허용하는 변경은 하지 않았다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

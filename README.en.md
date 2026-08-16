@@ -4,6 +4,8 @@
 
 > Status: Sol phased design complete; Luna implementation handoff READY
 >
+> LUN-015 status: Source, Bootstrap, and OIDC execution approved; Budget and Production cost gate incomplete
+>
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
 > catalog places imported (80 Tokyo, 80 Seoul) and the Production Projection built; the AWS IAM

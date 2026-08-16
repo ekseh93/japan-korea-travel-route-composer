@@ -4,6 +4,8 @@
 
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY
 >
+> LUN-015状態: Source・Bootstrap・OIDCの実行承認は完了、Budget・Production費用Gateは未完了
+>
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
 > 取込・Production Projection生成済み、AWS IAM Identity Centerのプロジェクトユーザーと一時Bootstrap権限の接続は完了、

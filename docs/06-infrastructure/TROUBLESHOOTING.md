@@ -408,6 +408,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   삭제 권한은 입력 검증과 별개로 protected `production-teardown` 승인을 계속 요구한다.
 - **검증:** Workflow 계약 테스트가 네 가지 오류 메시지를 고정했다. 실제 OIDC·Teardown·삭제는 실행하지 않았다.
 
+### 21. LUN-015 체크리스트 상태가 Budget 미완료와 충돌하던 문제
+
+- **문제:** Source·Bootstrap·OIDC 실행 승인은 완료됐지만 월 예산·이메일·철거 기준은 미승인인데
+  체크리스트가 `APPROVED_FOR_EXECUTION`으로 표시됐다.
+- **결정:** 상태를 `APPROVED_FOR_EXECUTION_WITH_BUDGET_GATE`로 명확히 바꾸고, README 3종에도
+  Production 비용 Gate 미완료를 기록했다.
+- **검증:** 문서 상태와 Workflow 사전검사·현재 미설정 입력이 같은 경계를 가리키며 AWS 호출은 없었다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

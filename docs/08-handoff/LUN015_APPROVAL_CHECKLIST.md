@@ -1,6 +1,6 @@
 # LUN-015 승인 체크리스트
 
-> 상태: `APPROVED_FOR_EXECUTION`
+> 상태: `APPROVED_FOR_EXECUTION_WITH_BUDGET_GATE`
 > 목적: 실제 Source Catalog와 AWS 배포를 시작하기 전 승인·비용·철거 경계를 확인한다.  
 > 승인 기록: 사용자가 README 가독성 변경 후 Source 반입과 AWS 리소스 생성·Terraform Plan/Apply를 승인했다 (2026-08-16).
 > 원칙: 승인된 Source 반입과 AWS Account/OIDC 사전 검증은 완료했으며, Budget 이메일 승인 전에는 Production Apply·배포 Smoke·Rollback을 실행하지 않는다.
