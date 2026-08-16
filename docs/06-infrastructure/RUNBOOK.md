@@ -59,6 +59,13 @@ OIDC Role과 Protected Environment가 필요하며 로컬 AWS Profile을 사용�
 pwsh -File scripts/configure-github-inputs.ps1
 ```
 
+PowerShell 7(`pwsh`)이 설치되지 않은 Windows 환경에서는 기본 Windows PowerShell로
+동일한 스크립트를 실행한다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\configure-github-inputs.ps1
+```
+
 ```powershell
 $repo = "ekseh93/japan-korea-travel-route-composer"
 

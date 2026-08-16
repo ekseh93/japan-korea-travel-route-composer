@@ -440,6 +440,15 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** 스크립트는 작성·구문 검증만 했으며 실행하지 않았다. 실제 Secret·Variable·AWS 상태는
   변경되지 않았다.
 
+### 25. Windows에서 `pwsh` 명령을 찾지 못한 문제
+
+- **문제:** PowerShell 7이 설치되지 않은 Windows 환경에서 `pwsh -File` 실행 시
+  `CommandNotFoundException`이 발생했다.
+- **결정:** PowerShell 7 설치를 필수로 만들지 않고 Windows 기본 `powershell.exe`용 대체 명령을
+  Runbook에 추가했다. `-ExecutionPolicy Bypass`는 해당 프로세스에만 적용한다.
+- **검증:** `powershell.exe`와 `gh.exe`의 설치 경로를 확인했다. 승인값 입력과 GitHub Secret·Variable
+  변경은 실행하지 않았다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.
