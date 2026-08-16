@@ -213,6 +213,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
   1~100 범위와 정수 형식을 AWS OIDC 전 사전검사·Terraform validation에서 함께 확인한다.
 - 현재 GitHub 변수는 생성하지 않았으며, 비용 승인 전 AWS Role 요청·Plan·Apply는 실행하지 않는다.
 
+### LUN-027 Teardown OIDC 전 입력 방어선
+
+- Teardown이 `DESTROY-PRODUCTION` 확인과 protected Environment를 사용해도, 필수 Terraform 입력이
+  없으면 AWS OIDC를 먼저 요청한 뒤 실패할 수 있음을 확인했다.
+- Teardown에도 Budget·월 예산·불변 Lambda key/hash 사전검사를 추가해 삭제 작업도 입력 검증 후에만
+  AWS Role을 요청하도록 통일했다.
+- Workflow 계약 테스트가 네 가지 형식 오류를 고정하며, 실제 Teardown·AWS OIDC·리소스 삭제는 실행하지 않았다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

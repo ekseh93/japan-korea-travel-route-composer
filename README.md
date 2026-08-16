@@ -10,7 +10,7 @@
 > Bootstrap의 State/Artifact Bucket·OIDC·Plan/Deploy Role은 계정에서 확인; immutable OIDC Trust와 GitHub Terraform Plan 검증 완료, 애플리케이션 배포는 미완료
 > 보호된 Production Build Gate `31925830262`는 catalog validate·immutable package·checksum·SBOM·GitHub artifact upload까지 성공했고, `production` 승인 대기에서 취소함; AWS 배포 단계에는 도달하지 않음
 > Terraform Plan `31927331676`은 OIDC·State init 후 미승인 빈 `BUDGET_EMAIL` validation에서 중단됨; Apply·artifact 업로드·배포는 실행하지 않음
-> 이후 Plan·Deploy workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, Plan `31928188767`에서 OIDC·Terraform 단계가 skipped 됨을 확인함; 현재 관련 입력은 미설정 상태임
+> 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, Plan `31928188767`에서 OIDC·Terraform 단계가 skipped 됨을 확인함; 현재 관련 입력은 미설정 상태임
 > 최신 GitHub CI `31928319717`에서 quality·browser-e2e·terraform-static과 전체 계약 검사가 성공함; 이 실행은 AWS OIDC·Terraform Apply를 포함하지 않음
 >
 > 공개 URL·사용자 지표: 없음

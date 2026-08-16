@@ -400,6 +400,14 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
 - **검증:** Terraform 계약 4건과 Workflow 계약 5건이 명시 입력·전달·오류 메시지를 검증했다.
   현재 변수는 생성하지 않았고 AWS 리소스 변경도 없다.
 
+### 20. Teardown이 입력 검증 전에 OIDC를 요청할 수 있던 문제
+
+- **문제:** `DESTROY-PRODUCTION` 확인과 protected Environment만으로는 필수 Budget·Artifact 입력이
+  비어 있는 Teardown이 AWS OIDC를 요청한 뒤 Terraform에서 실패할 수 있었다.
+- **결정:** Teardown도 Budget 이메일, 월 예산, Lambda key/hash 형식을 AWS OIDC보다 먼저 검사한다.
+  삭제 권한은 입력 검증과 별개로 protected `production-teardown` 승인을 계속 요구한다.
+- **검증:** Workflow 계약 테스트가 네 가지 오류 메시지를 고정했다. 실제 OIDC·Teardown·삭제는 실행하지 않았다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

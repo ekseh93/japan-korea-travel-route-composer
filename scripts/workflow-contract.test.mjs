@@ -78,6 +78,11 @@ test("deployment workflows require reviewed inputs and protected environments", 
   assert.match(teardown, /confirmation:[\s\S]*?required:\s+true/);
   assert.match(teardown, /DESTROY-PRODUCTION/);
   assert.match(teardown, /environment:\s+name:\s+production-teardown/);
+  assert.match(teardown, /Verify approved teardown inputs/);
+  assert.match(teardown, /BUDGET_EMAIL is not approved or configured; refusing teardown/);
+  assert.match(teardown, /MONTHLY_BUDGET_USD must be an explicitly approved integer/);
+  assert.match(teardown, /LAMBDA_ARTIFACT_KEY must be a 40-character release SHA/);
+  assert.match(teardown, /LAMBDA_SOURCE_CODE_HASH must be a Base64 SHA-256 digest/);
 
   const plan = await workflow("terraform-plan.yml");
   assert.match(plan, /environment:\s+terraform-plan/);
