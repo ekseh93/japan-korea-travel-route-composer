@@ -4,7 +4,7 @@
 
 > 状態: Solの段階別設計完了、Luna実装引継ぎREADY
 >
-> LUN-015状態: Budget入力の承認・登録は完了、Production Apply `31932494722`はDeploy Role IAMポリシー不足で部分適用後に停止し、修正・再試行待ち
+> LUN-015状態: Budget入力の承認・登録は完了、Production Apply `31932494722`はDeploy Role IAMポリシー不足で部分適用後に停止、State復旧はLambdaインラインポリシーが未作成であることを確認して修正中
 >
 > 実装状態: LUN-001~013のアプリケーション・インフラとLUN-014 Source Governance Gate・Projection
 > Build・DynamoDB Catalog Publisher・Catalog Rollbackを実装、OSMベースのCatalog 160件(東京80・ソウル80)を
@@ -15,6 +15,7 @@
 > その後、Plan・Deploy・Teardown workflowにBudget Secret・月額予算変数とimmutable Lambda artifact変数の事前検査をOIDC前に追加し、今回の実行で承認済みBudget Secretと月額予算`1 USD`を登録
 > 最新の手動Terraform Plan `31929552323`は当時`BUDGET_EMAIL`事前検査で停止したが、その後のProduction workflowではOIDCとartifactアップロードまで成功
 > 最新のGitHub CI `31929411509`でquality・browser-e2e・terraform-staticと全契約テストが成功、AWS OIDC・Terraform Applyは含まれていない
+> State reconcile `31933697630`は既存リソースのimport中にLambdaインラインポリシーが未作成で停止、ポリシーが存在する場合だけimportするよう復旧スクリプトを修正し、契約テスト9件に合格
 >
 > 公開URL・ユーザー指標: なし
 >

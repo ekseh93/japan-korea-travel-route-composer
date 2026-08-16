@@ -279,6 +279,14 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - Bootstrap Deploy Role 정책과 복구 workflow에 해당 조회 Action만 추가하고, 다음 reconcile에서 기존 주소는
   건너뛰도록 유지했다.
 
+### LUN-035 State import의 미생성 인라인 정책 처리
+
+- State reconcile `31933697630`은 기존 Web·CloudFront OAC·DynamoDB·Log Group·Lambda Role을 import한 뒤,
+  첫 부분 Apply에서 아직 생성되지 않은 Lambda runtime 인라인 정책의 import에서 중단됐다.
+- 복구 스크립트가 `list-role-policies`로 정책 존재 여부를 확인한 뒤 존재할 때만 import하도록 수정했다.
+  미생성 정책은 다음 Production Plan에서 Terraform이 생성하며, 복구 workflow는 계속 import-only 경계를 유지한다.
+- Bash 구문 검사와 Terraform/Workflow 계약 테스트 9건을 통과했으며, 실제 AWS 재실행은 수정 commit 반영 후 수행한다.
+
 ### LUN-014 Current pointer 계약 구현 결과
 
 - 검증된 `ProjectionBuildResult`에서 도쿄·서울별 immutable Current pointer 후보를 생성한다.

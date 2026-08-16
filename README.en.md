@@ -4,7 +4,7 @@
 
 > Status: Sol phased design complete; Luna implementation handoff READY
 >
-> LUN-015 status: Budget inputs approved and configured; Production Apply `31932494722` partially applied then stopped because the Deploy Role IAM policy was incomplete; remediation and retry are pending
+> LUN-015 status: Budget inputs approved and configured; Production Apply `31932494722` partially applied then stopped because the Deploy Role IAM policy was incomplete; State recovery confirmed that the Lambda inline policy was not yet created and is being remediated
 >
 > Implementation: LUN-001~013 application/infrastructure and LUN-014 Source Governance Gate,
 > Projection Build, DynamoDB Catalog Publisher, and Catalog Rollback implemented; 160 OSM-based
@@ -17,6 +17,7 @@
 > Plan, Deploy, and Teardown workflows now preflight the Budget Secret, approved monthly budget, and immutable Lambda artifact variables before OIDC; the approved Budget Secret and monthly budget of `1 USD` were configured for this run
 > Latest manual Terraform Plan `31929552323` stopped at the `BUDGET_EMAIL` preflight at that time; the later Production workflow reached OIDC and artifact upload
 > Latest GitHub CI `31929411509` passed quality, browser-e2e, terraform-static, and all contract checks; this run did not include AWS OIDC or Terraform Apply
+> State reconcile `31933697630` stopped while importing existing resources because the Lambda inline policy was not yet present; the recovery script now imports that policy only when it exists, and 9 contract tests passed
 >
 > Public URL and user metrics: none
 >

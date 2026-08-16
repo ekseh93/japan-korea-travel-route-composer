@@ -492,6 +492,17 @@ Plan workflow는 같은 사전검사에서 `LAMBDA_ARTIFACT_KEY`와
   import 결과는 유지하고, 다음 reconcile은 State에 등록된 주소를 건너뛰고 중단 지점부터 이어간다.
 - **검증:** Bootstrap 정책 복구 workflow의 최소 권한 JSON과 Terraform 정책에 같은 Action을 추가했다.
 
+### 30. State import 중 아직 생성되지 않은 Lambda 인라인 정책
+
+- **문제:** State reconcile `31933697630`은 S3·CloudFront OAC·DynamoDB·Log Group·Lambda Role까지 import한 뒤,
+  첫 부분 Apply에서 아직 생성되지 않은 `aws_iam_role_policy.lambda_runtime`를 import하려 해
+  `Cannot import non-existent remote object`로 중단됐다.
+- **결정:** AWS `list-role-policies`로 `${role}-runtime` 정책의 실제 존재 여부를 먼저 확인하고, 존재할 때만
+  Terraform State에 import한다. 정책이 없으면 복구를 중단하지 않고 다음 Production Plan에서 Terraform이
+  선언대로 생성하도록 둔다. 리소스 삭제·State 수동 편집·장기 Access Key 우회는 하지 않는다.
+- **검증:** 복구 스크립트의 정책 존재 조건을 계약 테스트에 추가했고, 로컬 Bash 구문 검사와 Workflow/Terraform
+  계약 테스트 9건을 통과했다. 수정 commit으로 보호된 State reconcile을 재실행해야 한다.
+
 ## 하지 않는 해결 방법
 
 - IAM 사용자 Access Key를 GitHub Secret, `.env`, README, Terraform 변수 파일에 저장하지 않는다.

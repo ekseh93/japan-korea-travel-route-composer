@@ -4,7 +4,7 @@
 
 > 상태: Sol 단계별 설계 완료, Luna 구현 인계 READY
 >
-> LUN-015 상태: Budget 입력 승인·등록 완료; Production Apply `31932494722`는 Deploy Role IAM 정책 부족으로 부분 적용 후 중단되어 보완·재시도 대기
+> LUN-015 상태: Budget 입력 승인·등록 완료; Production Apply `31932494722`는 Deploy Role IAM 정책 부족으로 부분 적용 후 중단됨; State 복구는 Lambda 인라인 정책 미생성 상태를 확인하고 보완 중
 >
 > 구현 상태: LUN-001~013 애플리케이션·인프라와 LUN-014 Source Governance Gate·Projection
 > Build·DynamoDB Catalog Publisher·Catalog Rollback 구현; OSM 기반 Catalog 160개(도쿄 80·서울 80)
@@ -15,6 +15,7 @@
 > 이후 Plan·Deploy·Teardown workflow에 Budget Secret·월 예산 변수와 immutable Lambda artifact 변수 사전검사를 OIDC 앞에 추가했으며, 이번 실행에서 승인된 Budget Secret과 월 예산 `1 USD`를 등록함
 > 최신 수동 Terraform Plan `31929552323`은 당시 `BUDGET_EMAIL` 사전검사에서 중단됐고, 이후 Production workflow에서는 OIDC와 artifact 업로드까지 성공함
 > 최신 GitHub CI `31929411509`에서 quality·browser-e2e·terraform-static과 전체 계약 검사가 성공함; 이 실행은 AWS OIDC·Terraform Apply를 포함하지 않음
+> State reconcile `31933697630`은 기존 리소스 import 중 Lambda 인라인 정책이 아직 존재하지 않아 중단됨; 복구 스크립트가 해당 정책이 존재할 때만 import하도록 수정되었고 계약 테스트 9건을 통과함
 >
 > 공개 URL·사용자 지표: 없음
 >

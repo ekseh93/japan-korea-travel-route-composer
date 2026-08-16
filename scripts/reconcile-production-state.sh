@@ -97,7 +97,11 @@ import_if_log_group_exists aws_cloudwatch_log_group.api "$api_log_group"
 
 if aws iam get-role --role-name "$lambda_role" >/dev/null 2>&1; then
   import_if_unmanaged aws_iam_role.lambda "$lambda_role"
-  import_if_unmanaged aws_iam_role_policy.lambda_runtime "${lambda_role}:${lambda_role}-runtime"
+  lambda_runtime_policy="${lambda_role}-runtime"
+  if aws iam list-role-policies --role-name "$lambda_role" \
+    --query "PolicyNames[?@=='$lambda_runtime_policy'] | length(@)" --output text | grep -q '^1$'; then
+    import_if_unmanaged aws_iam_role_policy.lambda_runtime "${lambda_role}:${lambda_runtime_policy}"
+  fi
 fi
 
 if aws sns get-topic-attributes --topic-arn "$budget_topic" >/dev/null 2>&1; then
