@@ -18,7 +18,7 @@
 >
 > GitHub CI 검증: quality·browser-e2e·terraform-static 3개 작업과 Smoke contract tests·Release contract
 > tests·Workflow contract tests·Terraform contract tests 통과
-> ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31914519023), 2026-08-16)
+> ([실행 결과](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31916014781), 2026-08-16)
 
 ## 프로젝트 개요
 

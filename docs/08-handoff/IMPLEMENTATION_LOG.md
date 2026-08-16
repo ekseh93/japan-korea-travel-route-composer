@@ -15,6 +15,7 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 | GitHub CI | quality, browser-e2e, terraform-static 통과 |
 | 실제 Source 반입 | OSM 기반 160개 Place·Evidence 160개·Route 112개 반입 및 Production Gate 통과 |
 | AWS 리소스·배포 | 미실행, AWS Account ID·Budget·OIDC 사전 검증 대기 |
+| 로컬 Terraform 사전 검증 | Terraform 1.9.8·TFLint 0.64.0 설치 및 backend 없는 정적 검증 통과; AWS 자격 증명 없음 |
 
 ## 커밋 기준
 
@@ -112,6 +113,13 @@ README는 상태가 바뀐 같은 커밋에서 갱신하고, 코드는 기능 �
 - 로컬에는 AWS CLI·Terraform·TFLint와 AWS 환경변수·`%USERPROFILE%\\.aws` 자격 증명 파일이 없다.
 - 따라서 AWS Account ID 조회, Bootstrap State/OIDC 생성, Terraform Plan/Apply, 배포 Smoke는 실행하지 않았다.
 - AWS Console 브라우저 로그인은 셸 자격 증명을 자동으로 만들지 않으므로 AWS SSO 또는 승인된 단기 OIDC 경로를 사용해야 한다.
+
+### LUN-016 로컬 Terraform 도구 준비 및 검증 결과
+
+- 사용자 영역에 Terraform 1.9.8, TFLint 0.64.0, AWS CLI 1.46.0을 준비했다. 운영 인증에는 문서화된 AWS CLI v2와 IAM Identity Center 또는 승인된 단기 세션을 사용한다.
+- `terraform fmt -check -recursive infra`, 두 Terraform 루트의 `init -backend=false`·`validate`, `tflint --recursive`를 실행해 통과했다.
+- `aws configure list`는 profile·key·region을 찾지 못했고, `aws sts get-caller-identity`는 `Unable to locate credentials`로 실패했다.
+- 따라서 AWS Account ID 확인, Bootstrap/OIDC/Budget 생성, Terraform Plan/Apply, artifact 업로드와 배포 Smoke는 계속 미실행이다.
 
 ### LUN-014 Current pointer 계약 구현 결과
 

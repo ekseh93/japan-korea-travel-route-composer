@@ -21,7 +21,7 @@
 > GitHub CI verification: quality, browser-e2e,
 > terraform-static, Smoke contract tests, Release contract tests, Workflow contract tests, and
 > Terraform contract tests all passed
-> ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31914519023),
+> ([run result](https://github.com/ekseh93/japan-korea-travel-route-composer/actions/runs/31916014781),
 > 2026-08-16)
 
 ## Project Overview

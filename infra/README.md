@@ -14,10 +14,10 @@ the fixed `production/terraform.tfstate` key and `use_lockfile=true`. Run
 `terraform fmt -check`, `terraform init -backend=false`, `terraform validate`,
 TFLint, and an IaC security scanner before requesting a production plan.
 
-Local verification on 2026-08-15: Terraform 1.9.8 `fmt -check` and `validate`
-passed for both roots with AWS provider 6.47.0 lockfiles, and TFLint 0.55.1
-passed. The GitHub CI run also passed the pinned Trivy container scan. No plan
-or apply ran.
+Local verification on 2026-08-16: Terraform 1.9.8 `fmt -check` and `validate`
+passed for both roots with AWS provider 6.47.0 lockfiles, and TFLint 0.64.0
+passed for `infra`. GitHub CI also passed the pinned TFLint 0.55.1 and Trivy
+container scans. No AWS plan or apply ran.
 
 AWS Budgets sends alerts and does not block payment or guarantee a zero bill.
 The teardown order and the state bucket exception are defined in
